@@ -9,10 +9,11 @@ Feature: Business process configuration
     And I map movement destination to <destination type>
     And I map movement resource to <resource type>
     And I map movement quantity to <quantity type>
-    Then I create a new Movement mask with <source type>
-    And new concept's destination type is of <destination type>
-    And new concept's resource type is of <resource type>
-    And new concept's quantity type is <quantity type>
+    Then the movement mask should be <new concept>
+    And new concept's source type should be of <source type>
+    And new concept's destination type should be of <destination type>
+    And new concept's resource type should be of <resource type>
+    And new concept's quantity type should be <quantity type>
 
     Examples:
       | new concept | source type | destination type | resource type | quantity type |
