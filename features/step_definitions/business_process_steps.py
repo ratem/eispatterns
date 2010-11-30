@@ -5,7 +5,7 @@ from domain.movement import Movement
 
 @step(u'Given that I need to configure a movement as a (.+)')
 def given_that_i_need_to_configure_a_movement_as_a(step, new_concept):
-    world.movement = Movement.create_as(new_concept)
+    world.movement.mask = new_concept
 
 @step(u'When I map movement source to (.+)')
 def when_i_map_movement_source_to(step, source_type):
