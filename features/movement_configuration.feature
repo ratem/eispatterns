@@ -1,7 +1,7 @@
-Feature: Business process configuration
+Feature: Movement configuration
   As a Business Analyst
-  I want to configure a business process template
-  In order to make it compliant to my client's needs
+  I want to configure a concrete movement
+  In order to make it usefull for business process
 
   Scenario Outline: Movement configuration
     Given that I need to configure a movement as a <new concept>
