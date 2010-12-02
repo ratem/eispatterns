@@ -4,7 +4,7 @@ Feature: Path configuration
   In order to make it compliant to a given business process
 
   Scenario Outline: Path masking
-    Given that I need to configure a path to reflect a given business process
+    Given I need to configure a path to reflect a given business process
     When I map path mask to <business process>
     Then the path mask should be <business process>
 
@@ -13,11 +13,12 @@ Feature: Path configuration
       | sale             |
 
   Scenario Outline: Movement inclusion
-    Given that I want to include an already configured movement to a path
+    Given I have a configured <path>
+    And I want to include a configured movement to this path
     When when I select a given <movement>
     Then this movement is included into the path
 
     Examples:
-      | movement |
-      | shipment |
+      | path | movement |
+      | sale | shipment |
 
