@@ -3,6 +3,6 @@ class Node(object):
         self.mask     = None
         self.location = None
 
-    def defineMask(self,concrete_concept):
+    def define_mask(self,concrete_concept):
         self.mask = concrete_concept
 

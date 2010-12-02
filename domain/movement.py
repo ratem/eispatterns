@@ -14,18 +14,18 @@ class Movement(object):
         self.resource    = None
         self.quantity    = 0.0
 
-    def defineMask(self, concrete_concept):
+    def define_mask(self, concrete_concept):
         self.mask = concrete_concept
 
-    def defineSource(self, source):
+    def define_source(self, source):
         self.source = source
 
-    def defineDestination(self, destination):
+    def define_destination(self, destination):
         self.destination = destination
 
-    def defineResource(self, resource):
+    def define_resource(self, resource):
         self.resource = resource
 
-    def defineQuantity(self, quantity):
+    def define_quantity(self, quantity):
         self.quantity = quantity
 

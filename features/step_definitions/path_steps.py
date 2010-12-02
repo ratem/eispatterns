@@ -13,12 +13,12 @@ def when_i_map_path_mask_to_business_process(step, business_process):
 
 @step(u'Then the path mask should be (.+)')
 def then_the_path_mask_should_be_business_process(step, business_process):
-    world.path.mask = business_process
+    world.path.define_mask(business_process)
 
 @step(u'Given I have a configured (.+)')
 def and_i_want_to_include_a_configured_movement_to_this_path(step, path):
     world.path = Path()
-    world.path.defineMask(path)
+    world.path.define_mask(path)
 
 @step(u'[Given|And] I want to include a configured movement to this path')
 def and_i_want_to_include_a_configured_movement_to_this_path(step):

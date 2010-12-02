@@ -7,10 +7,10 @@ class Path(object):
         self.mask         = None
         self.movements    = []
 
-    def defineMask(self, concrete_concept):
+    def define_mask(self, concrete_concept):
         self.mask = concrete_concept
 
-    def includeMovement(self, movement):
+    def include_movement(self, movement):
 #        movement.timesExecuted = 0
 #        movement.predecessor = []
         self.movements.append(movement)

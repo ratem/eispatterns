@@ -3,6 +3,6 @@ class Resource(object):
         self.mask = None
         self.unit = None
 
-    def defineMask(self, concrete_concept):
+    def define_mask(self, concrete_concept):
         self.mask = concrete_concept
 
