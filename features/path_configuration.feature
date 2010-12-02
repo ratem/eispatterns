@@ -15,8 +15,9 @@ Feature: Path configuration
   Scenario Outline: Movement inclusion
     Given I have a configured <path>
     And I want to include a configured movement to this path
-    When when I select a given <movement>
-    Then this movement is included into the path
+    When I select a given <movement>
+    And I include this movement into the path
+    Then this movement should be into the path
 
     Examples:
       | path | movement |
