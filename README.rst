@@ -35,3 +35,28 @@ can be instantiated. Of course, at some point extra coding is necessary, at this
 point we believe that methods for implementing specific algorithms will appear
 on the coordinator element, the Path instances.
 
+
+Setup
+-----
+
+Pre-setup (on Ubuntu)::
+
+    $ apt-get install python-setuptools
+    $ easy_install pip
+
+
+Install dependencies (if needed) and run all specs (depending on your
+envirnoment, you'll need to call with sudo)::
+
+    $ make
+
+
+Run only unit specs::
+
+    $ make unit
+
+
+Run only acceptance specs::
+
+    $ make acceptance
+
