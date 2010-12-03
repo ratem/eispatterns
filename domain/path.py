@@ -11,7 +11,9 @@ class Path(object):
         self.mask = concrete_concept
 
     def include_movement(self, movement):
-#        movement.timesExecuted = 0
-#        movement.predecessor = []
+#       '''Only when enters a path, a movement needs to know about how many
+#        times it was executed and its list of predecessors '''
+#        movement.times_executed = 0
+#        movement.predecessors = []
         self.movements.append(movement)
 
