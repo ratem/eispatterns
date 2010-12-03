@@ -1,19 +1,27 @@
+EIS Patterns
+============
+
 This project aims to discuss, and implemented in dynamic languages, Design
 Patterns for Enterprise Information Systems. The ideas here presented are
 discussed in more detail in the blog http://eis-development.blogspot.com
 
-Code is built on top of some concepts borrowed from ERP5 Framework
-(http://www.erp5.org), but sometimes interpreted in a different way*.
+Code is built on top of some concepts borrowed from `ERP5 Framework
+<http://www.erp5.org>`_, but
+sometimes interpreted in a different way*.
 
 Concept 1: Resource
-A resource is anything that is used for production. It can be a material, money,
-machine time, or even human skills.
+  A resource is anything that is used for production. It can be a material, money,
+  machine time, or even human skills.
+
 Concept 2: Node
-Is something that transforms resources. For instance, a machine, a factory, a
-bank account.
-Concept 3: Movement is a movement of any Resource from one Node to another.
-Concept 4: Path*
-It describes how Movements are used to implement business processes.
+  Is something that transforms resources. For instance, a machine, a factory, a
+  bank account.
+
+Concept 3: Movement
+  Is a movement of any Resource from one Node to another.
+
+Concept 4: Path
+  It describes how Movements are used to implement business processes.
 
 ERP5 also has the concept of Item, an instance of a Resource. At the moment we
 decided not to use this, otherwise it would be necessary to create classes for
