@@ -23,3 +23,14 @@ Feature: Path configuration
       | path | movement |
       | sale | shipment |
 
+  Scenario Outline: Movement predecessor inclusion
+    Given I have a configured <path>
+    And I have at least two configured movements in this path
+    When I select <predecessor> as predecessor of <movement>
+    And I include <predecessor> as predecessor of <movement>
+    Then <predecessor> should be a predecessor of <movement>
+
+    Examples:
+      | path | movement | predecessor   |
+      | sale | shipment | order payment |
+
