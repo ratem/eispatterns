@@ -17,3 +17,7 @@ class Path(object):
         movement.predecessors = []
         self.movements.append(movement)
 
+    def define_predecessor(self, movement, predecessor):
+        movement_position = self.movements.index(movement)
+        self.movements[movement_position].predecessors.append(predecessor)
+

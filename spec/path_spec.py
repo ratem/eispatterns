@@ -19,3 +19,12 @@ class PathSpec(unittest.TestCase):
         self.path.include_movement(self.movement)
         self.path.movements |should| include(self.movement)
 
+    def it_includes_a_predecessor_to_a_movement(self):
+        self.path.movements = []
+        self.movement = Movement()
+        self.path.include_movement(self.movement)
+        self.predecessor = Movement()
+        self.path.include_movement(self.predecessor)
+        self.path.define_predecessor(self.movement, self.predecessor)
+        self.path.movements[0].predecessors[0] |should| equal_to(self.predecessor)
+
