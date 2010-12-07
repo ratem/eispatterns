@@ -1,10 +1,10 @@
 Feature: Movement configuration
   As a Business Analyst
   I want to configure a concrete movement
-  In order to make it usefull for business process
+  In order to make it usefull for using in paths
 
   Scenario Outline: Movement configuration
-    Given that I need to configure a movement as a <new concept>
+    Given I need to configure a movement as a <new concept>
     When I map movement source to <source type>
     And I map movement destination to <destination type>
     And I map movement resource to <resource type>
