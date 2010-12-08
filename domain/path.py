@@ -4,20 +4,17 @@
 
 class Path(object):
     def __init__(self):
-        self.mask         = None
-        self.movements    = []
+        self.mask        = None
+        self.movements   = []
+        self.connections = []
+        self.orchestrate = None
 
     def define_mask(self, concrete_concept):
         self.mask = concrete_concept
 
     def include_movement(self, movement):
-#       '''Only when enters a path, a movement needs to know about how many
-#        times it was executed and its list of predecessors '''
-#        movement.times_executed = 0
-        movement.predecessors = []
         self.movements.append(movement)
 
-    def define_predecessor(self, movement, predecessor):
-        movement_position = self.movements.index(movement)
-        self.movements[movement_position].predecessors.append(predecessor)
+    def include_connection(self, connection):
+        self.connections.append(connection)
 

@@ -34,6 +34,6 @@ class ConnectionSpec(unittest.TestCase):
         self.connection.binding_time |should| equal_to('event dependent')
 
     def it_defines_things_todo(self):
-        '''Defining what to do occurs during connection instantiation '''
+        '''Defining what to do occurs during connection implementation '''
         self.connection.todo = Dummy()
 

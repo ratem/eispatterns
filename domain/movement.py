@@ -6,7 +6,7 @@
 #
 
 class Movement(object):
-    #default constructor - I cannot live with it
+    #default constructor
     def __init__(self):
         self.mask        = None
         self.source      = None

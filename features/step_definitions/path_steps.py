@@ -3,6 +3,7 @@ from lettuce import step, world
 from should_dsl import should
 from domain.path import Path
 from domain.movement import Movement
+from domain.connection import Connection
 
 @step(u'Given I need to configure a path to reflect a given business process')
 def given_i_need_to_configure_a_path_to_reflect_a_given_business_process(step):
@@ -16,9 +17,9 @@ def when_i_map_path_mask_to_business_process(step, business_process):
 def then_the_path_mask_should_be_business_process(step, business_process):
     world.path.mask |should| equal_to(business_process)
 
-@step(u'Given I have a configured (.+)')
-def given_i_have_a_configured_path(step, path):
-    #new scenario, new objects
+@step(u'Given there is a configured (.+) available')
+def given_there_is_a_configured_path_available(step, path):
+    #new scenario, new objects ? but this doesn't work below...
     step.given('I need to configure a path to reflect a given business process')
     step.when('I map path mask to %s' % path)
 
@@ -39,29 +40,28 @@ def and_i_include_this_movement_into_the_path(step):
 def then_this_movement_should_be_into_the_path(step):
     world.path.movements |should| include(world.configured_movement)
 
-#@step(u'Given I have a configured path')
-# a function with the same name already exists in another scenario, thus an
-# error will pop if I include this call, so I am forced to use the already
-# created path object
-
-@step(u'And I have at least two configured movements in this path')
-def and_i_have_at_least_two_configured_movements_in_this_path(self):
-    #I already have a movement in this path, I need to include only one
-    another_movement = Movement()
-    another_movement.define_mask('order payment')
-    world.path.include_movement(another_movement)
+@step(u'And this (.+) has at least two movements')
+def and_this_path_has_at_least_two_movements(step, path):
+    world.another_movement = Movement()
+    world.path.include_movement(world.another_movement)
     len(world.path.movements) |should| equal_to(2)
 
-@step(u'When I select (.+) as predecessor of (.+)')
-def when_i_select_predecessor_as_predecessor_of_movement(step, predecessor, movement):
-    #GUI operation goes here
+@step(u'And there is at least a (.+) which integrates two of these movements')
+def and_there_is_at_least_a_connection_which_integrates_two_of_these_movements(step, connection):
+    world.connection = Connection()
+    world.connection.define_mask(connection)
+    world.connection.define_left_hand(world.movement)
+    world.connection.left_hand |should| equal_to(world.movement)
+    world.connection.define_right_hand(world.another_movement)
+    world.connection.right_hand |should| equal_to(world.another_movement)
+
+@step(u'When I select a given (.+) to be included')
+def when_i_select_a_given(self, connection):
+    #GUI code goes here
     pass
 
-@step(u'And I include (.+) as predecessor of (.+)')
-def and_i_include_predecessor_as_predecessor_of_movement(step, predecessor, movement):
-    world.path.movements[0].predecessors.append(predecessor)
-
-@step(u'Then (.+) should be a predecessor of (.+)')
-def then_predecessor_should_be_a_predecessor_of_movement(step, predecessor, movement):
-    world.path.movements[0].predecessors[0] |should| equal_to(predecessor)
+@step(u'Then this connection should be included into the path')
+def then_this_connection_should_be_included_into_the_path(step):
+    world.path.include_connection(world.connection)
+    world.path.connections |should| include(world.connection)
 
