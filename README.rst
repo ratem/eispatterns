@@ -1,4 +1,4 @@
-EIS Patterns
+EIS Patterns - Frozen Sketch
 ============
 
 This project aims to discuss, and implemented in dynamic languages, Design
