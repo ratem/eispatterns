@@ -1,8 +1,14 @@
 class Resource(object):
     def __init__(self):
-        self.mask = None
-        self.unit = None
+        #configured
+        self.mask        = None
+        self.description = None
+        self.type        = None
+        self.unit        = None
+        #calable, to be implemented for instantiation
+        self.use         = None
 
-    def define_mask(self, concrete_concept):
-        self.mask = concrete_concept
+    def define_use(self):
+        ''' make self.use a callable object '''
+        pass
 
