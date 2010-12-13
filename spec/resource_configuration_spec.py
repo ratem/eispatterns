@@ -9,7 +9,7 @@ class ResourceConfigurationSpec(unittest.TestCase):
         self.resource_configuration = ResourceConfiguration()
 
     def it_parses_a_resource_configuration(self):
-        self.resource_configuration.retrieve('developer','1.0')
+        self.resource_configuration.retrieve('developer','junior 1.0')
         #should be done by retrieve in fact
         self.resource_configuration.configuration = 'A developer is a person, someone able of developing computer programms, measured by working hours'
         self.resource_configuration.configuration |should| equal_to('A developer is a person, someone able of developing computer programms, measured by working hours')
@@ -23,6 +23,6 @@ class ResourceConfigurationSpec(unittest.TestCase):
     def it_configures_a_resource(self):
         pass
 
-    def it_lists_the_avalable_configurations_of_a_given_resource(self):
+    def it_lists_the_available_configurations_of_a_given_resource(self):
         pass
 

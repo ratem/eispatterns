@@ -3,10 +3,16 @@ class ResourceConfiguration(object):
     template = '[A/An] <resource> is [a/an] <type>, <short description>, measured by <unit>'
 
     def __init__(self):
-        self.configuration = None
+        #retrieve(mask, version) will set these values
+        self.mask          = None
         self.version       = None
+        self.configuration = None
+        self.description   = None
+        self.type          = None
+        self.unit          = None
 
-    def parse(self):
+
+    def parse(self, mask, version):
         ''' parses configuration '''
         pass
 
