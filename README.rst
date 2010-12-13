@@ -3,7 +3,8 @@ EIS Patterns
 
 This project aims to discuss and implement in dynamic languages Design
 Patterns for Enterprise Information Systems. The ideas here presented are
-discussed in more detail in the blog http://eis-development.blogspot.com
+discussed in more detail in the blog `Enterprise Information Systems Development
+<http://eis-development.blogspot.com>`_
 
 Code is built on top of concepts borrowed from `ERP5 Framework
 <http://www.erp5.org>`_, sometimes interpreted in a different way.
