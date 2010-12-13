@@ -28,4 +28,5 @@ class ResourceConfigurationSpec(unittest.TestCase):
         resource.type = configuration.type
         resource.description = configuration.description
         resource.unit = configuration.unit
+        resource.__dict__ |should| include_all_of({'use': None, 'tag': None, 'mask': 'developer', 'version' : 'junior 1.0', 'type': 'person', 'description': 'someone...', 'unit':'working ours'})
 

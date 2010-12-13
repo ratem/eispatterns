@@ -4,12 +4,12 @@ class ResourceConfiguration(object):
 
     def __init__(self):
         #retrieve(mask, version) will set these values
-        self.mask          = None
-        self.version       = None
-        self.configuration = None
-        self.description   = None
-        self.type          = None
-        self.unit          = None
+        self.configuration_text = None
+        self.mask               = None
+        self.version            = None
+        self.description        = None
+        self.type               = None
+        self.unit               = None
 
 
     def parse(self, mask, version):

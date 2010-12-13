@@ -29,7 +29,8 @@ for instantiating the other 3 abstract concepts.
 
 On the other hand, we introduce the concept of Connection, which is used to
 connect two movements, and can be used in one or more paths. There is a possibility
-of this concept become the Causality concept used in ERP5.
+of this concept become the Causality concept used in ERP5, but currently it is
+more generic than cause-effect relationships.
 
 Concept 5: Connection
   It describes the relationship between two Movements, in the context of one or
@@ -39,13 +40,15 @@ The core idea is to use the concepts as Lego parts. This mean not using
 subclasses in general, but masking the abstract concepts through configuration.
 For instance, a Movement is first configured as a concrete movement, such as
 transferring goods from supplier to customer. After that, it can be instantiated.
-Of course, at some point extra coding is necessary, at this point we believe that
-methods for implementing specific algorithms will appear on the coordinator
-element - the Path instances. Also, each concept class has to implement, before
-instantiation, a callable object that defines its specific behavior depending on
-different contexts (paths).
 
-The idea is to define a process with two phases:
+Of course, at some point it is necessary to implement specific functionalities
+for the concepts. These functionalities will be implemented in two places:
+a) At instances of concrete concepts, by defining specific behavior depending on
+different contexts (paths).
+b) At path objects, in the form of cordination code, which will make the path''s
+movements collaborate to realize a business process.
+
+In term of process, the idea is to define a two phased one:
 a) Configuration: defines descriptors, which represent concrete uses of the
 abstract concepts. Descriptors list the types used to transform the abstract
 concepts into concrete ones. Configuration is done through a Domain Specific
