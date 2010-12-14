@@ -1,18 +1,19 @@
-from domain.resource_configuration import ResourceConfiguration
+class Resource:
 
-class Resource(object):
     def __init__(self):
-        #calable, to be implemented for instantiation
+        #calable, to be implemented during stories implementation
         self.use = None
-        #object identifier
+        #object identifier, to be implemented before instantiation
         self.tag = None
 
     def configure(self, configuration):
-        self.mask        = configuration.mask
-        self.version     = configuration.version
-        self.description = configuration.description
-        self.type        = configuration.type
-        self.unit        = configuration.unit
+        #configuration object must comply to resource_configuration
+        expected_attributes = ['mask','version','type', 'description','unit']
+        for attribute in expected_attributes:
+            if not hasattr(configuration, attribute):
+                raise ValueError, 'Missing configuration attribute: %s' % attribute
+        #sets a pointer to the configuration object
+        self.configuration = configuration
 
     def define_use(self):
         ''' make self.use a callable object '''

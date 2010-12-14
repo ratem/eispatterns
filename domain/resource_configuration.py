@@ -1,8 +1,9 @@
-class ResourceConfiguration(object):
+class ResourceConfiguration:
 
     template = '[A/An] <resource> is [a/an] <type>, <short description>, measured by <unit>'
 
     def __init__(self):
+        #should be implemented as a singleton of a given key composed by mask and version
         #retrieve(mask, version) will set these values
         self.configuration_text = None
         self.mask               = None
@@ -22,10 +23,6 @@ class ResourceConfiguration(object):
 
     def retrieve(self, mask, version):
         ''' retrieves configuration '''
-        pass
-
-    def configure(self, resource):
-        ''' configures resource '''
         pass
 
     def list_configurations(self, mask):
