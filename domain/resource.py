@@ -7,9 +7,7 @@ class Resource(object):
         #object identifier
         self.tag = None
 
-    def configure(self, mask, version):
-        configuration    = ResourceConfiguration()
-        configuration.retrieve(mask,version)
+    def configure(self, configuration):
         self.mask        = configuration.mask
         self.version     = configuration.version
         self.description = configuration.description
