@@ -3,7 +3,7 @@ class ResourceConfiguration:
     template = '[A/An] <resource> is [a/an] <type>, <short description>, measured by <unit>'
 
     def __init__(self):
-        #should be implemented as a singleton of a given key composed by mask and version
+        #should be implemented as a multiton with mask and version as key
         #retrieve(mask, version) will set these values
         self.configuration_text = None
         self.mask               = None
