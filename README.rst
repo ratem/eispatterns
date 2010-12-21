@@ -36,7 +36,7 @@ Concept 5: Connection
   It describes the relationship between two Movements, in the context of one or
   more paths.
 
-The core idea is to use the concepts as Lego parts. This mean not using
+The core idea is to use the concepts as Lego parts. This mean avoiding using
 subclasses in general, but masking the abstract concepts through configuration.
 For instance, a Movement is first configured as a concrete movement, such as
 transferring goods from supplier to customer. After that, it can be instantiated.
@@ -45,10 +45,10 @@ Of course, at some point it is necessary to implement specific functionalities
 for the concepts. These functionalities will be implemented in two places:
 a) At instances of concrete concepts, by defining specific behavior depending on
 different contexts (paths).
-b) At path objects, in the form of cordination code, which will make the path''s
+b) At path objects, in the form of coordination code, which will make the path''s
 movements collaborate to realize a business process.
 
-In term of process, the idea is to define a two phased one:
+Leading to a two-phased process:
 a) Configuration: defines descriptors, which represent concrete uses of the
 abstract concepts. Descriptors list the types used to transform the abstract
 concepts into concrete ones. Configuration is done through a Domain Specific
@@ -61,24 +61,25 @@ are implemented.
 
 Thus, in a first moment, a domain specialist will configure concrete concepts
 using a specific DSL. Configurations are reused during the implementation, when
-user stories instantiates and define the specific behavior of the concrete
+user stories instantiate and define the specific behavior of the concrete
 concepts.
 
 Programming Notes
 -----------------
-a) Configurable attributes appear in the configure() method of every class, they
-are used to describe a concrete concept, thus their values are defined a priori,
-and obviously are the same for all object of this concrete. Therefore, they are
-stored as singleton objects refered by every instance of this concrete concept.
-Retrieval of these attributes is done by using mask and version as keys
-Attributes defined in the default constructors are those particular for each
-instance. A special case are the calable attributes of every class, which can
-also be reused by more than one object (see b).
+a) Configurable attributes are set by the configure() method of the Maskable
+superclass, these attributes are used to describe a concrete concept, thus their
+values are defined a priori, and obviously are the same for all object of this
+concrete concept. Therefore, they are stored as multiton objects refered by
+every instance of this concrete concept. Retrieval of these attributes is done
+by using mask and version as keys. Attributes defined in the default constructors
+are those particular for each instance. A special case are the calable attributes
+of every class, which can also be reused by more than one object (see b).
+
 b) Every object has to implement a callable, for instance, the "use" method of
-Resource or "process" of Node.
-They can be used by one or more objects of the same concrete concept or even of
-different concepts. Ideally they can be define even at runtime and through
-configuration.
+Resource or "process" of Node. They can be used by one or more objects of the
+same concrete concept or even of different concepts. Ideally they can be defined
+even at runtime and through configuration.
+
 
 Setup
 -----
