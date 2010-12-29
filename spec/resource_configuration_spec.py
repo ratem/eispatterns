@@ -23,6 +23,6 @@ class ResourceConfigurationSpec(unittest.TestCase):
     def it_configures_a_resource(self):
         pass
 
-    def it_lists_the_available_configurations_of_a_given_resource(self):
+    def it_lists_the_available_configurations_for_a_given_resource(self):
         pass
 

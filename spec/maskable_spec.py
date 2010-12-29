@@ -10,7 +10,7 @@ class MaskableSpec(unittest.TestCase):
 
     def it_defines_a_todo_method(self):
         #todo is just a protocol
-        pass
+        self.maskable.todo() |should| equal_to(self.maskable.tag)
 
     def it_obtains_a_configuration(self):
         #Stubs a configuration object
@@ -22,7 +22,7 @@ class MaskableSpec(unittest.TestCase):
         self.maskable.configure(configuration)
         self.maskable.configuration.mask |should| equal_to('a mask')
         self.maskable.configuration.version |should| equal_to('a version')
-#       resource.configuration |should| be(configuration)
+        #resource.configuration |should| be(configuration)
 
     def it_defines_a_tag(self):
         #first method's scenario

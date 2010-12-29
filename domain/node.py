@@ -6,14 +6,14 @@ class Node(Maskable):
 
     def __init__(self):
         Maskable.__init__(self)
-        #callable, to be implemented during implementation of user stories
-        self.process = self.todo()
+        #while it doesn't know how to process resources, it uses an alias for todo()
+        self.process_resources = self.todo
         #to be set during instantiation
         self.location = None
 
-    def define_process(self):
+    def define_how_to_process_resources(self, how_to_process):
         ''' make self.process a callable object '''
-        pass
+        self.process_resources = how_to_process
 
     def define_location(self):
         ''' define node's location '''

@@ -5,7 +5,7 @@ class Maskable:
     def define_tag(self,tag=None):
         ''' if not passed as a parameter, defines tags by some algorithm '''
         if tag == None:
-            self.tag = 0 #will be some id generation algorithm in the future
+            self.tag = 0 #id generation algorithm goes here
         else:
             self.tag = tag
 
@@ -18,6 +18,6 @@ class Maskable:
         self.configuration = configuration
 
     def todo(self):
-        ''' to be redefined and renamed by each abstract concept '''
-        pass
+        ''' usually redefined and renamed by each abstract concept '''
+        return self.tag
 

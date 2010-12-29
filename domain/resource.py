@@ -6,10 +6,10 @@ class Resource(Maskable):
 
     def __init__(self):
         Maskable.__init__(self)
-        #callable, to be implemented during implementation of user stories
-        self.use = self.todo()
+        #while it doesn't know how to be used, it uses an alias for todo()
+        self.use = self.todo
 
-    def define_use(self):
+    def define_how_to_be_used(self, how_to_use):
         ''' make self.use a callable object '''
-        pass
+        self.use = how_to_use
 
