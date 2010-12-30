@@ -76,6 +76,17 @@ Resource or "process" of Node. They can be used by one or more objects of the
 same concrete concept or even of different concepts. Ideally they can be defined
 even at runtime and through configuration.
 
+General Notes
+-------------
+a)This is a didactic framework, if you need a production-ready and flexible EIS
+framework, I suggest to use ERP5. The framework here defined is used for
+discussion on EIS development techniques in graduation courses.
+
+b)The core concepts have only a few attributes, thus it is impossible for them to
+cover all possible meanings of all possible business entities' attributes.
+Therefore, after the core structure is stable, we will start a discussion on how
+to provide the necessary attribute flexibility while keeping the original proposal
+of not abusing of subclassing.
 
 Setup
 -----
