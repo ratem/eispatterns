@@ -16,7 +16,7 @@ class MaskableSpec(unittest.TestCase):
         #Stubs a configuration object
         with Stub() as configuration:
             configuration.mask >> 'a mask'
-            configuration.version >>'a version'
+            configuration.version >> 'a version'
         #expected_configuration_attributes is defined only in subclasses, forced below
         self.maskable.expected_configuration_attributes = ['mask','version']
         self.maskable.configure(configuration)

@@ -9,20 +9,18 @@ class ResourceConfigurationSpec(unittest.TestCase):
         self.resource_configuration = ResourceConfiguration()
 
     def it_parses_a_resource_configuration(self):
+        '''I am not parsing a resource configuration in fact'''
         self.resource_configuration.read('developer','junior 1.0')
-        #should be done by retrieve in fact
-        self.resource_configuration.configuration_text = 'A developer is a person, someone able of developing computer programms, measured by working hours'
-        self.resource_configuration.configuration_text |should| equal_to('A developer is a person, someone able of developing computer programms, measured by working hours')
+        #should be done by parse/retrieve in fact
+        self.resource_configuration.configuration_text = 'A programming is a skill, which represents the capacity of developing programms, measured by development hours'
+        self.resource_configuration.configuration_text |should| equal_to('A programming is a skill, which represents the capacity of developing programms, measured by development hours')
 
     def it_persists_a_resource_configuration(self):
-        pass
+        '''I am not persisting a resource configuration in fact'''
 
-    def it_retrieves_from_some_storage(self):
-        pass
-
-    def it_configures_a_resource(self):
-        pass
+    def it_retrieves_a_resource_configuration_from_some_storage(self):
+        '''I am not retrieving a resource configuration in fact'''
 
     def it_lists_the_available_configurations_for_a_given_resource(self):
-        pass
+        '''I am not listing the available configurations in fact'''
 

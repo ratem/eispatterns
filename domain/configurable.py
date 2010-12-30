@@ -9,10 +9,14 @@
 '''
 class Configurable:
     def __init__(self):
+        #for managing configurations
         self.storage            = None
         self.configuration_text = None
+        #for instances use
         self.mask               = None
         self.version            = None
+        self.type               = None
+        self.description        = None
 
     def parse(self, configuration_text):
         ''' parses configuration '''
