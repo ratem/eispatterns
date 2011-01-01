@@ -1,6 +1,7 @@
 class Maskable:
     def __init__(self):
-        self.tag = None
+        self.tag   = None
+        self.title = None
 
     def define_tag(self,tag=None):
         ''' if not passed as a parameter, defines tags by some algorithm '''
