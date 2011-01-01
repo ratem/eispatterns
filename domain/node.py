@@ -1,11 +1,11 @@
-from domain.maskable import Maskable
+from domain.configurable import Configurable
 
-class Node(Maskable):
+class Node(Configurable):
 
     expected_configuration_attributes = ['mask','version', 'type', 'description','processing_capabilities']
 
     def __init__(self):
-        Maskable.__init__(self)
+        Configurable.__init__(self)
         #while it doesn't know how to process resources, it uses an alias for todo()
         self.process_resources = self.todo
         #to be set during instantiation

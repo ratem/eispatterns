@@ -1,11 +1,11 @@
-from domain.maskable import Maskable
+from domain.configurable import Configurable
 
-class Resource(Maskable):
+class Resource(Configurable):
 
     expected_configuration_attributes = ['mask','version','type', 'description','unit']
 
     def __init__(self):
-        Maskable.__init__(self)
+        Configurable.__init__(self)
         #while it doesn't know how to be used, it uses an alias for todo()
         self.use = self.todo
 

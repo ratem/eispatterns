@@ -1,11 +1,11 @@
-from domain.maskable import Maskable
+from domain.configurable import Configurable
 
-class Movement(Maskable):
+class Movement(Configurable):
 
     expected_configuration_attributes = ['mask','version', 'type', 'description','source_node_mask', 'source_node_mask_version','destination_node_mask', 'destination_node_mask_version','resource_mask', 'resource_mask_version']
 
     def __init__(self):
-        Maskable.__init__(self)
+        Configurable.__init__(self)
         #while it doesn't know how to process resources, it uses an alias for todo()
         self.perform = self.todo
         #to be set during instantiation
