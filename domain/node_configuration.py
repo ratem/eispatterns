@@ -3,7 +3,7 @@ from domain.configurator import Configurator
 
 class NodeConfiguration(Configurator):
 
-    template_configuration_text = '[A/An] <node mask> version <node mask version> is [a/an] <type>, <description>, able of <processing capabilities>'
+    template_configuration_text = '[A/An] <node mask> version <node mask version> is [a/an] <category>, <description>, able of <processing capabilities>'
 
     def __init__(self):
         Configurator.__init__(self)

@@ -45,12 +45,15 @@ b) At path objects, in the form of coordination code, which will make the path''
 movements collaborate to realize a business process.
 
 In that way, we are going to have a two-phased development/customization process:
-a) Configuration: defines descriptors, which represent concrete uses of the
+a) Every Configurable concept has an auxiliary class, descendant of Configurator,
+which is supposed to manage the possible configurations used for producing
+concrete instances.
+b) Configuration: defines descriptors, which represent concrete uses of the
 abstract concepts. Descriptors list the types used to transform the abstract
 concepts into concrete ones. Configuration is done through a Domain Specific
 Language (DSL), having each concept a template text to be used for its
 configuration. In the future, we expect to define a proper grammar for this DSL.
-b) Implementation: uses descriptors to make the concrete concepts instantiable
+c) Implementation: uses descriptors to make the concrete concepts instantiable
 and implement the specific code related to their concrete use. Each concept has
 a callable object with a proper name, which is defined during the implementation
 of user stories.
@@ -62,7 +65,7 @@ concepts.
 
 Programming Notes
 -----------------
-a) Configurable attributes are set by the configure() method of the Maskable
+a) Configurable attributes are set by the configure() method of the Configurable
 superclass, these attributes are used to describe a concrete concept, thus their
 values are defined a priori, and obviously are the same for all object of this
 concrete concept. Therefore, they are stored as multiton objects refered by
@@ -72,21 +75,22 @@ are those particular for each concept. A special case are the callable attribute
 of every class, which can also be reused by more than one object (see b).
 
 b) Every object has to implement a callable, for instance, the "use" method of
-Resource or "process" of Node. They can be used by one or more objects of the
-same concrete concept or even of different concepts. Ideally they can be defined
-even at runtime and through configuration.
+Resource or "process_resources" of Node. They can be used by one or more objects
+of the same concrete concept or even of different concepts. Ideally they can be
+defined even at runtime and through configuration.
 
 General Notes
 -------------
-a)This is a didactic framework, if you need a production-ready and flexible EIS
+a)This is a didactic framework, if you need a flexible production-ready EIS
 framework, I suggest to use ERP5. The framework here defined is used for
-discussion on EIS development techniques in graduation courses.
+discuting EIS development techniques.
 
-b)The core concepts have only a few attributes, thus it is impossible for them to
-cover all possible meanings of all possible business entities' attributes.
+b)The core concepts have only a few attributes, thus it is impossible for them
+to cover all possible attributes found in all possible business entities.
 Therefore, after the core structure is stable, we will start a discussion on how
-to provide the necessary attribute flexibility while keeping the original proposal
-of not abusing of subclassing.
+to provide the necessary attribute flexibility while keeping the original
+proposal of not abusing of subclassing. One possibility is to use attachable
+objects to provide the extra machinery (attributes and methods) necessary.
 
 Setup
 -----
