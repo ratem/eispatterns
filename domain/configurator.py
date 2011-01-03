@@ -15,7 +15,7 @@ class Configurator:
         #for instances use
         self.mask               = None
         self.version            = None
-        self.type               = None
+        self.category           = None
         self.description        = None
 
     def parse(self, configuration_text):

@@ -1,6 +1,5 @@
 import unittest
 from should_dsl import should
-from domain.resource import Resource
 from domain.resource_configuration import ResourceConfiguration
 
 class ResourceConfigurationSpec(unittest.TestCase):

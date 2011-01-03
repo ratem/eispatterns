@@ -1,6 +1,5 @@
 import unittest
 from should_dsl import should
-from domain.node import Node
 from domain.node_configuration import NodeConfiguration
 
 class NodeConfigurationSpec(unittest.TestCase):

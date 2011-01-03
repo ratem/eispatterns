@@ -2,7 +2,8 @@ from domain.configurable import Configurable
 
 class Movement(Configurable):
 
-    expected_configuration_attributes = ['mask','version', 'type', 'description','source_node_mask', 'source_node_mask_version','destination_node_mask', 'destination_node_mask_version','resource_mask', 'resource_mask_version']
+    expected_configuration_attributes = ['mask','version']
+    #, 'category', 'description','source_node_mask', 'source_node_mask_version','destination_node_mask', 'destination_node_mask_version','resource_mask', 'resource_mask_version']
 
     def __init__(self):
         Configurable.__init__(self)
@@ -19,28 +20,45 @@ class Movement(Configurable):
         ''' make self.perform a callable object '''
         self.perform = how_to_perform
 
-    #an important remark: some movements may work with many different masks for
-    #source and destination, as well as all of a given category.
-    #For instance, payments should work to all category=="person".
-    #The code below doesn't allow this, will correct later
     def set_source_node(self, source):
-        if source.mask != self.configuration.source_node_mask:
-            raise ValueError, 'Wrong source node mask: %s' % source.mask
-        elif source.version != self.configuration.source_node_mask_version:
-            raise ValueError, 'Wrong source node mask version: %s' % source.version
-        self.source_node = source
+        #mask + version or category should be allowable
+        compatible_source_node = False
+        if len(self.configuration.allowable_source_node_categories) != 0:
+            if (source.category in self.configuration.allowable_source_node_categories):
+                compatible_source_node = True
+        if len(self.configuration.allowable_source_node_masks_and_versions) != 0:
+            if ([source.mask, source.version] in self.configuration.allowable_source_node_masks_and_versions):
+                compatible_source_node = True
+        if compatible_source_node:
+            self.source_node = source
+        else:
+            raise ValueError,'Non compatible source node configuration'
 
     def set_destination_node(self, destination):
-        if destination.mask != self.configuration.destination_node_mask:
-            raise ValueError, 'Wrong destination node mask: %s' % destination.mask
-        elif destination.version != self.configuration.destination_node_mask_version:
-            raise ValueError, 'Wrong destination node mask version: %s' % destination.version
-        self.destination_node = destination
+        #mask + version or category should be allowable
+        compatible_destination_node = False
+        if len(self.configuration.allowable_destination_node_categories) != 0:
+            if (destination.category in self.configuration.allowable_destination_node_categories):
+                compatible_destination_node = True
+        if len(self.configuration.allowable_destination_node_masks_and_versions) != 0:
+            if ([destination.mask, destination.version] in self.configuration.allowable_destination_node_masks_and_versions):
+                compatible_destination_node = True
+        if compatible_destination_node:
+            self.destination_node = destination
+        else:
+            raise ValueError,'Non compatible destination node configuration'
 
     def set_resource(self, resource):
-        if resource.mask != self.configuration.resource_mask:
-            raise ValueError, 'Wrong resource mask: %s' % resource.mask
-        elif resource.version != self.configuration.resource_mask_version:
-            raise ValueError, 'Wrong resource mask version: %s' % resource.version
-        self.resource = resource
+        #mask + version or category should be allowable
+        compatible_resource = False
+        if len(self.configuration.allowable_resource_categories) != 0:
+            if (resource.category in self.configuration.allowable_resource_categories):
+                compatible_resource = True
+        if len(self.configuration.allowable_resource_masks_and_versions) != 0:
+            if ([resource.mask, resource.version] in self.configuration.allowable_resource_masks_and_versions):
+                compatible_resource = True
+        if compatible_resource:
+            self.resource = resource
+        else:
+            raise ValueError,'Non compatible resource configuration'
 
