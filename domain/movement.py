@@ -1,3 +1,8 @@
+#side note: maybe we will have to use hierarchies of categories, such as
+#person->employee/individual_customer
+#organization->holding/branch/organization_customer/government
+#by doing this I can use super-categories to include all subcategories
+
 from domain.configurable import Configurable
 
 class Movement(Configurable):
@@ -20,6 +25,7 @@ class Movement(Configurable):
         ''' make self.perform a callable object '''
         self.perform = how_to_perform
 
+    #all these checkings will be moved to the configuration class
     def set_source_node(self, source):
         #mask + version or category should be allowable
         compatible_source_node = False

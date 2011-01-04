@@ -8,7 +8,7 @@ movement.mask        = payment
 movement.version     = generic
 movement.category    = financial operation
 movement.description = used to pay services or materials, as well as employees
-movement.allowable_resource_masks_and_versions         = {[money, generic],[stocks,preferential]}
+movement.allowable_resource_masks_and_versions         = [[money, generic],[stocks,preferential][
 movement.allowable_resource_categories                 = ['financial resources']
 movement.allowable_source_node_masks_and_versions      = None
 movement.allowable_source_node_categories              = [organization, people]
@@ -25,11 +25,11 @@ class MovementConfiguration(Configurator):
 
     def __init__(self):
         Configurator.__init__(self)
-        self.allowable_resource_masks_and_versions         = {}
+        self.allowable_resource_masks_and_versions         = []
         self.allowable_resource_categories                 = []
-        self.allowable_source_node_masks_and_versions      = {}
+        self.allowable_source_node_masks_and_versions      = []
         self.allowable_source_node_categories              = []
-        self.allowable_destination_node_masks_and_versions = {}
+        self.allowable_destination_node_masks_and_versions = []
         self.allowable_destination_node_categories         = []
 
     def parse(self, configuration_text):
