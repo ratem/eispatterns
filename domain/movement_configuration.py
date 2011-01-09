@@ -32,6 +32,48 @@ class MovementConfiguration(Configurator):
         self.allowable_destination_node_masks_and_versions = []
         self.allowable_destination_node_categories         = []
 
+    def check_resource_compatibility(self, resource):
+        #mask + version or category should be allowable
+        compatible_resource = False
+        if self.allowable_resource_categories != []:
+            if (resource.configuration.category in self.allowable_resource_categories):
+                compatible_resource = True
+        if self.allowable_resource_masks_and_versions != []:
+            if ([resource.configuration.mask, resource.configuration.version] in self.allowable_resource_masks_and_versions):
+                compatible_resource = True
+        if compatible_resource:
+            return 'Compatible resource configuration'
+        else:
+            raise ValueError,'Non compatible resource configuration'
+
+    def check_source_node_compatibility(self, source):
+        #mask + version or category should be allowable
+        compatible_source_node = False
+        if self.allowable_source_node_categories != []:
+            if (source.configuration.category in self.allowable_source_node_categories):
+                compatible_source_node = True
+        if self.allowable_source_node_masks_and_versions != []:
+            if ([source.configuration.mask, source.configuration.version] in self.allowable_source_node_masks_and_versions):
+                compatible_source_node = True
+        if compatible_source_node:
+            return 'Compatible source node configuration'
+        else:
+            raise ValueError,'Non compatible source node configuration'
+
+    def check_destination_node_compatibility(self, destination):
+        #mask + version or category should be allowable
+        compatible_destination_node = False
+        if self.allowable_destination_node_categories != []:
+            if (destination.configuration.category in self.allowable_destination_node_categories):
+                compatible_destination_node = True
+        if self.allowable_destination_node_masks_and_versions != []:
+            if ([destination.configuration.mask, destination.configuration.version] in self.allowable_destination_node_masks_and_versions):
+                compatible_destination_node = True
+        if compatible_destination_node:
+            return 'Compatible destination node configuration'
+        else:
+            raise ValueError,'Non compatible destination node configuration'
+
     def parse(self, configuration_text):
         #elesbom code goes here
         return 0

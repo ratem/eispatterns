@@ -79,6 +79,12 @@ Resource or "process_resources" of Node. They can be used by one or more objects
 of the same concrete concept or even of different concepts. Ideally they can be
 defined even at runtime and through configuration.
 
+c) Tests are following the "mockist" way of thinking in general, however, given
+the symbioses among concepts and their configurators, when checking the
+relation between a concept and its configurator class sometimes we are forced to
+use "classist" tests. For example, in Movement tests, MovementConfiguration is
+used normally, while Resource and Node are "mocked".
+
 General Notes
 -------------
 a)This is a didactic framework, if you need a flexible production-ready EIS
