@@ -2,7 +2,7 @@ from domain.configurable import Configurable
 
 class Resource(Configurable):
 
-    expected_configuration_attributes = ['mask','version','type', 'description','unit']
+    configurator_class = 'ResourceConfiguration'
 
     def __init__(self):
         Configurable.__init__(self)

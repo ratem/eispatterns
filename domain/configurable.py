@@ -1,8 +1,7 @@
 class Configurable:
     def __init__(self):
-        self.tag   = None
-        self.title = None
-        #open issue: instead of mask and version should hold a pointer to confoguration only
+        self.tag           = None
+        self.label         = None
         self.configuration = None
 
     def define_tag(self,tag=None):
@@ -13,13 +12,11 @@ class Configurable:
             self.tag = tag
 
     def configure(self, configuration):
-        #open issue: configuration compliance should be checked by configurator classes?
-        #expected_configuration_attributes is a class attribute defined in each subclass
-        for attribute in self.expected_configuration_attributes:
-            if not hasattr(configuration, attribute):
-                raise ValueError, 'Missing configuration attribute: %s' % attribute
-        #sets a reference to the configuration object
-        self.configuration = configuration
+        #each subclass has a configurator_class class attribute
+        if (configuration.__class__.__name__ == self.configurator_class):
+            self.configuration = configuration
+        else:
+            raise KeyError,'Non compatible configuration'
 
     def todo(self):
         ''' usually redefined and renamed by each abstract concept '''

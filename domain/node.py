@@ -2,7 +2,7 @@ from domain.configurable import Configurable
 
 class Node(Configurable):
 
-    expected_configuration_attributes = ['mask','version', 'type', 'description','processing_capabilities']
+    configurator_class = 'NodeConfiguration'
 
     def __init__(self):
         Configurable.__init__(self)

@@ -16,13 +16,11 @@ class ConfigurableSpec(unittest.TestCase):
         #Stubs a configuration object
         with Stub() as configuration:
             configuration.mask >> 'a mask'
-            configuration.version >> 'a version'
-        #expected_configuration_attributes is defined only in subclasses, forced below
-        self.configurable.expected_configuration_attributes = ['mask','version']
+        #configurator_class is defined only in subclasses, forced below
+        self.configurable.configurator_class = 'Stub'
         self.configurable.configure(configuration)
+            #resource.configuration |should| be(configuration)
         self.configurable.configuration.mask |should| equal_to('a mask')
-        self.configurable.configuration.version |should| equal_to('a version')
-        #resource.configuration |should| be(configuration)
 
     def it_defines_a_tag(self):
         #first method's scenario

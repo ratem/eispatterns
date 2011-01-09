@@ -21,12 +21,6 @@ class Movement(Configurable):
         self.quantity         = None
         self.datetime         = None
 
-    def configure(self,configuration):
-        if (configuration.__class__.__name__ == Movement.configurator_class):
-            self.configuration = configuration
-        else:
-            raise KeyError,'Non compatible configuration'
-
     def define_how_to_perform(self, how_to_perform):
         ''' make self.perform a callable object '''
         self.perform = how_to_perform
