@@ -82,7 +82,7 @@ defined even at runtime and through configuration.
 c) Tests are following the "mockist" way of thinking in general, however, given
 the symbioses among concepts and their configurators, when checking the
 relation between a concept and its configurator class sometimes we are forced to
-use "classist" tests. For example, in Movement tests, MovementConfiguration is
+use "classical" tests. For example, in Movement tests, MovementConfiguration is
 used normally, while Resource and Node are "mocked".
 
 General Notes

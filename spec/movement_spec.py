@@ -19,8 +19,8 @@ class MovementSpec(unittest.TestCase):
         self.movement.define_how_to_perform(self.simulates_some_movement_performing)
         self.movement.perform |should| equal_to(self.simulates_some_movement_performing)
 
-    # "Classism" to test relationship between movement and its configurator
-    # "Mockism" to test relationship with other concepts
+    # "Classical" to test relationship between movement and its configurator
+    # "Mockist" to test relationship with other concepts
     def it_configures_a_movement(self):
         configuration = MovementConfiguration()
         #a complete configuration
