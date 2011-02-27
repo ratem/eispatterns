@@ -1,10 +1,4 @@
-#Note: open issue: hierarchies of categories, such as
-#person->employee/individual_customer
-#organization->holding/branch/organization_customer/government
-#by doing this one can use super-categories to include all subcategories
-
 from domain.configurable import Configurable
-#from domain.movement_configuration import MovementConfiguration
 
 class Movement(Configurable):
 

@@ -7,7 +7,7 @@ class CategorySpec(unittest.TestCase):
     def setUp(self):
         self.category = Category('person', 'category to represent various roles for people','Node')
 
-    def it_update_its_super_category(self):
+    def it_updates_its_super_category(self):
         self.category.update_super_category('organization','any type of organization')
         self.category.super_category |should| be('organization')
         self.category.description |should| be('any type of organization')

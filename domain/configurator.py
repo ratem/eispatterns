@@ -14,7 +14,7 @@ class Configurator:
         self.configuration_text = None
         #for instances use
         self.mask               = None
-        self.version            = None
+        self.maks_version       = None
         self.category           = None
         self.description        = None
 
