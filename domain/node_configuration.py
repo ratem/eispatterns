@@ -27,6 +27,20 @@ class NodeConfiguration(Configurator):
         self.allowable_resource_categories         = []
         self.processing_capabilities = None
 
+    def check_resource_compatibility(self, resource):
+        #mask + version or category should be allowable
+        compatible_resource = False
+        if self.allowable_resource_categories != []:
+            if (resource.configuration.category in self.allowable_resource_categories):
+                compatible_resource = True
+        if self.allowable_resource_masks_and_versions != []:
+            if ([resource.configuration.mask, resource.configuration.version] in self.allowable_resource_masks_and_versions):
+                compatible_resource = True
+        if compatible_resource:
+            return 'Compatible resource configuration'
+        else:
+            raise ValueError,'Non compatible resource configuration'
+
     def parse(self, configuration_text):
         #need a parser
         return 0

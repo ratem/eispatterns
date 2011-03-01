@@ -7,7 +7,7 @@ class MovementConfigurationSpec(unittest.TestCase):
 
     def setUp(self):
         self.movement_configuration = MovementConfiguration()
-        #a complete configuratin example for the tests
+        #a complete configuration example
         self.movement_configuration.mask        = 'payment'
         self.movement_configuration.version     = 'monthly'
         self.movement_configuration.category    = 'financial'
@@ -33,7 +33,7 @@ class MovementConfigurationSpec(unittest.TestCase):
         self.movement_configuration.allowable_resource_categories = []
         self.movement_configuration.allowable_resource_masks_and_versions = [['money','dollar'],['money','euro']]
         self.movement_configuration.check_resource_compatibility(resource) |should| equal_to('Compatible resource configuration')
-        #error: empty resource configuration
+        #error: empty allowables
         self.movement_configuration.allowable_resource_masks_and_versions = []
         self.movement_configuration.allowable_resource_categories = []
         (self.movement_configuration.check_resource_compatibility, resource) |should| throw(ValueError)
