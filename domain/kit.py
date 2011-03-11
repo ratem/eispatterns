@@ -1,5 +1,6 @@
 from domain.resource import Resource
 
+
 class Kit(Resource):
 
     def __init__(self):
