@@ -4,10 +4,10 @@ class Category:
         self.super_category = super_category
         self.description    = description
         self.sub_categories = {}
-        if concept in ('Resource','Node','Movement','Path'):
+        if concept in ('Resource','Node','Movement'):
             self.concept    = concept
         else:
-            raise TypeError ('Concept must be one of Resource, Node, Movement, or Path')
+            raise TypeError ('Concept must be one of Resource, Node, or Movement')
 
     # Overloads 'in', works for both super and sub categories
     def __contains__(self, category):
