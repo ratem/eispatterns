@@ -1,7 +1,7 @@
 from domain.resource import Resource
 
 
-class Immaterial(Resource):
+class Operation(Resource):
 
     def __init__(self):
         Resource.__init__(self)

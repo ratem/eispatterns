@@ -1,6 +1,8 @@
-class Decorable:
+from domain.business_entity import BusinessEntity
+
+
+class Decorable(BusinessEntity):
     def __init__(self):
-        self.oid        = None
-        self.category   = None
+        BusinessEntity.__init__(self)
         self.decorators = []
 

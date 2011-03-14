@@ -1,9 +1,10 @@
-from domain.decorable import Decorable
+from domain.business_entity import BusinessEntity
 
 
-class Resource(Decorable):
+class Resource(BusinessEntity):
 
     def __init__(self):
-        Decorable.__init__(self)
+        BusinessEntity.__init__(self)
+        self.oid  = None
         self.unit = None
 

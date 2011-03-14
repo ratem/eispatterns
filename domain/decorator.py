@@ -1,3 +1,6 @@
+from domain.business_entity import BusinessEntity
+
+
 class Decorator:
     def __init__(self):
         self.oid         = None

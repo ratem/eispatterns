@@ -1,19 +1,11 @@
-'''
-Resource/Operations: operation/person, operation/machine
-Resource/Materials: mro, component, raw material, software, document
-Resource/Kits: product, service
-Node/Persons: employee, customer/individual, partner/individual, employee/customer, employee/partner
-Node/Machines: hardware/it, tool, machine/general
-Node/Organizations: company, holding, branch, government, customer/organization, partner/organization
-'''
+#multiton
 class Category:
     def __init__(self, super_category, description, concept):
-        self.oid = None
         self.super_category = super_category
         self.description    = description
         self.sub_categories = {}
         if concept in ('Resource','Node','Movement'):
-            self.concept = concept
+            self.concept    = concept
         else:
             raise TypeError ('Concept must be one of Resource, Node, or Movement')
 
