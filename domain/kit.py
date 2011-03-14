@@ -5,5 +5,5 @@ class Kit(Resource):
 
     def __init__(self):
         Resource.__init__(self)
-        resources = []
+        self.resources = []
 
