@@ -1,4 +1,4 @@
-from domain.node import Node
+from domain.node.node import Node
 
 
 class Machine(Node):

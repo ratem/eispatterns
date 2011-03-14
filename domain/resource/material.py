@@ -1,4 +1,4 @@
-from domain.resource import Resource
+from domain.resource.resource import Resource
 
 
 class Material(Resource):

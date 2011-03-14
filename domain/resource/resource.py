@@ -1,4 +1,4 @@
-from domain.business_entity import BusinessEntity
+from domain.base.business_entity import BusinessEntity
 
 
 class Resource(BusinessEntity):

@@ -1,6 +1,6 @@
 import unittest
 from should_dsl import should, should_not
-from domain.person import Person
+from domain.node.person import Person
 from domain.developer_decorator import DeveloperDecorator
 
 

@@ -1,4 +1,4 @@
-from domain.decorable import Decorable
+from domain.base.decorable import Decorable
 
 
 class Movement(Decorable):

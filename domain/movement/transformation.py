@@ -1,4 +1,4 @@
-from domain.movement import Movement
+from domain.movement.movement import Movement
 
 
 class Transformation(Movement):

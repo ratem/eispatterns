@@ -1,10 +1,11 @@
-from domain.decorator import Decorator
-from domain.person import Person
-from should_dsl import should
 from inspect import getsource
+from should_dsl import should
+from domain.base.decorator import Decorator
+from domain.node.person import Person
 
 
 class DeveloperDecorator(Decorator):
+
     def __init__(self):
         Decorator.__init__(self)
         self.description = "Development skills"
