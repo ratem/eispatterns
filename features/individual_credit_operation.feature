@@ -4,14 +4,14 @@ Feature: Individual Customer Credit Operation
   In order to approve or not the loan
 
   Scenario Outline: Individual Customer asks for loan
-    Given I am a registered Credit Analyst with number <analyst number>
-    And an individual customer asks for a personal loan
-    And the customer's account number is <account number>
-    And the customer's asks for a personal loan of <desired value>
+    Given I am a registered Credit Analyst
+    And an individual customer with account number <account number> asks for a personal loan
+    And the loan request is of <desired value>
     When I confirm the loan request
-    Then a new loan request with the <account number>, <desired value>, and <analyst number> is created
+    Then a new loan request with the <account number> and <desired value> is created
+    And the new loan request is associated to the Credit Analyst
 
     Examples:
-      | analyst number | account number | desired value |
-      | '09876-5'      | '1234567-8'    | 10000,00      |
+      | account number | desired value |
+      | '1234567-8'    | 10000,00      |
 

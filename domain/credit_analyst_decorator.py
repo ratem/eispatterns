@@ -4,14 +4,13 @@ from domain.base.decorator import Decorator
 from domain.node.person import Person
 
 
-class DeveloperDecorator(Decorator):
+class CreditAnalystDecorator(Decorator):
 
-    def __init__(self):
+    def __init__(self, register):
         Decorator.__init__(self)
-        self.description = "Someone with software development skills"
-        self.language = None
-        self.level = None
-        self.other_skills = None
+        self.description = "Some employee with credit analysis skills"
+        self.register = register
+        self.loan_limit = 0
 
     def decorate(self, decorated):
         try:
@@ -34,13 +33,11 @@ class DeveloperDecorator(Decorator):
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)
 
-    def set_skills(self, language, level, other_skills):
-        self.language = language
-        self.level = level
-        self.other_skills = other_skills
+    def change_loan_limit(self, new_limit):
+        self.loan_limit = new_limit
 
-    #stupid code only to show that a resource/material/source_code must be transformed
-    #must be improved to check the category of material == source_code using should_dsl
-    def develop(self):
-        self.source_code = 'print("hello world")'
+    #stupid code
+    #should be resource/operation/credit_analysis object in use
+    def analyse(self, account_number):
+        return True
 
