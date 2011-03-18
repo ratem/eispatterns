@@ -20,7 +20,7 @@ class CreditAnalystDecorator(Decorator):
         self.decorated = decorated
 
     def query_rules_of_association(self,query=None):
-        rule_method = getsource(self.rule_should_be_person_instance)
+        '''rule_method = getsource(self.rule_should_be_person_instance)
         #very stupid code downwards
         #splits after the method signature
         rule_method_code = rule_method.split('\n')
@@ -29,6 +29,8 @@ class CreditAnalystDecorator(Decorator):
         #strip whitespaces
         rule_method_code = rule_method_code.lstrip(' ')
         return rule_method_code
+        '''
+        pass
 
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)
@@ -36,8 +38,10 @@ class CreditAnalystDecorator(Decorator):
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit
 
-    #stupid code
-    #should be resource/operation/credit_analysis object in use
-    def analyse(self, account_number):
+    #stupid code downwards, should be:
+    #resource/operation/credit_analysis object in use
+    #movement/transformation realizes the credit_analysis on a resource/material/credit_document
+    #as part of a movement/process => process is the coordinator object
+    def analyse(self, account):
         return True
 

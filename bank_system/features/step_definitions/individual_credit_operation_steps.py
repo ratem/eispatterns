@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from lettuce import step, world
 from should_dsl import should
-from domain.credit_analyst_decorator import CreditAnalystDecorator
+from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
+
 
 @step(u'Given I am a registered Credit Analyst')
 def given_i_am_a_registered_credit_analyst(step):
