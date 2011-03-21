@@ -2,7 +2,7 @@ from inspect import getsource
 from should_dsl import should
 from domain.base.decorator import Decorator
 from domain.node.person import Person
-
+from domain.resource.operation import operation
 
 class CreditAnalystDecorator(Decorator):
 
@@ -38,10 +38,14 @@ class CreditAnalystDecorator(Decorator):
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit
 
-    #stupid code downwards, should be:
-    #resource/operation/credit_analysis object in use
-    #movement/transformation realizes the credit_analysis on a resource/material/credit_document
-    #as part of a movement/process => process is the coordinator object
-    def analyse(self, account):
-        return True
+    #stupid credit anlysis code, only for demonstration purpose
+    @operation(category='business_operation')
+    def analyse(self, bank_account, value):
+        if not bank_account.restricted:
+            if bank_account.average_credit*4 > value:
+                return True
+            else:
+                return False
+        else:
+            return False
 

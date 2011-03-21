@@ -35,5 +35,5 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
             bank_account.open_loans_total >> 12000.00
             bank_account.restricted       >> False
             bank_account.credit_limit     >> 20000.00
-        self.a_credit_analyst_decorator.analyse(bank_account) |should| be(True)
+        self.a_credit_analyst_decorator.analyse(bank_account, 5000) |should| be(True)
 
