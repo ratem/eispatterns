@@ -1,8 +1,10 @@
-from domain.resource.resource import Resource
+#operation is a Python Decorator which is applied to Node/Person and Node/Machine methods
 
 
-class Operation(Resource):
-
-    def __init__(self):
-        Resource.__init__(self)
+def operation(**attributes):
+    def add_attributes(method):
+        for attr in attributes:
+            setattr(method, attr, attributes[attr])
+        return method
+    return add_attributes
 
