@@ -9,7 +9,7 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
 
     def setUp(self):
         self.a_credit_analyst_decorator = CreditAnalystDecorator('12345-6')
-        #test doubles won't work here, using classic
+        #test doubles won't work for decoration, using classic
         self.a_person = Person()
 
     def it_decorates_a_person(self):
@@ -19,10 +19,6 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         #should fail
         non_person = 'I am not a person'
         (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(ValueError)
-
-    def it_queries_rules_of_association(self):
-        #self.a_credit_analyst_decorator.query_rules_of_association() |should| start_with('decorated')
-        pass
 
     def it_changes_its_loan_limit(self):
         self.a_credit_analyst_decorator.change_loan_limit(100000)

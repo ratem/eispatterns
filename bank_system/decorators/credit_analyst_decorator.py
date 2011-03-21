@@ -3,6 +3,8 @@ from should_dsl import should
 from domain.base.decorator import Decorator
 from domain.node.person import Person
 from domain.resource.operation import operation
+from domain.supportive.rule import rule
+
 
 class CreditAnalystDecorator(Decorator):
 
@@ -20,25 +22,14 @@ class CreditAnalystDecorator(Decorator):
         self.decorated = decorated
 
     def query_rules_of_association(self,query=None):
-        '''rule_method = getsource(self.rule_should_be_person_instance)
-        #very stupid code downwards
-        #splits after the method signature
-        rule_method_code = rule_method.split('\n')
-        #strip the method signature
-        rule_method_code = rule_method_code[1]
-        #strip whitespaces
-        rule_method_code = rule_method_code.lstrip(' ')
-        return rule_method_code
-        '''
+        #Using getsource has shown bad behavior
         pass
 
+    @rule('rule of association')
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)
 
-    def change_loan_limit(self, new_limit):
-        self.loan_limit = new_limit
-
-    #stupid credit anlysis code, only for demonstration purpose
+    #stupid credit analysis code, only for demonstration purpose
     @operation(category='business_operation')
     def analyse(self, bank_account, value):
         if not bank_account.restricted:
@@ -48,4 +39,7 @@ class CreditAnalystDecorator(Decorator):
                 return False
         else:
             return False
+
+    def change_loan_limit(self, new_limit):
+        self.loan_limit = new_limit
 
