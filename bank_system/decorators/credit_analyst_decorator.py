@@ -1,4 +1,4 @@
-from inspect import getsource
+#from inspect import getsource
 from should_dsl import should
 from domain.base.decorator import Decorator
 from domain.node.person import Person
@@ -23,12 +23,17 @@ class CreditAnalystDecorator(Decorator):
         self.decorated = decorated
 
     def query_rules_of_association(self,query=None):
-        #Using getsource has shown bad behavior
+        #Using getsource has shown bad behavior sometimes
         pass
 
     @rule('association')
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)
+
+    #creates a loan_request
+    @operation(category='business')
+    def create_loan_request(self, bank_account, value):
+        pass
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')

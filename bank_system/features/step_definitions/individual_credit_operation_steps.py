@@ -2,6 +2,7 @@
 from lettuce import step, world
 from should_dsl import should
 from domain.node.person import Person
+from domain.movement.process import Process
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 
 
@@ -23,7 +24,7 @@ def when_i_confirm_the_loan_request(step):
 
 @step(u'Then a new loan request with the (.+) and (.+) is created')
 def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created(step, account_number, desired_value):
-    pass
+    world.an_individual_credit_operation = Process()
 
 @step(u'And the new loan request is associated to the Credit Analyst')
 def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
