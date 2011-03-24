@@ -1,4 +1,5 @@
 from domain.node.node import Node
+from domain.supportive.rule import rule
 
 
 class Person(Node):

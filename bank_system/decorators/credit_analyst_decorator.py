@@ -4,6 +4,7 @@ from domain.base.decorator import Decorator
 from domain.node.person import Person
 from domain.resource.operation import operation
 from domain.supportive.rule import rule
+from domain.supportive.association_error import AssociationError
 
 
 class CreditAnalystDecorator(Decorator):
@@ -17,20 +18,20 @@ class CreditAnalystDecorator(Decorator):
     def decorate(self, decorated):
         try:
             self.rule_should_be_person_instance(decorated)
-        except: #need a customized exception here
-            raise ValueError('Person instance expected, instead %s passed' % type(decorated))
+        except:
+            raise AssociationError('Person instance expected, instead %s passed' % type(decorated))
         self.decorated = decorated
 
     def query_rules_of_association(self,query=None):
         #Using getsource has shown bad behavior
         pass
 
-    @rule('rule of association')
+    @rule('association')
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)
 
-    #stupid credit analysis code, only for demonstration purpose
-    @operation(category='business_operation')
+    #stupid credit analysis, only for demonstration
+    @operation(category='business')
     def analyse(self, bank_account, value):
         if not bank_account.restricted:
             if bank_account.average_credit*4 > value:

@@ -3,6 +3,7 @@ from should_dsl import should, should_not
 from ludibrio import Stub
 from domain.node.person import Person
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
+from domain.supportive.association_error import AssociationError
 
 
 class CreditAnalystDecoratorSpec(unittest.TestCase):
@@ -18,7 +19,7 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         self.a_credit_analyst_decorator.decorated |should| be(self.a_person)
         #should fail
         non_person = 'I am not a person'
-        (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(ValueError)
+        (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(AssociationError)
 
     def it_changes_its_loan_limit(self):
         self.a_credit_analyst_decorator.change_loan_limit(100000)
