@@ -30,10 +30,10 @@ class CreditAnalystDecorator(Decorator):
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)
 
-    #creates a loan_request
+    #creates a loan request
     @operation(category='business')
     def create_loan_request(self, bank_account, value):
-        pass
+        return value
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')

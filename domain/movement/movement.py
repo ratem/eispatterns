@@ -11,27 +11,29 @@ class Movement(Decorable):
         self.source = None
         self.destination = None
         self.operation = None
-        self.parameters = {}
 
     def set_source(self, source):
         try:
             source |should| be_instance_of(Node)
         except:
-            raise ContractError('Node instance expected, instead %s passed' % type(movement))
+            raise ContractError('Node instance expected, instead %s passed' % type(source))
         self.source = source
 
     def set_destination(self, destination):
         try:
             destination |should| be_instance_of(Node)
         except:
-            raise ContractError('Node instance expected, instead %s passed' % type(movement))
+            raise ContractError('Node instance expected, instead %s passed' % type(destination))
         self.destination = destination
 
-    #conditions for a operation: be a @operation, be a Decorator or Node method
+    #conditions for a operation: be a @operation, ??be a Decorator or Node method??
     def set_operation(self, operation):
         if hasattr(operation,'category'):
             self.operation = operation
             return True
         else:
             return False
+
+    def run(self, *arguments):
+        self.operation(*arguments)
 

@@ -22,7 +22,7 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(AssociationError)
 
     def it_creates_a_loan_request(self):
-        pass
+        self.a_credit_analyst_decorator.create_loan_request('1234567-8', 10000) |should| be(10000)
 
     def it_analyses_credit(self):
         with Stub() as bank_account:
