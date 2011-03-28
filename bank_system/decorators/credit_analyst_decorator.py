@@ -4,6 +4,7 @@ from domain.node.person import Person
 from domain.resource.operation import operation
 from domain.supportive.rule import rule
 from domain.supportive.association_error import AssociationError
+from bank_system.resources.loan_request import LoanRequest
 
 
 class CreditAnalystDecorator(Decorator):
@@ -28,7 +29,9 @@ class CreditAnalystDecorator(Decorator):
     #creates a loan request
     @operation(category='business')
     def create_loan_request(self, bank_account, value):
-        return value
+        loan_request = LoanRequest(bank_account, value, self)
+        #Sends the the loan_request for the input are
+        self.decorated.input_area.append(loan_request)
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')

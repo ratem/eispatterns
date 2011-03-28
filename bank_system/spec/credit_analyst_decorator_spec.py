@@ -4,7 +4,7 @@ from ludibrio import Stub
 from domain.node.person import Person
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from domain.supportive.association_error import AssociationError
-
+from bank_system.resources.loan_request import LoanRequest
 
 class CreditAnalystDecoratorSpec(unittest.TestCase):
 
@@ -22,7 +22,10 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(AssociationError)
 
     def it_creates_a_loan_request(self):
-        self.a_credit_analyst_decorator.create_loan_request('1234567-8', 10000) |should| be(10000)
+        #tests ran out of order, thus forcing the decoration
+        self.a_credit_analyst_decorator.decorate(self.a_person)
+        self.a_credit_analyst_decorator.create_loan_request('1234567-8', 10000)
+        self.a_person.input_area[-1].account |should| be('1234567-8')
 
     def it_analyses_credit(self):
         with Stub() as bank_account:

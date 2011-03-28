@@ -41,13 +41,14 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     #associates the transformation to the process
     world.an_individual_credit_operation.insert_movement(world.loan_request_creation)
     world.an_individual_credit_operation.movements |should| contain(world.loan_request_creation)
-    #finally it runs the transformation
+    #finally it runs the transformation...
     world.an_individual_credit_operation.movements[0].run(account_number, desired_value)
+    #checks if the loan request is stored in the Node's input_area
+    world.a_person.input_area[-1].account |should| equal_to(account_number)
+    world.a_person.input_area[-1].value |should| equal_to(desired_value)
 
 @step(u'And the new loan request is associated to the Credit Analyst')
 def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
-    #right now the only thing necessary is to have a person referenced by the process
-    #in fact, the test below is already done by unit level...
-    world.an_individual_credit_operation.insert_node(world.a_person)
-    world.an_individual_credit_operation.nodes |should| include(world.a_person)
+    #...it is done in previous step
+    world.a_person.input_area[-1].analyst |should| be(world.credit_analyst)
 
