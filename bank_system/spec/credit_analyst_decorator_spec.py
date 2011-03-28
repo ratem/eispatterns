@@ -28,13 +28,12 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         self.a_person.input_area[-1].account |should| be('1234567-8')
 
     def it_analyses_credit(self):
-        with Stub() as bank_account:
-            bank_account.number           >> '12345-X'
-            bank_account.average_credit   >> 2500.00
-            bank_account.open_loans_total >> 12000.00
-            bank_account.restricted       >> False
-            bank_account.credit_limit     >> 20000.00
-        self.a_credit_analyst_decorator.analyse(bank_account, 5000) |should| be(True)
+        with Stub() as loan_request:
+            loan_request.account.restricted     >> False
+            loan_request.account.average_credit >> 2500.00
+            loan_request.value                  >> 5000
+        self.a_credit_analyst_decorator.analyse(loan_request) |should| be(True)
+
 
     def it_changes_its_loan_limit(self):
         self.a_credit_analyst_decorator.change_loan_limit(100000)

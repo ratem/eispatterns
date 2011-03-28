@@ -15,3 +15,14 @@ Feature: Individual Customer Credit Operation
       | account number | desired value |
       | '1234567-8'    | 10000,00      |
 
+  Scenario Outline: Credit Analyst analyses the individual customer loan request
+    Given I am a registered Credit Analyst
+    And I pick a loan request with account <account number> and <desired value> from my area to analyse
+    When I analyse the loan request
+    Then The loan request enters the state ANALYSED with <decision> and <commentaries>
+
+    Examples:
+      | account number | desired value | decision       | commentaries      |
+      | '1234567-8'    | 10000,00      | 'approved'     | 'Client is ok...' |
+      | '4567890-1'    | 15000,00      | 'non-approved' | 'Client needs...' |
+

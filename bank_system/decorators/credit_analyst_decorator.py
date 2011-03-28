@@ -35,9 +35,10 @@ class CreditAnalystDecorator(Decorator):
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')
-    def analyse(self, bank_account, value):
-        if not bank_account.restricted:
-            if bank_account.average_credit*4 > value:
+    def analyse(self, loan_request):
+        if not loan_request.account.restricted:
+            if loan_request.account.average_credit*4 > loan_request.value:
+                #waiting for creating moving methods in node
                 return True
             else:
                 return False
