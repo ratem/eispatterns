@@ -1,4 +1,3 @@
-#from inspect import getsource
 from should_dsl import should
 from domain.base.decorator import Decorator
 from domain.node.person import Person
@@ -21,10 +20,6 @@ class CreditAnalystDecorator(Decorator):
         except:
             raise AssociationError('Person instance expected, instead %s passed' % type(decorated))
         self.decorated = decorated
-
-    def query_rules_of_association(self,query=None):
-        #Using getsource has shown bad behavior sometimes
-        pass
 
     @rule('association')
     def rule_should_be_person_instance(self, decorated):
