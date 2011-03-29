@@ -25,7 +25,7 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         #tests ran out of order, thus forcing the decoration
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.create_loan_request('1234567-8', 10000)
-        self.a_person.input_area[-1].account |should| be('1234567-8')
+        self.a_person.input_area |should| contain('loan request 1234567-8')
 
     def it_analyses_credit(self):
         with Stub() as loan_request:
