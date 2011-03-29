@@ -28,10 +28,10 @@ class CreditAnalystDecorator(Decorator):
 
     #creates a loan request
     @operation(category='business')
-    def create_loan_request(self, bank_account, value):
-        loan_request = LoanRequest(bank_account, value, self)
+    def create_loan_request(self, account_number, value):
+        loan_request = LoanRequest(account_number, value, self)
         #Sends the the loan_request for the input area
-        loan_key = 'loan request %s'% bank_account
+        loan_key = 'loan request %s'% account_number
         self.decorated.receive_resource(loan_key, loan_request)
 
     #stupid credit analysis, only for demonstration

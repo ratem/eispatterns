@@ -43,22 +43,24 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     #finally it runs the transformation...
     world.an_individual_credit_operation.movements[0].run(account_number, desired_value)
     #checks if the loan request is stored in the Node's input_area
-    world.a_person.input_area[-1].account |should| equal_to(account_number)
-    world.a_person.input_area[-1].value |should| equal_to(desired_value)
+    world.a_person.input_area |should| contain('loan request %s'% account_number)
 
 @step(u'And the new loan request is associated to the Credit Analyst')
 def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
-    #...it is done in previous step
-    world.a_person.input_area[-1].analyst |should| be(world.credit_analyst)
+    #no order in step execution => redo what was done in 'Then a new loan... is created'
+    world.loan_request_creation.set_operation(world.credit_analyst.create_loan_request)
+    world.an_individual_credit_operation.insert_movement(world.loan_request_creation)
+    world.an_individual_credit_operation.movements[0].run('1234567-8', 5000)
+    world.a_person.input_area['loan request 1234567-8'].analyst |should| be(world.credit_analyst)
 
 #Scenario Credit Analyst analyses the individual customer loan request
 @step(u'And I pick a loan request with account (.+) and (.+) from my area to analyse')
 def and_i_pick_a_loan_request_with_account_account_number_and_desired_value_from_my_area_to_analyse(step, account_number, desired_value):
-    #since there is no order in step execution, I have to redo what was done in the step Then a new loan request with the (.+) and (.+) is created
+    #no order in step execution => redo what was done in 'Then a new loan... is created'
     world.loan_request_creation.set_operation(world.credit_analyst.create_loan_request)
     world.an_individual_credit_operation.insert_movement(world.loan_request_creation)
     world.an_individual_credit_operation.movements[0].run(account_number, desired_value)
-    world.a_person.input_area |should| have_at_least(1).items
+    world.a_person.input_area |should| contain('loan request %s'% account_number)
 
 @step(u'When I analyse the loan request')
 def when_i_analyse_the_loan_request(step):
