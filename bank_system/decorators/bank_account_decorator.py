@@ -13,6 +13,8 @@ class BankAccountDecorator(Decorator):
         self.description = "A bank account"
         #should it mask Machine.tag? decorated.tag = number?
         self.number = number
+        self.restricted = False
+        self.average_credit = 0
 
     def decorate(self, decorated):
         try:

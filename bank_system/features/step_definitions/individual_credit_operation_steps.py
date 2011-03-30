@@ -43,7 +43,7 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     #finally it runs the transformation...
     world.an_individual_credit_operation.movements[0].run(account_number, desired_value)
     #checks if the loan request is stored in the Node's input_area
-    world.a_person.input_area |should| contain('loan request %s'% account_number)
+    world.a_person.input_area |should| contain(account_number)
 
 @step(u'And the new loan request is associated to the Credit Analyst')
 def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
@@ -51,7 +51,7 @@ def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
     world.loan_request_creation.set_operation(world.credit_analyst.create_loan_request)
     world.an_individual_credit_operation.insert_movement(world.loan_request_creation)
     world.an_individual_credit_operation.movements[0].run('1234567-8', 5000)
-    world.a_person.input_area['loan request 1234567-8'].analyst |should| be(world.credit_analyst)
+    world.a_person.input_area['1234567-8'].analyst |should| be(world.credit_analyst)
 
 #Scenario Credit Analyst analyses the individual customer loan request
 @step(u'And I pick a loan request with account (.+) and (.+) from my area to analyse')
@@ -60,12 +60,23 @@ def and_i_pick_a_loan_request_with_account_account_number_and_desired_value_from
     world.loan_request_creation.set_operation(world.credit_analyst.create_loan_request)
     world.an_individual_credit_operation.insert_movement(world.loan_request_creation)
     world.an_individual_credit_operation.movements[0].run(account_number, desired_value)
-    world.a_person.input_area |should| contain('loan request %s'% account_number)
+    world.a_person.input_area |should| contain(account_number)
+    #the actual picking is performed by analyse()
 
 @step(u'When I analyse the loan request')
 def when_i_analyse_the_loan_request(step):
-    #world.credit_analyst.analyse()
-    pass
+    #creates a new transformation to register the analysis
+    world.loan_request_analysis = Transformation()
+    #associates analyse operation to the transformation
+    world.loan_request_analysis.set_operation(world.credit_analyst.analyse)
+    #associates the transformation to the process
+    world.an_individual_credit_operation.insert_movement(world.loan_request_analysis)
+    #finally it runs the transformation...
+    #must refactor process.movements to make it easier to find operations
+    world.an_individual_credit_operation.movements[1].run(loan_request)
+    #checks if the loan request is stored in the Node's input_area
+    world.a_person.input_area |should| contain(account_number)
+
 
 @step(u'Then The loan request enters the state ANALYSED with <decision> and <commentaries>')
 def then_the_loan_request_enters_the_state_analysed_with_decision_and_commentaries(step):

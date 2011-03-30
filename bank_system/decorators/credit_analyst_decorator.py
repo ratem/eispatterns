@@ -5,6 +5,7 @@ from domain.resource.operation import operation
 from domain.supportive.rule import rule
 from domain.supportive.association_error import AssociationError
 from bank_system.resources.loan_request import LoanRequest
+from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
 
 class CreditAnalystDecorator(Decorator):
@@ -28,20 +29,30 @@ class CreditAnalystDecorator(Decorator):
 
     #creates a loan request
     @operation(category='business')
-    def create_loan_request(self, account_number, value):
-        loan_request = LoanRequest(account_number, value, self)
-        #Sends the the loan_request for the input area
-        loan_key = 'loan request %s'% account_number
-        self.decorated.receive_resource(loan_key, loan_request)
+    def create_loan_request(self, account, value):
+        loan_request = LoanRequest(account, value, self)
+        #Sends the the loan_request to the input area
+        self.decorated.receive_resource(loan_request.account.number, loan_request)
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')
-    def analyse(self, loan_request):
+    def analyse(self, loan_request_key):
+        #move the request from the input_are to the processing_area
+        self.decorated.transfer(loan_request_key,'input','processing')
+        #picks the loan for processing
+        try:
+           loan_request = self.decorated.processing_area[loan_request_key]
+        except KeyError:
+           return False
+        #automatically approves or not
         if not loan_request.account.restricted:
             if loan_request.account.average_credit*4 > loan_request.value:
-                #waiting for creating moving methods in node
+                #transfers the loan to output
+                self.decorated.transfer(loan_request_key,'processing','output')
+                loan_request.approved = True
                 return True
             else:
+                loan_request.approved = False
                 return False
         else:
             return False

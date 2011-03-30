@@ -24,14 +24,14 @@ class Node(Decorable):
         if source_area == 'input':
             resource = self.input_area.pop(key)
         elif source_area == 'processing':
-            resource = self.process_area.pop(key)
+            resource = self.processing_area.pop(key)
         elif source_area == 'output':
             resource = self.output_area.pop(key)
         else:
             return False
         if destination_area == 'input': #rework!
             self.input_area[key] = resource
-        elif destination_area == 'process':
+        elif destination_area == 'processing':
             self.processing_area[key] = resource
         elif destination_area == 'output':
             self.output_area[key] = resource

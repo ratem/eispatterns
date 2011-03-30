@@ -22,6 +22,13 @@ class NodeSpec(unittest.TestCase):
 
     def it_transfers_a_resource(self):
         self.a_node.receive_resource('resource key', self.a_resource)
+        #from input to processing
         self.a_node.transfer('resource key', 'input', 'processing')
-        #self.a_node.processing_area |should| contain('resource key')
+         #one way of testing
+        self.a_node.processing_area |should| contain('resource key')
+         #another way of testing
+        self.a_node.processing_area['resource key'] |should| be(self.a_resource)
+        #from processing to output
+        self.a_node.transfer('resource key', 'processing', 'output')
+        self.a_node.output_area |should| contain('resource key')
 
