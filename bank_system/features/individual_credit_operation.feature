@@ -19,9 +19,9 @@ Feature: Individual Customer Credit Operation
     Given I am a registered Credit Analyst
     And there is a loan request of account <account number> to be analysed
     When I pick the loan request of account <account number> and analyse it
-    Then The loan request enters the state ANALYSED with decision <decision>
+    Then the loan request enters the state ANALYSED with decision <decision>
 
     Examples:
       | account number | desired value | decision |
-      | 1234567-8      | 10000,00      | approved |
+      | 1234567-8      | 10000,00      | False    |
 
