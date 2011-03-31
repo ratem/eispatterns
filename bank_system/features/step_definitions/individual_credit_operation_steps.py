@@ -39,10 +39,10 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     world.loan_request_creation.set_operation(world.credit_analyst.create_loan_request)
     world.loan_request_creation.operation |should| equal_to(world.credit_analyst.create_loan_request)
     #associates the transformation to the process
-    world.an_individual_credit_operation.insert_movement(world.loan_request_creation)
-    world.an_individual_credit_operation.movements |should| contain(world.loan_request_creation)
+    world.an_individual_credit_operation.insert_movement('loan creation', world.loan_request_creation)
+    world.an_individual_credit_operation.movements |should| contain('loan creation')
     #finally it runs the transformation...
-    world.an_individual_credit_operation.movements[0].run(world.account, desired_value)
+    world.an_individual_credit_operation.movements['loan creation'].run(world.account, desired_value)
     #checks if the loan request is stored in the Node's input_area
     world.a_person.input_area |should| contain(account_number)
 
@@ -54,13 +54,11 @@ def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
 #Scenario Credit Analyst analyses the individual customer loan request
 @step(u'And there is a loan request of account (.+) to be analysed')
 def and_there_is_a_loan_request_of_account_account_number_to_be_analysed(step, account_number):
-    #Letucce cleans the objects of the previous scenario, thus creating loan request again
-    #Could do this, however, it contains stuff that I need here
+    #Could do this, however, it contains stuff that I don't need here
     #step.then('a new loan request with the %s and %f is created' % (account_number, 10000))
     #Thus...
-    #world.a_person.input_area = {}
     world.credit_analyst.decorate(world.a_person)
-    world.credit_analyst.create_loan_request(world.account, 5000)
+    world.credit_analyst.create_loan_request(world.account, 10000)
     world.a_person.input_area |should| contain(world.account.number)
 
 @step(u'When I pick to analyse the loan request of account (.+)')
@@ -70,14 +68,15 @@ def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, acco
     #associates analyse operation to the transformation
     world.loan_request_analysis.set_operation(world.credit_analyst.analyse)
     #associates the transformation to the process
-    world.an_individual_credit_operation.insert_movement(world.loan_request_analysis)
+    world.an_individual_credit_operation.insert_movement('loan analysis', world.loan_request_analysis)
     #finally it runs the transformation...
     #must refactor process.movements to make it easier to find operations => use a dictionary
-    world.an_individual_credit_operation.movements[1].run(world.account.number)
+    world.an_individual_credit_operation.movements['loan analysis'].run(world.account.number)
     #if everything is ok the loan request was stored in the Node's output_area
     world.a_person.output_area |should| contain(account_number)
 
 @step(u'Then the loan request has the decision (.+)')
 def then_the_loan_request_has_the_decision_decision(step, decision):
+    #Lettuce sends u'False'...
     world.a_person.output_area['1234567-8'].approved |should| equal_to(False)
 

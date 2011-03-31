@@ -17,16 +17,16 @@ class ProcessSpec(unittest.TestCase):
     def it_inserts_a_movement(self):
         #should not work
         non_movement = "I am not a Movement"
-        (self.a_process.insert_movement, non_movement) |should| throw(ContractError)
+        (self.a_process.insert_movement, 'Ops!',non_movement) |should| throw(ContractError)
         #test doubles won't work given type checking rules, using classic
-        self.a_process.insert_movement(self.a_movement)
-        self.a_process.movements |should| contain(self.a_movement)
+        self.a_process.insert_movement('A movement', self.a_movement)
+        self.a_process.movements |should| contain('A movement')
 
     def it_inserts_a_node(self):
         #should not work
         non_node = "I am not a Node"
-        (self.a_process.insert_node, non_node) |should| throw(ContractError)
+        (self.a_process.insert_node, 'Ops!', non_node) |should| throw(ContractError)
         #test doubles won't work given type checking rules, using classic
-        self.a_process.insert_node(self.a_node)
-        self.a_process.nodes |should| contain(self.a_node)
+        self.a_process.insert_node('A node', self.a_node)
+        self.a_process.nodes |should| contain('A node')
 
