@@ -63,8 +63,8 @@ def and_there_is_a_loan_request_of_account_account_number_to_be_analysed(step, a
     world.credit_analyst.create_loan_request(world.account, 5000)
     world.a_person.input_area |should| contain(world.account.number)
 
-@step(u'When I pick the loan request of account (.+) and analyse it')
-def when_i_pick_the_loan_request_of_account_account_number_and_analyse_it(step, account_number):
+@step(u'When I pick to analyse the loan request of account (.+)')
+def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, account_number):
     #creates a new transformation to register the analysis
     world.loan_request_analysis = Transformation()
     #associates analyse operation to the transformation
@@ -73,12 +73,11 @@ def when_i_pick_the_loan_request_of_account_account_number_and_analyse_it(step, 
     world.an_individual_credit_operation.insert_movement(world.loan_request_analysis)
     #finally it runs the transformation...
     #must refactor process.movements to make it easier to find operations => use a dictionary
-       #strange - analyse doesn't work in this context, even when it is directly called
     world.an_individual_credit_operation.movements[1].run(world.account.number)
     #if everything is ok the loan request was stored in the Node's output_area
     world.a_person.output_area |should| contain(account_number)
 
-@step(u'Then the loan request enters the state ANALYSED with decision (.+)')
-def then_the_loan_request_enters_the_state_analysed_with_decision_decision(step, decision):
+@step(u'Then the loan request has the decision (.+)')
+def then_the_loan_request_has_the_decision_decision(step, decision):
     world.a_person.output_area['1234567-8'].approved |should| equal_to(False)
 

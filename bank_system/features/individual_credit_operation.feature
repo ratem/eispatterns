@@ -18,8 +18,8 @@ Feature: Individual Customer Credit Operation
   Scenario Outline: Credit Analyst analyses the individual customer loan request
     Given I am a registered Credit Analyst
     And there is a loan request of account <account number> to be analysed
-    When I pick the loan request of account <account number> and analyse it
-    Then the loan request enters the state ANALYSED with decision <decision>
+    When I pick to analyse the loan request of account <account number>
+    Then the loan request has the decision <decision>
 
     Examples:
       | account number | desired value | decision |

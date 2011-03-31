@@ -8,6 +8,7 @@ from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
 
 class LoanRequest(Material):
+
     def __init__(self, account, value, analyst):
         Material.__init__(self)
         self.unit = 'unit'
