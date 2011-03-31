@@ -37,25 +37,22 @@ class CreditAnalystDecorator(Decorator):
     #stupid credit analysis, only for demonstration
     @operation(category='business')
     def analyse(self, loan_request_key):
-        #move the request from the input_are to the processing_area
+        if not self.decorated.input_area.has_key(loan_request_key): return False
+        #move the request from the input_area to the processing_area
         self.decorated.transfer(loan_request_key,'input','processing')
         #picks the loan for processing
-        try:
-           loan_request = self.decorated.processing_area[loan_request_key]
-        except KeyError:
-           return False
+        loan_request = self.decorated.processing_area[loan_request_key]
         #automatically approves or not
         if not loan_request.account.restricted:
-            if loan_request.account.average_credit*4 > loan_request.value:
-                #transfers the loan to output
-                self.decorated.transfer(loan_request_key,'processing','output')
-                loan_request.approved = True
-                return True
-            else:
-                loan_request.approved = False
-                return False
+           if loan_request.account.average_credit*4 > loan_request.value:
+               loan_request.approved = True
+           else:
+               loan_request.approved = False
         else:
-            return False
+           loan_request.approved = False
+        #transfers the loan to the output_area
+        self.decorated.transfer(loan_request_key,'processing','output')
+        return True
 
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit

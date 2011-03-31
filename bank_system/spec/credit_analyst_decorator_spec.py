@@ -24,16 +24,14 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(AssociationError)
 
     def it_creates_a_loan_request(self):
-        #tests ran out of order, thus forcing the decoration
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
         self.a_person.input_area |should| contain('1234567-8')
 
     def it_analyses_a_loan_request(self):
         #Stub removed, now Node really transfers resources internally
-        #tests ran out of order, do it all again
         self.a_credit_analyst_decorator.decorate(self.a_person)
-        self.an_account.average_credit = 12500
+        self.an_account.average_credit = 5000
         self.an_account.restricted = False
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
         #finally analyses de loan
