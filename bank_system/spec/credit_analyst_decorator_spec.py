@@ -29,13 +29,14 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         self.a_person.input_area |should| contain('1234567-8')
 
     def it_analyses_a_loan_request(self):
-        #Stub removed, now Node really transfers resources internally
+        #Stub removed, from now on Node really transfers resources internally
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.an_account.average_credit = 5000
-        self.an_account.restricted = False
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
-        #finally analyses de loan
+        #analyses de loan
         self.a_credit_analyst_decorator.analyse(self.an_account.number) |should| equal_to(True)
+        #just to check if the loan moved to the output_area
+        self.a_person.output_area |should| contain('1234567-8')
 
     def it_changes_its_loan_limit(self):
         self.a_credit_analyst_decorator.change_loan_limit(100000)

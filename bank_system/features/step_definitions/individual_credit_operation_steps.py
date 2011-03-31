@@ -55,7 +55,7 @@ def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
 @step(u'And there is a loan request of account (.+) to be analysed')
 def and_there_is_a_loan_request_of_account_account_number_to_be_analysed(step, account_number):
     #Letucce cleans the objects of the previous scenario, thus creating loan request again
-    #Could do this, however, too complex to what I need
+    #Could do this, however, it contains stuff that I need here
     #step.then('a new loan request with the %s and %f is created' % (account_number, 10000))
     #Thus...
     #world.a_person.input_area = {}
@@ -73,13 +73,12 @@ def when_i_pick_the_loan_request_of_account_account_number_and_analyse_it(step, 
     world.an_individual_credit_operation.insert_movement(world.loan_request_analysis)
     #finally it runs the transformation...
     #must refactor process.movements to make it easier to find operations => use a dictionary
-       #something strange is helping here - analyse doesn't work in this context
-       #even when it is directly called
-    world.an_individual_credit_operation.movements[1].run(account_number)
+       #strange - analyse doesn't work in this context, even when it is directly called
+    world.an_individual_credit_operation.movements[1].run(world.account.number)
     #if everything is ok the loan request was stored in the Node's output_area
-    world.a_person.processing_area |should| contain(account_number)
+    #world.a_person.processing_area |should| contain(account_number)
 
-@step(u'Then The loan request enters the state ANALYSED with <decision> and <commentaries>')
-def then_the_loan_request_enters_the_state_analysed_with_decision_and_commentaries(step):
+@step(u'Then The loan request enters the state ANALYSED with decision <decision>')
+def then_the_loan_request_enters_the_state_analysed_with_decision_decision(step):
     pass
 
