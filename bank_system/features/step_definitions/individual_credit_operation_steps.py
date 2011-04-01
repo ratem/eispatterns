@@ -39,10 +39,10 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     world.loan_request_creation.set_operation(world.credit_analyst.create_loan_request)
     world.loan_request_creation.operation |should| equal_to(world.credit_analyst.create_loan_request)
     #associates the transformation to the process
-    world.an_individual_credit_operation.insert_movement('loan creation', world.loan_request_creation)
-    world.an_individual_credit_operation.movements |should| contain('loan creation')
+    world.an_individual_credit_operation.insert_movement('loan request creation', world.loan_request_creation)
+    world.an_individual_credit_operation.movements |should| contain('loan request creation')
     #finally it runs the transformation...
-    world.an_individual_credit_operation.movements['loan creation'].run(world.account, desired_value)
+    world.an_individual_credit_operation.movements['loan request creation'].run(world.account, desired_value)
     #checks if the loan request is stored in the Node's input_area
     world.a_person.input_area |should| contain(account_number)
 
@@ -68,10 +68,10 @@ def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, acco
     #associates analyse operation to the transformation
     world.loan_request_analysis.set_operation(world.credit_analyst.analyse)
     #associates the transformation to the process
-    world.an_individual_credit_operation.insert_movement('loan analysis', world.loan_request_analysis)
+    world.an_individual_credit_operation.insert_movement('loan request analysis', world.loan_request_analysis)
     #finally it runs the transformation...
     #must refactor process.movements to make it easier to find operations => use a dictionary
-    world.an_individual_credit_operation.movements['loan analysis'].run(world.account.number)
+    world.an_individual_credit_operation.movements['loan request analysis'].run(world.account.number)
     #if everything is ok the loan request was stored in the Node's output_area
     world.a_person.output_area |should| contain(account_number)
 
@@ -79,4 +79,21 @@ def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, acco
 def then_the_loan_request_has_the_decision_decision(step, decision):
     #Lettuce sends u'False'...
     world.a_person.output_area['1234567-8'].approved |should| equal_to(False)
+
+#Scenario Approved loan request
+@step(u'Given a loan request of value (.+) for account (.+) was approved')
+def given_a_loan_request_of_value_value_for_account_account_number_was_approved(step, value, account_number):
+    world.create_loan = Transformation()
+    #should remove the request from credit analyst area and send it to account area?
+    #but it is already processed, should exist a log area in nodes?
+    #world.create_loan.set_operation(world.credit_analyst.create_loan)
+    world.an_individual_credit_operation.insert_movement('loan creation', world.create_loan)
+
+@step(u'When I pick this loan to perfom it')
+def when_i_pick_this_loan_to_perfom_it(step):
+    pass
+
+@step(u'Then a loan of value (.+) for account (.+) is generated')
+def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
+    pass
 

@@ -11,6 +11,8 @@ class BankAccountDecorator(Decorator):
     def __init__(self, number):
         Decorator.__init__(self)
         self.description = "A bank account"
+        #log area for already processed resources
+        self.log_area = {}
         #should it mask Machine.tag? decorated.tag = number?
         self.number = number
         self.restricted = False

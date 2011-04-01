@@ -11,7 +11,6 @@ class LoanRequest(Material):
 
     def __init__(self, account, value, analyst):
         Material.__init__(self)
-        self.unit = 'unit'
         self.value = value
         self.approved = False
         self.datetime = datetime.now()

@@ -25,3 +25,12 @@ Feature: Individual Customer Credit Operation
       | account number | desired value | decision |
       | 1234567-8      | 10000,00      | False    |
 
+  Scenario Outline: Approved loan request
+    Given a loan request of value <value> for account <account number> was approved
+    When I pick this loan to perfom it
+    Then a loan of value <value> for account <account number> is generated
+
+    Examples:
+      | account number | desired value |
+      | 0987654-3      | 500,00        |
+
