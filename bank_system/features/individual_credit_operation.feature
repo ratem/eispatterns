@@ -29,6 +29,7 @@ Feature: Individual Customer Credit Operation
     Given a loan request of value <value> for account <account number> was approved
     When When I pick and perfom this loan
     Then a loan of value <value> for account <account number> is generated
+    And the loan_request is moved to the account <account number> historic
 
     Examples:
       | account number | desired value |

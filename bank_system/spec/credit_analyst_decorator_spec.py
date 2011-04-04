@@ -53,11 +53,6 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         #given that I am using datetime to generate the key, I cannot access the newly
         #created loan through its key
         self.a_credit_analyst_decorator.decorated.output_area.values() |should| have_at_least(1).loan
-        #the account's log_area should contain the loan request
-        #self.an_account.log_area |should| contain(loan_request.datetime)
-        #the associated machine processing_area should contain the loan
-        #since there is no way of acessing the recently created loan here:
-        #self.an_account.decorated.processing_area |should| have(1).loan
 
     def it_changes_its_loan_limit(self):
         self.a_credit_analyst_decorator.change_loan_limit(100000)

@@ -5,6 +5,7 @@ from domain.node.person import Person
 from domain.node.machine import Machine
 from domain.movement.process import Process
 from domain.movement.transformation import Transformation
+from domain.movement.transportation import Transportation
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
@@ -110,5 +111,18 @@ def when_i_pick_and_perfom_this_loan(step):
 
 @step(u'Then a loan of value (.+) for account (.+) is generated')
 def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
+    #moves the loan to the processing area of the account
+    world.move_loan_to_account = Transportation(world.credit_analyst.decorated, world.account.decorated)
+    #world.move_loan_to_account.transport(??? how to get the new loan key ???)
+    #world.account.decorated.transfer('input', 'processing')
+
+@step(u'And the loan_request is moved to the account (.+) historic')
+def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
+    #moves the loan_request to the log_area of the account
+    #be aware that there must be a movement and a transfer to the log_area
+
+    #world.move_loan_to_account.transport(??? how to get the new loan key ???)
+    #world.account.decorated.transfer(input, log) - ops!, no transfering to the log area
+    #should all nodes have a log area?
     pass
 
