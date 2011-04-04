@@ -31,6 +31,7 @@ class CreditAnalystDecorator(Decorator):
     #creates a loan request
     @operation(category='business')
     def create_loan_request(self, account, value):
+        ''' creates a loan request '''
         loan_request = LoanRequest(account, value, self)
         #Sends the the loan_request to the input area
         self.decorated.receive_resource(loan_request.account.number, loan_request)
@@ -38,6 +39,7 @@ class CreditAnalystDecorator(Decorator):
     #stupid credit analysis, only for demonstration
     @operation(category='business')
     def analyse(self, loan_request_key):
+        ''' automatically analyses a loan request '''
         if not self.decorated.input_area.has_key(loan_request_key): return False
         #move the request from the input_area to the processing_area
         self.decorated.transfer(loan_request_key,'input','processing')
@@ -57,6 +59,7 @@ class CreditAnalystDecorator(Decorator):
 
     @operation(category='business')
     def create_loan(self, loan_request):
+        ''' creates a loan '''
         loan = Loan(loan_request)
         #Pops the loan from the analyst's output_area
         processed_loan_request = self.decorated.output_area.pop(loan_request.account.number)

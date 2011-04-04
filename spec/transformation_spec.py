@@ -13,6 +13,7 @@ class TransformationSpec(unittest.TestCase):
 
     @operation(category='business')
     def an_operation(self, argument):
+        ''' operations must be documented'''
         return argument
 
     def non_operation(self):

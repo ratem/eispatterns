@@ -13,6 +13,7 @@ class OperationSpec(unittest.TestCase):
 
     @operation(category='skill')
     def something_a_person_can_do(self):
+        ''' this method represents something a person can do '''
         something = 1
         something += 1
         return something
