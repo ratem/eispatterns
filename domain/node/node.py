@@ -13,6 +13,8 @@ class Node(Decorable):
         self.tag = None
         self.location = None
 
+    #receiving resources should be through movements, however, there is still
+    #the cases where the resource is created inside the Node...
     def receive_resource(self, key, resource):
         try:
             resource |should| be_instance_of(Resource)

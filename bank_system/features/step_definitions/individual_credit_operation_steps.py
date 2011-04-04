@@ -63,7 +63,7 @@ def and_there_is_a_loan_request_of_account_account_number_to_be_analysed(step, a
     #Thus...
     world.credit_analyst.decorate(world.a_person)
     world.credit_analyst.create_loan_request(world.account, 10000)
-    world.a_person.input_area |should| contain(world.account.number)
+    world.credit_analyst.decorated.input_area |should| contain(world.account.number)
 
 @step(u'When I pick to analyse the loan request of account (.+)')
 def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, account_number):
@@ -81,21 +81,32 @@ def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, acco
 
 @step(u'Then the loan request has the decision (.+)')
 def then_the_loan_request_has_the_decision_decision(step, decision):
-    #Lettuce sends u'False'...
-    world.a_person.output_area['1234567-8'].approved |should| equal_to(False)
+    #Lettuce sends u'False', thus using eval() to convert in into boolean
+    world.credit_analyst.decorated.output_area['1234567-8'].approved |should| equal_to(eval(decision))
 
 #Scenario Approved loan request
 @step(u'Given a loan request of value (.+) for account (.+) was approved')
 def given_a_loan_request_of_value_value_for_account_account_number_was_approved(step, value, account_number):
-    world.create_loan = Transformation(world.credit_analyst.decorated, world.credit_analyst.decorated)
-    #should remove the request from credit analyst area and send it to account area?
-    #but it is already processed, should exist a log area in nodes?
-    #world.create_loan.set_operation(world.credit_analyst.create_loan)
-    world.an_individual_credit_operation.insert_movement('loan creation', world.create_loan)
+    #directly creating a loan request (I really need BLDD to avoid this...)
+    world.credit_analyst.create_loan_request(world.account, value)
+    #forces the loan request approval
+    world.credit_analyst.decorated.input_area[world.account.number].approved = True
+    world.credit_analyst.decorated.input_area |should| contain(world.account.number)
 
-@step(u'When I pick this loan to perfom it')
-def when_i_pick_this_loan_to_perfom_it(step):
-    pass
+@step(u'When I pick and perfom this loan')
+def when_i_pick_and_perfom_this_loan(step):
+    #picking...
+    loan_request = world.credit_analyst.decorated.input_area[world.account.number]
+    #preparing to perform...
+    world.create_loan = Transformation(world.credit_analyst.decorated, world.credit_analyst.decorated)
+    world.create_loan.set_action(world.credit_analyst.create_loan)
+    world.an_individual_credit_operation.insert_movement('loan creation', world.create_loan)
+    #performing!
+    world.an_individual_credit_operation.movements['loan creation'].perform(loan_request)
+    #given that I am using datetime to generate the key, I cannot access the newly
+    #created loan through its key
+    #output_area must have at least the loan_request and the newly created loan
+    world.credit_analyst.decorated.output_area.values() |should| have_at_least(2).itens
 
 @step(u'Then a loan of value (.+) for account (.+) is generated')
 def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):

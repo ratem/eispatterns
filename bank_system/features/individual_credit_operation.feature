@@ -27,7 +27,7 @@ Feature: Individual Customer Credit Operation
 
   Scenario Outline: Approved loan request
     Given a loan request of value <value> for account <account number> was approved
-    When I pick this loan to perfom it
+    When When I pick and perfom this loan
     Then a loan of value <value> for account <account number> is generated
 
     Examples:

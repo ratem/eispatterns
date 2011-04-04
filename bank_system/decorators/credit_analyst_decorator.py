@@ -33,7 +33,7 @@ class CreditAnalystDecorator(Decorator):
     def create_loan_request(self, account, value):
         ''' creates a loan request '''
         loan_request = LoanRequest(account, value, self)
-        #Sends the the loan_request to the input area
+        #Puts the loan_request to the input area
         self.decorated.receive_resource(loan_request.account.number, loan_request)
 
     #stupid credit analysis, only for demonstration
@@ -61,14 +61,16 @@ class CreditAnalystDecorator(Decorator):
     def create_loan(self, loan_request):
         ''' creates a loan '''
         loan = Loan(loan_request)
+        #puts the new loan on the analyst's output_area
+        self.decorated.output_area[loan.datetime] = loan
         #Pops the loan from the analyst's output_area
-        processed_loan_request = self.decorated.output_area.pop(loan_request.account.number)
+        #processed_loan_request = self.decorated.output_area.pop(loan_request.account.number)
         #Sends the the loan_request to the account log_area, using datetime as key
         #HEY! THIS IS A MOVEMENT
-        processed_loan_request.account.log_area[processed_loan_request.datetime] = processed_loan_request
+        #processed_loan_request.account.log_area[processed_loan_request.datetime] = processed_loan_request
         #Sends the new loan to the decorated processing_area
         #HEY! THIS IS ANOTHER MOVEMENT - which one is the main? a movement inside another movement?
-        processed_loan_request.account.decorated.processing_area[loan.datetime] = loan
+        #processed_loan_request.account.decorated.processing_area[loan.datetime] = loan
 
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit
