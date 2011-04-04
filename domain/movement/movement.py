@@ -1,4 +1,4 @@
-from inspect import ismethod
+from datetime import datetime
 from should_dsl import should
 from domain.base.decorable import Decorable
 from domain.node.node import Node
@@ -6,34 +6,16 @@ from domain.supportive.contract_error import ContractError
 
 
 class Movement(Decorable):
-    def __init__(self):
+    def __init__(self, source, destination):
         Decorable.__init__(self)
-        self.source = None
-        self.destination = None
-        self.operation = None
-
-    def set_source(self, source):
         try:
             source |should| be_instance_of(Node)
         except:
-            raise ContractError('Node instance expected, instead %s passed' % type(source))
+            raise ContractError('Source: Node instance expected, instead %s passed' % type(source))
         self.source = source
-
-    def set_destination(self, destination):
         try:
             destination |should| be_instance_of(Node)
         except:
-            raise ContractError('Node instance expected, instead %s passed' % type(destination))
+            raise ContractError('Destination: Node instance expected, instead %s passed' % type(destination))
         self.destination = destination
-
-    #conditions for a operation: be a @operation, ??be a Decorator or Node method??
-    def set_operation(self, operation):
-        if hasattr(operation,'category'):
-            self.operation = operation
-            return True
-        else:
-            return False
-
-    def run(self, *arguments):
-        self.operation(*arguments)
 

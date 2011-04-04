@@ -5,8 +5,8 @@ from domain.supportive.contract_error import ContractError
 
 
 class Process(Movement):
-    def __init__(self):
-        Movement.__init__(self)
+    def __init__(self, source, destination):
+        Movement.__init__(self, source, destination)
         #composition
         self.movements = {}
         #aggregation

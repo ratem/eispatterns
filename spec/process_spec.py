@@ -10,9 +10,11 @@ from domain.supportive.contract_error import ContractError
 class ProcessSpec(unittest.TestCase):
 
     def setUp(self):
-        self.a_process = Process()
-        self.a_movement = Movement()
-        self.a_node = Node()
+        self.a_client = Node()
+        self.the_company = Node()
+        self.a_process = Process(self.the_company, self.a_client)
+        self.a_processing_unit = Node()
+        self.a_movement = Movement(self.a_processing_unit, self.a_processing_unit)
 
     def it_inserts_a_movement(self):
         #should not work
@@ -27,6 +29,6 @@ class ProcessSpec(unittest.TestCase):
         non_node = "I am not a Node"
         (self.a_process.insert_node, 'Ops!', non_node) |should| throw(ContractError)
         #test doubles won't work given type checking rules, using classic
-        self.a_process.insert_node('A node', self.a_node)
-        self.a_process.nodes |should| contain('A node')
+        self.a_process.insert_node('A company processing unit', self.a_processing_unit)
+        self.a_process.nodes |should| contain('A company processing unit')
 
