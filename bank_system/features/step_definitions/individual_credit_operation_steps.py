@@ -102,27 +102,33 @@ def when_i_pick_and_perfom_this_loan(step):
     world.create_loan = Transformation(world.credit_analyst.decorated, world.credit_analyst.decorated)
     world.create_loan.set_action(world.credit_analyst.create_loan)
     world.an_individual_credit_operation.insert_movement('loan creation', world.create_loan)
+    #output_area should have only one element, the loan_request
+    world.credit_analyst.decorated.output_area.values() |should| have(1).loan_request
     #performing!
     world.an_individual_credit_operation.movements['loan creation'].perform(loan_request)
     #given that I am using datetime to generate the key, I cannot access the newly
     #created loan through its key
     #output_area must have at least the loan_request and the newly created loan
-    world.credit_analyst.decorated.output_area.values() |should| have_at_least(2).itens
+    world.credit_analyst.decorated.output_area.values() |should| have(2).itens
 
 @step(u'Then a loan of value (.+) for account (.+) is generated')
 def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
     #moves the loan to the processing area of the account
     world.move_loan_to_account = Transportation(world.credit_analyst.decorated, world.account.decorated)
-    #world.move_loan_to_account.transport(??? how to get the new loan key ???)
-    #world.account.decorated.transfer('input', 'processing')
+    #picks the loan by its type - no way to know here its key
+    for item in world.credit_analyst.decorated.output_area.values():
+        if item.__class__.__name__ == 'Loan':
+            break
+    world.move_loan_to_account.transport(item.datetime)
+    world.account.decorated.input_area |should| contain(item.datetime)
 
 @step(u'And the loan_request is moved to the account (.+) historic')
 def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
-    #moves the loan_request to the log_area of the account
-    #be aware that there must be a movement and a transfer to the log_area
-
-    #world.move_loan_to_account.transport(??? how to get the new loan key ???)
-    #world.account.decorated.transfer(input, log) - ops!, no transfering to the log area
-    #should all nodes have a log area?
-    pass
+    #moves the loan_request to the account
+    world.move_loan_request_to_account = Transportation(world.credit_analyst.decorated, world.account.decorated)
+    world.move_loan_request_to_account.transport(world.account.number)
+    #be aware that: this is not elegant and shouldn't be done here
+    processed_loan_request = world.account.decorated.input_area.pop(world.account.number)
+    world.account.log_area[processed_loan_request.datetime] = processed_loan_request
+    world.account.log_area |should| have(1).loan_request
 
