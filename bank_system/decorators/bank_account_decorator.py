@@ -7,7 +7,7 @@ from domain.supportive.association_error import AssociationError
 
 
 class BankAccountDecorator(Decorator):
-
+    '''Bank Account'''
     def __init__(self, number):
         Decorator.__init__(self)
         self.description = "A bank account"

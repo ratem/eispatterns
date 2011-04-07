@@ -10,7 +10,7 @@ from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
 
 class CreditAnalystDecorator(Decorator):
-
+    '''Credit Analyst'''
     def __init__(self, register):
         Decorator.__init__(self)
         self.description = "An employee with credit analysis skills"

@@ -3,7 +3,6 @@ from should_dsl import should
 from ludibrio import Stub
 from configurator.rule_checker import RuleChecker
 from domain.node.person import Person
-from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from domain.supportive.contract_error import ContractError
 
 
