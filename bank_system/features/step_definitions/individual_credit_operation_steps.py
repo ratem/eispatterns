@@ -128,4 +128,28 @@ def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, a
     processed_loan_request = world.account.decorated.input_area.pop(world.account.number)
     world.account.log_area[processed_loan_request.datetime] = processed_loan_request
     world.account.log_area |should| have(1).loan_request
+    #need to think of a way of elegantly and coherently move things to log_areas
+
+#Scenario Refused loan request
+@step(u'And there is a refused loan request of value (.+) for account (.+)')
+def and_there_is_a_refused_loan_request_of_value_value_for_account_account_number(step, desired_value, account_number):
+    #directly creating a loan request (I really need BLDD to avoid this...)
+    world.credit_analyst.create_loan_request(world.account, int(desired_value))
+    #forces the loan request approval and its transfer to the output_area
+    world.credit_analyst.decorated.input_area[world.account.number].approved = False
+    world.credit_analyst.decorated.transfer(world.account.number, 'input', 'output')
+    world.credit_analyst.decorated.output_area |should| contain(world.account.number)
+
+@step(u'When When I pick this loan request')
+def when_when_i_pick_this_loan_request(step):
+    #GUI code goes here
+    pass
+
+@step(u'Then the loan_request is moved to the account (.+) historic')
+def then_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
+    #be aware that: this is not elegant and shouldn't be done here
+    processed_loan_request = world.credit_analyst.decorated.output_area.pop(world.account.number)
+    world.account.log_area[processed_loan_request.datetime] = processed_loan_request
+    world.account.log_area |should| contain(processed_loan_request.datetime)
+    #need to think of a way of elegantly and coherently move things to log_areas
 

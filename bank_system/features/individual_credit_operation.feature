@@ -34,6 +34,16 @@ Feature: Individual Customer Credit Operation
     And the loan_request is moved to the account <account number> historic
 
     Examples:
-      | account number | desired value   |
-      | 0987654-3      | 10000           |
+      | account number | desired value |
+      | 0987654-3      | 10000         |
+
+  Scenario Outline: Refused loan request
+    Given I am a registered Credit Analyst
+    And there is a refused loan request of value <desired value> for account <account number>
+    When When I pick this loan request
+    Then the loan_request is moved to the account <account number> historic
+
+    Examples:
+      | account number | desired value |
+      | 0987654-3      | 10005         |
 
