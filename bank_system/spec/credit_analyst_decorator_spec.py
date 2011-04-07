@@ -35,11 +35,15 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         #Stub removed, from now on Node really transfers resources internally
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.an_account.average_credit = 5000
+        #should approve
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
-        #analyses de loan
-        self.a_credit_analyst_decorator.analyse(self.an_account.number) |should| equal_to(True)
-        #just to check if the loan moved to the output_area
-        self.a_person.output_area |should| contain('1234567-8')
+        self.a_credit_analyst_decorator.analyse(self.an_account.number)
+        self.a_credit_analyst_decorator.decorated.output_area['1234567-8'].approved |should| equal_to(True)
+        #should refuse
+        self.a_credit_analyst_decorator.create_loan_request(self.an_account, 50000)
+        self.a_credit_analyst_decorator.analyse(self.an_account.number)
+        self.a_credit_analyst_decorator.decorated.output_area['1234567-8'].approved |should| equal_to(False)
+
 
     def it_creates_a_loan(self):
         loan_request = LoanRequest(self.an_account, 7000, self.a_credit_analyst_decorator)
