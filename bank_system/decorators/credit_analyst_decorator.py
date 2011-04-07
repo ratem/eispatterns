@@ -55,7 +55,6 @@ class CreditAnalystDecorator(Decorator):
            loan_request.approved = False
         #transfers the loan to the output_area
         self.decorated.transfer(loan_request_key,'processing','output')
-        return True
 
     @operation(category='business')
     def create_loan(self, loan_request):

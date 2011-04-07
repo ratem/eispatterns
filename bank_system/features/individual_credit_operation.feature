@@ -13,25 +13,27 @@ Feature: Individual Customer Credit Operation
 
     Examples:
       | account number | desired value |
-      | 1234567-8      | 10000,00      |
+      | 1234567-8      | 10000         |
 
   Scenario Outline: Credit Analyst analyses the individual customer loan request
     Given I am a registered Credit Analyst
-    And there is a loan request of account <account number> to be analysed
+    And there is a loan request of account <account number> with desired value <desired value> to be analysed
     When I pick to analyse the loan request of account <account number>
-    Then the loan request has the decision <decision>
+    Then the loan request for account <account number> has the decision <decision>
 
     Examples:
       | account number | desired value | decision |
-      | 1234567-8      | 10000,00      | False    |
+      | 1234567-8      | 10000         | True     |
+      | 1234567-8      | 10005         | False    |
 
   Scenario Outline: Approved loan request
-    Given a loan request of value <value> for account <account number> was approved
+    Given I am a registered Credit Analyst
+    And there is an approved loan request of value <value> for account <account number>
     When When I pick and perfom this loan
     Then a loan of value <value> for account <account number> is generated
     And the loan_request is moved to the account <account number> historic
 
     Examples:
-      | account number | desired value |
-      | 0987654-3      | 500,00        |
+      | account number | desired value   |
+      | 0987654-3      | 10000           |
 
