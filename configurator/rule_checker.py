@@ -31,10 +31,12 @@ class RuleChecker:
         else:
             self.allowable_decorators.append(credit_analyst.__class__.__doc__)
 
-    def find_classes(self, module):
+    def find_decorators(self, module):
         for name in dir(module):
            obj = getattr(module, name)
            if inspect.isclass(obj):
                if issubclass(obj, Decorator):
-                  self.decorators.append(obj)
+                  #a class is a subclass of itself, thus:
+                  if obj.__name__ != 'Decorator':
+                     self.decorators.append(obj)
 
