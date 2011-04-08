@@ -41,7 +41,7 @@ class RuleChecker:
             #the solution is to use Class Methods, with standard arguments
             #if we need instance attributes for checking associations, one of
             #the default arguments must be and instance of the given class
-            #other solution is to use getsource
+            #this also can cause problems, thus the solution is to use getsource
             checker = cls('x')
             try:
                 checker.decorate(node)
