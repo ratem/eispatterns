@@ -3,12 +3,13 @@ import inspect
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 from domain.supportive.contract_error import ContractError
-
+from domain.base.decorator import Decorator
 
 class RuleChecker:
 
     def __init__(self):
         self.allowable_decorators = []
+        self.decorators = []
 
     def can_decorate(self,node):
         #works only for this module
@@ -29,4 +30,11 @@ class RuleChecker:
             pass
         else:
             self.allowable_decorators.append(credit_analyst.__class__.__doc__)
+
+    def find_classes(self, module):
+        for name in dir(module):
+           obj = getattr(module, name)
+           if inspect.isclass(obj):
+               if issubclass(obj, Decorator):
+                  self.decorators.append(obj)
 
