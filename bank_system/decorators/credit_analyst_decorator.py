@@ -19,11 +19,12 @@ class CreditAnalystDecorator(Decorator):
 
     def decorate(self, decorated):
         try:
-            self.rule_should_be_person_instance(decorated)
+            CreditAnalystDecorator.rule_should_be_person_instance(decorated)
         except:
             raise AssociationError('Person instance expected, instead %s passed' % type(decorated))
         self.decorated = decorated
 
+    @classmethod
     @rule('association')
     def rule_should_be_person_instance(self, decorated):
         decorated |should| be_instance_of(Person)

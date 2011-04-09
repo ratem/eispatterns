@@ -20,11 +20,12 @@ class BankAccountDecorator(Decorator):
 
     def decorate(self, decorated):
         try:
-            self.rule_should_be_machine_instance(decorated)
+            BankAccountDecorator.rule_should_be_machine_instance(decorated)
         except:
             raise AssociationError('Machine instance expected, instead %s passed' % type(decorated))
         self.decorated = decorated
 
+    @classmethod
     @rule('association')
     def rule_should_be_machine_instance(self, decorated):
         decorated |should| be_instance_of(Machine)

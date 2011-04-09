@@ -38,11 +38,8 @@ class RuleCheckerSpec(unittest.TestCase):
             self.rule_checker.find_rules(decorator)
         self.rule_checker.check_rules(self.a_person)
         self.rule_checker.allowable_decorators |should| have(1).decorator
-
-
-    def test_it_stupidly_checks_which_decorators_can_decorate_a_node(self):
-        self.rule_checker.stupid_check(self.a_person)
-        self.rule_checker.allowable_decorators |should| contain('Credit Analyst')
+        #non_allowable should contain tuples (class, reason), where reason is
+        #the __doc__ of a @rule == fine grained reasons for not decorating!
 
 '''
 if __name__ == '__main__':

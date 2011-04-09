@@ -1,3 +1,15 @@
+'''
+@rules must be class methods because creating an instance for each decorator is
+a problem, given that the different arguments required by different decorator
+constructors. The solution is to use @rules as Class Methods, with no arguments
+besides decorated.
+If decorators instance attributes are needed they should be used at decorate(),
+making that some object can pass the @rule tests but get an extra error while
+trying to decorate() it. Anyway, checking decorators instance attributes for
+decoration maybe is a bad practice, given that decorators are created for
+decorating an object (having setted only very basic attributes), and not the
+opposite.
+'''
 import sys
 import inspect
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
@@ -13,6 +25,7 @@ class RuleChecker:
         self.rules = []
 
     def find_decorators(self, module):
+        ''' finds decorator classes in a module '''
         for name in dir(module):
            obj = getattr(module, name)
            if inspect.isclass(obj):
@@ -29,41 +42,21 @@ class RuleChecker:
                      if new_decorator: self.decorators.append(obj)
 
     def find_rules(self, decorator):
+        ''' finds @rules in a decorator '''
         for name, method in inspect.getmembers(decorator, inspect.ismethod):
             if hasattr(method,'rule_category'):
                 self.rules.append(method)
 
     def check_rules(self, node):
-        self.checker = Decorator()
-        #import pdb;pdb.set_trace()
+        ''' runs, for each decorator, each rule separately '''
         for cls in self.decorators:
-            #creating an instance is a problem, because of the creation arguments
-            #the solution is to use Class Methods, with standard arguments
-            #if we need instance attributes for checking associations, one of
-            #the default arguments must be and instance of the given class
-            #this also can cause problems, thus the solution is to use getsource
-            checker = cls('x')
-            try:
-                checker.decorate(node)
-            except:
-                pass
-            else:
-                self.allowable_decorators.append(cls.__doc__)
-
-    def stupid_check(self,node):
-        #What is done below must be done dinamically, by iterating through all decorators
-        credit_analyst = CreditAnalystDecorator('x')
-        try:
-            credit_analyst.decorate(node)
-        except:
-            pass
-        else:
-            self.allowable_decorators.append(credit_analyst.__class__.__doc__)
-        bank_account = BankAccountDecorator('x')
-        try:
-            bank_account.decorate(node)
-        except:
-            pass
-        else:
-            self.allowable_decorators.append(credit_analyst.__class__.__doc__)
+            for rule in self.rules:
+                if rule.im_self == cls: #it is safer than im_class
+                    allowable = True
+                    #check http://stackoverflow.com/questions/114214/class-method-differences-in-python-bound-unbound-and-static
+                    try: cls.__dict__[rule.__name__].__get__(None, cls)(node)
+                    except: allowable = False #should register "why"
+                else: allowable = False
+            if allowable:
+                self.allowable_decorators.append(cls)
 
