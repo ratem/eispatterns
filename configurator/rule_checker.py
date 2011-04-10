@@ -7,9 +7,10 @@ If decorators instance attributes are needed they should be used at decorate(),
 making that some object can pass the @rule tests but get an extra error while
 trying to decorate() it. Anyway, checking decorators instance attributes for
 decoration maybe is a bad practice, given that decorators are created for
-decorating an object (having setted only very basic attributes), and not the
-opposite.
+decorating an object (having setted only very basic attributes), thus, it starts
+operating - and changing its state - only after the decoration.
 '''
+
 import sys
 import inspect
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
@@ -17,13 +18,13 @@ from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 from domain.supportive.contract_error import ContractError
 from domain.base.decorator import Decorator
 
-class RuleChecker:
 
+class RuleChecker:
+    ''' Checks for a given node which decorators can be associated to it '''
     def __init__(self):
         self.allowable_decorators = []
         self.broken_rules = []
         self.decorators = []
-        self.rules = []
 
     def find_decorators(self, module):
         ''' finds decorator classes in a module '''
@@ -42,25 +43,18 @@ class RuleChecker:
                              break
                      if new_decorator: self.decorators.append(obj)
 
-    def find_rules(self, decorator):
-        ''' finds @rules in a decorator '''
-        for name, method in inspect.getmembers(decorator, inspect.ismethod):
-            if hasattr(method,'rule_category'):
-                self.rules.append(method)
-
     def check_rules(self, node):
-        ''' for each decorator, runs each rule separately '''
-        for cls in self.decorators:
-            for rule in self.rules: #rules are gruped by class, this lop can be improved
-                if rule.im_self == cls: #im_class returns <classobj>
-                    allowable = True
-                    #resolve descriptor in order to run the @rule
+        ''' for each decorator, identifies and runs each rule separately '''
+        for decorator in self.decorators:
+            for method_name, method_object in inspect.getmembers(decorator, inspect.ismethod):
+                if hasattr(method_object,'rule_category'):
                     try:
-                        cls.__dict__[rule.__name__].__get__(None, cls)(node)
+                        decorator.__dict__[method_name].__get__(None, decorator)(node)
                     except:
                         allowable = False
-                        self.broken_rules.append([cls, rule])
-                else: allowable = False
+                        self.broken_rules.append([decorator, method_object])
+                    else:
+                        allowable = True
             if allowable:
-                self.allowable_decorators.append(cls)
+                self.allowable_decorators.append(decorator)
 
