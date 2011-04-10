@@ -21,6 +21,7 @@ class RuleChecker:
 
     def __init__(self):
         self.allowable_decorators = []
+        self.broken_rules = []
         self.decorators = []
         self.rules = []
 
@@ -48,14 +49,17 @@ class RuleChecker:
                 self.rules.append(method)
 
     def check_rules(self, node):
-        ''' runs, for each decorator, each rule separately '''
+        ''' for each decorator, runs each rule separately '''
         for cls in self.decorators:
-            for rule in self.rules:
-                if rule.im_self == cls: #it is safer than im_class
+            for rule in self.rules: #rules are gruped by class, this lop can be improved
+                if rule.im_self == cls: #im_class returns <classobj>
                     allowable = True
-                    #check http://stackoverflow.com/questions/114214/class-method-differences-in-python-bound-unbound-and-static
-                    try: cls.__dict__[rule.__name__].__get__(None, cls)(node)
-                    except: allowable = False #should register "why"
+                    #resolve descriptor in order to run the @rule
+                    try:
+                        cls.__dict__[rule.__name__].__get__(None, cls)(node)
+                    except:
+                        allowable = False
+                        self.broken_rules.append([cls, rule])
                 else: allowable = False
             if allowable:
                 self.allowable_decorators.append(cls)
