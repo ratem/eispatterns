@@ -25,5 +25,6 @@ class LoanRequest(Material):
 
     @rule('association')
     def rule_should_be_bank_account_instance(self, account):
+        ''' Account should be of type Bank Account Decorator '''
         account |should| be_instance_of(BankAccountDecorator)
 

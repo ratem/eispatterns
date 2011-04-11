@@ -28,5 +28,6 @@ class BankAccountDecorator(Decorator):
     @classmethod
     @rule('association')
     def rule_should_be_machine_instance(self, decorated):
+        ''' Decorated object should be a Machine '''
         decorated |should| be_instance_of(Machine)
 

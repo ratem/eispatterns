@@ -19,5 +19,6 @@ class Loan(Material):
 
     @rule('association')
     def rule_should_be_loan_request_instance(self, loan_request):
+        ''' Loan Request should be of type Loan Request '''
         loan_request |should| be_instance_of(LoanRequest)
 

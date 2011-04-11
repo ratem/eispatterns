@@ -27,6 +27,7 @@ class CreditAnalystDecorator(Decorator):
     @classmethod
     @rule('association')
     def rule_should_be_person_instance(self, decorated):
+        ''' Decorated object should be a Person '''
         decorated |should| be_instance_of(Person)
 
     #creates a loan request

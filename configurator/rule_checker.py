@@ -48,8 +48,8 @@ class RuleChecker:
         for decorator in self.decorators:
             for method_name, method_object in inspect.getmembers(decorator, inspect.ismethod):
                 if hasattr(method_object,'rule_category'):
-                    try:
-                        decorator.__dict__[method_name].__get__(None, decorator)(node)
+                    try:#decorator.__dict__[method_name].__get__(None, decorator)(node)
+                        getattr(decorator, method_name)(node)
                     except:
                         allowable = False
                         self.broken_rules.append([decorator, method_object])
