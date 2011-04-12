@@ -34,7 +34,7 @@ class RuleChecker:
                if issubclass(obj, Decorator):
                   #a class is a subclass of itself, thus:
                   if obj.__name__ != 'Decorator':
-                     #import clauses in modules inserts imported classes in the namespace
+                     #each import clause inserts imported classes in the namespace
                      #thus one class can appear more than once when a module has many imports
                      new_decorator = True
                      for decorator in self.decorators:
