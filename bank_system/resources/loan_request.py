@@ -8,7 +8,7 @@ from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
 
 class LoanRequest(Material):
-    ''' A Loan Request '''
+    ''' A Loan Request has a value, a date and time, and an associated analyst '''
     def __init__(self, account, value, analyst):
         Material.__init__(self)
         self.value = value

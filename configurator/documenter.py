@@ -1,9 +1,8 @@
 '''
-Should be able of supplying documentation on (Business) Decorators and Resources.
+Should be able of supplying documentation on (Business) Decorators and Materials
+(instantiable Resources).
 -Decorators: @operations
--Resources: attributes
-Obs.: Given that 'real' resources are derived from Resource/Material, it checks
-    Material subclasses.
+-Materials: attributes
 In the future, with the use of a workflow engine, it should also work for Processes
 '''
 import inspect
@@ -12,10 +11,12 @@ from domain.base.decorator import Decorator
 
 
 class Documenter:
-    ''' Presents information on Business Decorators and Resources '''
+    ''' Presents information on Business Decorators and Materials '''
     def __init__(self):
         self.decorators = []
-        self.resources = []
+        self.materials = []
+        self.operations = []
+        self.materials_documentations = []
 
     def find_classes(self, module):
         ''' finds classes in a module '''
@@ -24,7 +25,7 @@ class Documenter:
            if inspect.isclass(obj):
                #each import clause inserts imported classes in the namespace
                #thus one class can appear more than once when a module has many imports
-               if (obj not in self.decorators) and (obj not in self.resources):
+               if (obj not in self.decorators) and (obj not in self.materials):
                   #a class is a subclass of itself, thus:
                   if issubclass(obj, Decorator):
                      if obj.__name__ != 'Decorator':
@@ -32,5 +33,17 @@ class Documenter:
                   elif issubclass(obj, Material):
                      #Resources are in fact subclasses of Material
                      if obj.__name__ != 'Material':
-                         self.resources.append(obj)
+                         self.materials.append(obj)
+
+    def list_decorators_operations(self):
+        ''' for each decorator, lists its @operations '''
+        for decorator in self.decorators:
+            for method_name, method_object in inspect.getmembers(decorator, inspect.ismethod):
+                if hasattr(method_object,'category'):
+                    self.operations.append([decorator, method_object])
+
+    def list_materials_documentations(self):
+        ''' for each material, lists its documentation '''
+        for material in self.materials:
+            self.materials_documentations.append([material, material.__doc__])
 

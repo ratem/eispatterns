@@ -7,7 +7,7 @@ from bank_system.resources.loan_request import LoanRequest
 
 
 class Loan(Material):
-    ''' Loan generated from a Loan Request '''
+    ''' A Loan is generated from a Loan Request '''
     def __init__(self, loan_request):
         Material.__init__(self)
         try:
