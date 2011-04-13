@@ -1,11 +1,13 @@
 '''
 Should be able of supplying documentation on (Business) Decorators and Resources.
--Decorators: operations
+-Decorators: @operations
 -Resources: attributes
+Obs.: Given that 'real' resources are derived from Resource/Material, it checks
+    Material subclasses.
 In the future, with the use of a workflow engine, it should also work for Processes
 '''
 import inspect
-from domain.resource.resource import Resource
+from domain.resource.material import Material
 from domain.base.decorator import Decorator
 
 
@@ -27,7 +29,8 @@ class Documenter:
                   if issubclass(obj, Decorator):
                      if obj.__name__ != 'Decorator':
                          self.decorators.append(obj)
-                  elif issubclass(obj, Resource):
-                     if obj.__name__ != 'Resource':
+                  elif issubclass(obj, Material):
+                     #Resources are in fact subclasses of Material
+                     if obj.__name__ != 'Material':
                          self.resources.append(obj)
 

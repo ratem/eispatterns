@@ -10,11 +10,8 @@ decoration maybe is a bad practice, given that decorators are created for
 decorating an object (having setted only very basic attributes), thus, it starts
 operating - and changing its state - only after the decoration.
 '''
-
 import sys
 import inspect
-from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
-from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 from domain.supportive.contract_error import ContractError
 from domain.base.decorator import Decorator
 

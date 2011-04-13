@@ -1,13 +1,13 @@
 from datetime import datetime
 from should_dsl import should
-from domain.resource.material import Material
 from domain.supportive.association_error import AssociationError
 from domain.supportive.rule import rule
+from domain.resource.material import Material
 from bank_system.resources.loan_request import LoanRequest
 
 
 class Loan(Material):
-
+    ''' Loan generated from a Loan Request '''
     def __init__(self, loan_request):
         Material.__init__(self)
         try:

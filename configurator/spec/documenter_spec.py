@@ -3,6 +3,7 @@ from should_dsl import should
 import bank_system.decorators.credit_analyst_decorator
 import bank_system.resources
 from configurator.documenter import Documenter
+import configurator.rule_checker_imports
 
 
 class DocumenterSpec(unittest.TestCase):
@@ -11,11 +12,14 @@ class DocumenterSpec(unittest.TestCase):
         self.documenter = Documenter()
 
     def it_finds_classes(self):
-        #for bank_system.decorators should work like bank_system.resources...
         #a decorator module, which imports another decorator module
         self.documenter.find_classes(bank_system.decorators.credit_analyst_decorator)
         self.documenter |should| have(2).decorators
         #a resource module
-        self.documenter.find_classes(bank_system.resources)
+        self.documenter.find_classes(bank_system.resources.loan)
+        self.documenter |should| have(2).resources
+        #a imports module
+        self.documenter.find_classes(configurator.rule_checker_imports)
+        self.documenter |should| have(2).decorators
         self.documenter |should| have(2).resources
 

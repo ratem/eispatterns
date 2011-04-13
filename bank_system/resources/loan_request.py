@@ -1,14 +1,14 @@
 from datetime import datetime
 from should_dsl import should
-from domain.resource.material import Material
 from domain.supportive.association_error import AssociationError
 from domain.supportive.rule import rule
+from domain.resource.material import Material
 #from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
 
 class LoanRequest(Material):
-
+    ''' A Loan Request '''
     def __init__(self, account, value, analyst):
         Material.__init__(self)
         self.value = value

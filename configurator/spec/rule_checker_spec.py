@@ -3,7 +3,7 @@ from should_dsl import should
 from configurator.rule_checker import RuleChecker
 from domain.node.person import Person
 import bank_system.decorators
-import configurator.import_decorators
+import configurator.rule_checker_imports
 
 
 class RuleCheckerSpec(unittest.TestCase):
@@ -21,12 +21,12 @@ class RuleCheckerSpec(unittest.TestCase):
          #credit_analyst_decorator imports bank_account_decorator => two decorators in the namespace
         self.rule_checker |should| have(2).decorators
         self.rule_checker.decorators = []
-        #it works with configurator.import_decorators, a pure import module
-        self.rule_checker.find_decorators(configurator.import_decorators)
+        #it works with configurator.rule_checker_imports, a pure import module
+        self.rule_checker.find_decorators(configurator.rule_checker_imports)
         self.rule_checker |should| have(2).decorators
 
     def it_checks_rules(self):
-        self.rule_checker.find_decorators(configurator.import_decorators)
+        self.rule_checker.find_decorators(configurator.rule_checker_imports)
         self.rule_checker.check_rules(self.a_person)
         self.rule_checker |should| have(1).allowable_decorators
         self.rule_checker |should| have(1).broken_rules
