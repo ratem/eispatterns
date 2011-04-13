@@ -2,15 +2,15 @@ from datetime import datetime
 from should_dsl import should
 from domain.supportive.association_error import AssociationError
 from domain.supportive.rule import rule
-from domain.resource.material import Material
+from domain.resource.work_item import WorkItem
 #from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 
 
-class LoanRequest(Material):
+class LoanRequest(WorkItem):
     ''' A Loan Request has a value, a date and time, and an associated analyst '''
     def __init__(self, account, value, analyst):
-        Material.__init__(self)
+        WorkItem.__init__(self)
         self.value = value
         self.approved = False
         self.datetime = datetime.now()

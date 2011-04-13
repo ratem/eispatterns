@@ -17,19 +17,19 @@ class DocumenterSpec(unittest.TestCase):
         self.documenter |should| have(2).decorators
         #a resource module
         self.documenter.find_classes(bank_system.resources.loan)
-        self.documenter |should| have(2).materials
+        self.documenter |should| have(2).work_items
         #a imports module
         self.documenter.find_classes(configurator.rule_checker_imports)
         self.documenter |should| have(2).decorators
-        self.documenter |should| have(2).materials
+        self.documenter |should| have(2).work_items
 
     def it_lists_decorators_operations(self):
         self.documenter.find_classes(configurator.documenter_imports)
         self.documenter.list_decorators_operations()
         self.documenter |should| have(3).operations
 
-    def it_lists_materials_documentations(self):
+    def it_lists_work_items_documentations(self):
         self.documenter.find_classes(configurator.documenter_imports)
-        self.documenter.list_materials_documentations()
-        self.documenter |should| have(2).materials_documentations
+        self.documenter.list_work_items_documentations()
+        self.documenter |should| have(2).work_items_documentations
 

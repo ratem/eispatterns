@@ -2,14 +2,14 @@ from datetime import datetime
 from should_dsl import should
 from domain.supportive.association_error import AssociationError
 from domain.supportive.rule import rule
-from domain.resource.material import Material
+from domain.resource.work_item import WorkItem
 from bank_system.resources.loan_request import LoanRequest
 
 
-class Loan(Material):
+class Loan(WorkItem):
     ''' A Loan is generated from a Loan Request '''
     def __init__(self, loan_request):
-        Material.__init__(self)
+        WorkItem.__init__(self)
         try:
            self.rule_should_be_loan_request_instance(loan_request)
         except:
