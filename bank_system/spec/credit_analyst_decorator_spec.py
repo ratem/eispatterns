@@ -7,6 +7,7 @@ from bank_system.resources.loan_request import LoanRequest
 from bank_system.resources.loan import Loan
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
+from bank_system.decorators.employee_decorator import EmployeeDecorator
 
 
 class CreditAnalystDecoratorSpec(unittest.TestCase):
@@ -18,20 +19,25 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         self.an_account = BankAccountDecorator('1234567-8')
 
     def it_decorates_a_person(self):
+        #should fail
+        (self.a_credit_analyst_decorator.decorate, self.a_person) |should| throw(AssociationError)
         #should work
+        an_employee_decorator = EmployeeDecorator()
+        an_employee_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.decorated |should| be(self.a_person)
-        self.a_credit_analyst_decorator.decorated |should| have(1).decorators
-        #should fail
-        non_person = 'I am not a person'
-        (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(AssociationError)
+        self.a_credit_analyst_decorator.decorated |should| have(2).decorators
 
     def it_creates_a_loan_request(self):
+        an_employee_decorator = EmployeeDecorator()
+        an_employee_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.create_loan_request(self.an_account, 10000)
         self.a_person.input_area |should| contain('1234567-8')
 
     def it_analyses_a_loan_request(self):
+        an_employee_decorator = EmployeeDecorator()
+        an_employee_decorator.decorate(self.a_person)
         #Stub removed, from now on Node really transfers resources internally
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.an_account.average_credit = 5000
@@ -46,6 +52,8 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
 
 
     def it_creates_a_loan(self):
+        an_employee_decorator = EmployeeDecorator()
+        an_employee_decorator.decorate(self.a_person)
         loan_request = LoanRequest(self.an_account, 7000, self.a_credit_analyst_decorator)
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.decorated.output_area[self.an_account.number] = loan_request

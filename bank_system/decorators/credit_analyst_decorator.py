@@ -7,6 +7,7 @@ from domain.supportive.association_error import AssociationError
 from bank_system.resources.loan_request import LoanRequest
 from bank_system.resources.loan import Loan
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
+from bank_system.decorators.employee_decorator import EmployeeDecorator
 
 
 class CreditAnalystDecorator(Decorator):
@@ -19,17 +20,17 @@ class CreditAnalystDecorator(Decorator):
 
     def decorate(self, decorated):
         try:
-            CreditAnalystDecorator.rule_should_be_person_instance(decorated)
+            CreditAnalystDecorator.rule_should_contain_employee_decorator(decorated)
         except:
-            raise AssociationError('Person instance expected, instead %s passed' % type(decorated))
+            raise AssociationError('Person must be previously decorated by Employee Decorator')
         self.decorated = decorated
         self.decorated.decorators[self.__doc__] = self
 
     @classmethod
     @rule('association')
-    def rule_should_be_person_instance(self, decorated):
-        ''' Decorated object should be a Person '''
-        decorated |should| be_instance_of(Person)
+    def rule_should_contain_employee_decorator(self, decorated):
+        ''' Decorated object should be already decorated by Employee '''
+        decorated.decorators |should| contain(EmployeeDecorator.__doc__)
 
     #creates a loan request
     @operation(category='business')

@@ -8,12 +8,16 @@ from domain.movement.transformation import Transformation
 from domain.movement.transportation import Transportation
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
+from bank_system.decorators.employee_decorator import EmployeeDecorator
+
 
 #Scenario Individual Customer asks for loan
 @step(u'Given I am a registered Credit Analyst')
 
 def given_i_am_a_registered_credit_analyst(step):
     world.a_person = Person()
+    an_employee_decorator = EmployeeDecorator()
+    an_employee_decorator.decorate(world.a_person)
     world.credit_analyst = CreditAnalystDecorator('09876-5')
     world.credit_analyst.decorate(world.a_person)
 
