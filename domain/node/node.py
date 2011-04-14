@@ -10,6 +10,7 @@ class Node(Decorable):
         self.input_area = {}
         self.processing_area = {}
         self.output_area = {}
+        self.log_area = {}
         self.tag = None
         self.location = None
 
@@ -37,6 +38,9 @@ class Node(Decorable):
             self.processing_area[key] = resource
         elif destination_area == 'output':
             self.output_area[key] = resource
+        elif destination_area == 'log':
+            self.log_area[key] = resource
+
         else:
             return False
         return True

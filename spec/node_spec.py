@@ -31,4 +31,7 @@ class NodeSpec(unittest.TestCase):
         #from processing to output
         self.a_node.transfer('resource key', 'processing', 'output')
         self.a_node.output_area |should| contain('resource key')
+        #from output to log
+        self.a_node.transfer('resource key', 'output', 'log')
+        self.a_node.log_area |should| contain('resource key')
 

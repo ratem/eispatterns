@@ -1,6 +1,5 @@
 import unittest
 from should_dsl import should, should_not
-from ludibrio import Stub
 from domain.node.person import Person
 from domain.node.machine import Machine
 from domain.supportive.association_error import AssociationError
