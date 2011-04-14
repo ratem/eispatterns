@@ -12,15 +12,15 @@ class DocumenterSpec(unittest.TestCase):
         self.documenter = Documenter()
 
     def it_finds_classes(self):
-        #a decorator module, which imports another decorator module
+        #a decorator module, which imports two other decorator modules
         self.documenter.find_classes(bank_system.decorators.credit_analyst_decorator)
-        self.documenter |should| have(2).decorators
+        self.documenter |should| have(3).decorators
         #a resource module
         self.documenter.find_classes(bank_system.resources.loan)
         self.documenter |should| have(2).work_items
         #a imports module
         self.documenter.find_classes(configurator.rule_checker_imports)
-        self.documenter |should| have(2).decorators
+        self.documenter |should| have(3).decorators
         self.documenter |should| have(2).work_items
 
     def it_lists_decorators_operations(self):

@@ -18,16 +18,16 @@ class RuleCheckerSpec(unittest.TestCase):
         self.rule_checker |should| have(1).decorators
         self.rule_checker.decorators = []
         self.rule_checker.find_decorators(bank_system.decorators.credit_analyst_decorator)
-         #credit_analyst_decorator imports bank_account_decorator => two decorators in the namespace
-        self.rule_checker |should| have(2).decorators
+         #credit_analyst_decorator imports bank_account_decorator and employee_decorator => two decorators in the namespace
+        self.rule_checker |should| have(3).decorators
         self.rule_checker.decorators = []
         #it works with configurator.rule_checker_imports, a pure import module
         self.rule_checker.find_decorators(configurator.rule_checker_imports)
-        self.rule_checker |should| have(2).decorators
+        self.rule_checker |should| have(3).decorators
 
     def it_checks_rules(self):
         self.rule_checker.find_decorators(configurator.rule_checker_imports)
         self.rule_checker.check_rules(self.a_person)
-        self.rule_checker |should| have(1).allowable_decorators
-        self.rule_checker |should| have(1).broken_rules
+        self.rule_checker |should| have(1).allowable_decorators #employee
+        self.rule_checker |should| have(2).broken_rules #credit_analyst + bank_account
 
