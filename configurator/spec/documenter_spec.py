@@ -19,17 +19,27 @@ class DocumenterSpec(unittest.TestCase):
         self.documenter.find_classes(bank_system.resources.loan)
         self.documenter |should| have(2).work_items
         #a imports module
-        self.documenter.find_classes(configurator.rule_checker_imports)
+        self.documenter.find_classes(configurator.documenter_imports)
         self.documenter |should| have(3).decorators
         self.documenter |should| have(2).work_items
 
-    def it_lists_decorators_operations(self):
+    def it_gets_decorators_operations(self):
         self.documenter.find_classes(configurator.documenter_imports)
-        self.documenter.list_decorators_operations()
+        self.documenter.get_decorators_operations()
         self.documenter |should| have(3).operations
 
-    def it_lists_work_items_documentations(self):
+    def it_gets_work_items_documentations(self):
         self.documenter.find_classes(configurator.documenter_imports)
-        self.documenter.list_work_items_documentations()
+        self.documenter.get_work_items_documentations()
         self.documenter |should| have(2).work_items_documentations
+
+    def it_searches_a_term(self):
+        self.documenter.find_classes(configurator.documenter_imports)
+        self.documenter.get_work_items_documentations()
+        self.documenter.get_decorators_operations()
+        self.documenter.search_term('loan')
+        #3 @operations from credit_analyst_decorator, loan_request.__doc__, loan.__doc__
+        self.documenter.found |should| have(5).items
+        self.documenter.search_term('xxxx')
+        self.documenter.found |should| have(0).item
 

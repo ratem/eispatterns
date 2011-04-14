@@ -17,6 +17,7 @@ class Documenter:
         self.work_items = []
         self.operations = []
         self.work_items_documentations = []
+        self.found = []
 
     def find_classes(self, module):
         ''' finds classes in a module '''
@@ -35,15 +36,29 @@ class Documenter:
                      if obj.__name__ != 'WorkItem':
                          self.work_items.append(obj)
 
-    def list_decorators_operations(self):
+    def get_decorators_operations(self):
         ''' for each decorator, lists its @operations '''
         for decorator in self.decorators:
             for method_name, method_object in inspect.getmembers(decorator, inspect.ismethod):
                 if hasattr(method_object,'category'):
                     self.operations.append([decorator, method_object])
 
-    def list_work_items_documentations(self):
+    def get_work_items_documentations(self):
         ''' for each WorkItem, lists its documentation '''
         for work_item in self.work_items:
             self.work_items_documentations.append([work_item, work_item.__doc__])
+
+    #simple search
+    def search_term(self, term):
+        self.found = []
+        term.lower()
+        for decorator in self.decorators:
+            if decorator.__doc__.lower().find(term) != -1:
+                self.found.append([decorator.__name__, decorator.__doc__])
+        for decorator, method_object in self.operations:
+            if method_object.__doc__.lower().find(term) != -1:
+                self.found.append([decorator.__name__, method_object.__doc__])
+        for work_item, work_item.__doc__ in self.work_items_documentations:
+            if work_item.__doc__.lower().find(term) != -1:
+                self.found.append([work_item.__name__, work_item.__doc__])
 
