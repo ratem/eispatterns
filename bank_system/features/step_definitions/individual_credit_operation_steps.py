@@ -121,14 +121,15 @@ def then_a_loan_of_value_value_for_account_account_number_is_generated(step, val
 
 @step(u'And the loan_request is moved to the account (.+) historic')
 def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
-    #moves the loan_request to the account
+    #creates the movement
     world.move_loan_request_to_account = Transportation(world.credit_analyst.decorated, world.account.decorated)
-    world.move_loan_request_to_account.transport(world.account.number)
-    #be aware that: this is not elegant and shouldn't be done here
-    processed_loan_request = world.account.decorated.input_area.pop(world.account.number)
-    world.account.log_area[processed_loan_request.datetime] = processed_loan_request
-    world.account.log_area |should| have(1).loan_request
-    #need to think of a way of elegantly and coherently move things to log_areas
+    #insert the movement into the business process
+    world.an_individual_credit_operation.insert_movement('move loan request to account', world.move_loan_request_to_account)
+    #perform! (world.account.number is the loan request key)
+    world.an_individual_credit_operation.movements['move loan request to account'].transport(world.account.number)
+    #moves from the input area to the log area
+    world.account.decorated.transfer(world.account.number,'input','log')
+    world.account.decorated.log_area |should| have(1).loan_request
 
 #Scenario Refused loan request
 @step(u'And there is a refused loan request of value (.+) for account (.+)')
@@ -147,9 +148,5 @@ def when_when_i_pick_this_loan_request(step):
 
 @step(u'Then the loan_request is moved to the account (.+) historic')
 def then_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
-    #be aware that: this is not elegant and shouldn't be done here
-    processed_loan_request = world.credit_analyst.decorated.output_area.pop(world.account.number)
-    world.account.log_area[processed_loan_request.datetime] = processed_loan_request
-    world.account.log_area |should| contain(processed_loan_request.datetime)
-    #need to think of a way of elegantly and coherently move things to log_areas
+    step.then(u'And the loan_request is moved to the account (.+) historic')
 
