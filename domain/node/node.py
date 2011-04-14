@@ -7,6 +7,7 @@ from domain.supportive.contract_error import ContractError
 class Node(Decorable):
     def __init__(self):
         Decorable.__init__(self)
+        self.decorators = {}
         self.input_area = {}
         self.processing_area = {}
         self.output_area = {}
@@ -14,8 +15,7 @@ class Node(Decorable):
         self.tag = None
         self.location = None
 
-    #receiving resources should be through movements, however, there is still
-    #the cases where the resource is created inside the Node...
+    #receiving resources should be through movements
     def receive_resource(self, key, resource):
         try:
             resource |should| be_instance_of(Resource)
@@ -38,9 +38,8 @@ class Node(Decorable):
             self.processing_area[key] = resource
         elif destination_area == 'output':
             self.output_area[key] = resource
-        elif destination_area == 'log':
+        elif destination_area == 'log': #log only receives, never sends
             self.log_area[key] = resource
-
         else:
             return False
         return True

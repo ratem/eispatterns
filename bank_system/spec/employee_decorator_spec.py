@@ -16,6 +16,7 @@ class EmployeeDecoratorSpec(unittest.TestCase):
         #should work
         self.an_employee_decorator.decorate(self.a_person)
         self.an_employee_decorator.decorated |should| be(self.a_person)
+        self.an_employee_decorator.decorated |should| have(1).decorators
         #should fail
         non_person = 'I am not a person'
         (self.an_employee_decorator.decorate, non_person) |should| throw(AssociationError)

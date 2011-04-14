@@ -22,6 +22,7 @@ class EmployeeDecorator(Decorator):
         except:
             raise AssociationError('Person instance expected, instead %s passed' % type(decorated))
         self.decorated = decorated
+        self.decorated.decorators[self.__doc__] = self
 
     @classmethod
     @rule('association')

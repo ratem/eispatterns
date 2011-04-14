@@ -21,6 +21,7 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         #should work
         self.a_credit_analyst_decorator.decorate(self.a_person)
         self.a_credit_analyst_decorator.decorated |should| be(self.a_person)
+        self.a_credit_analyst_decorator.decorated |should| have(1).decorators
         #should fail
         non_person = 'I am not a person'
         (self.a_credit_analyst_decorator.decorate, non_person) |should| throw(AssociationError)

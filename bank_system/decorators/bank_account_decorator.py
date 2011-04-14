@@ -24,6 +24,7 @@ class BankAccountDecorator(Decorator):
         except:
             raise AssociationError('Machine instance expected, instead %s passed' % type(decorated))
         self.decorated = decorated
+        self.decorated.decorators[self.__doc__] = self
 
     @classmethod
     @rule('association')

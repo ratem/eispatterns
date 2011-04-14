@@ -16,6 +16,7 @@ class bankAccountDecoratorSpec(unittest.TestCase):
         #should work
         self.a_bank_account_decorator.decorate(self.a_machine)
         self.a_bank_account_decorator.decorated |should| be(self.a_machine)
+        self.a_bank_account_decorator.decorated |should| have(1).decorators
         #should fail
         non_machine = 'I am not a machine'
         (self.a_bank_account_decorator.decorate, non_machine) |should| throw(AssociationError)
