@@ -9,7 +9,9 @@ class TransformationSpec(unittest.TestCase):
 
     def setUp(self):
         self.a_person = Person()
-        self.a_transformation = Transformation(self.a_person, self.a_person)
+        self.a_transformation = Transformation()
+        self.a_transformation.set_source(self.a_person)
+        self.a_transformation.set_destination(self.a_person)
 
     @operation(category='business')
     def an_operation(self, argument):

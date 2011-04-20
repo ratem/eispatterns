@@ -12,9 +12,13 @@ class ProcessSpec(unittest.TestCase):
     def setUp(self):
         self.a_client = Node()
         self.the_company = Node()
-        self.a_process = Process(self.the_company, self.a_client)
+        self.a_process = Process()
+        self.a_process.set_source(self.the_company)
+        self.a_process.set_destination(self.a_client)
         self.a_processing_unit = Node()
-        self.a_movement = Movement(self.a_processing_unit, self.a_processing_unit)
+        self.a_movement = Movement()
+        self.a_movement.set_source(self.a_processing_unit)
+        self.a_movement.set_destination(self.a_processing_unit)
 
     def it_inserts_a_movement(self):
         #should not work

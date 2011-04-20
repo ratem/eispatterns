@@ -3,8 +3,6 @@ from domain.movement.movement import Movement
 
 
 class Transportation(Movement):
-    def __init__(self, source, destination):
-        Movement.__init__(self, source, destination)
 
     def transport(self, resource_key):
         self.datetime = datetime.now()
