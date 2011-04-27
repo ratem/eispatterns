@@ -25,3 +25,8 @@ class Process(Movement):
             raise ContractError('Node instance expected, instead %s passed' % type(node))
         self.nodes[key] = node
 
+    def configure(self, template):
+        self.template = template
+        self.states = template.states
+        self.transformations = template.transformations
+
