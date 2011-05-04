@@ -44,8 +44,13 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     world.the_company = Machine()
     world.a_client = Person()
     #now the business process starts to be assembled
-    world.an_individual_credit_operation = Process(world.the_company, world.a_client)
-    world.loan_request_creation = Transformation(world.credit_analyst.decorated, world.credit_analyst.decorated)
+    world.an_individual_credit_operation = Process()
+    world.an_individual_credit_operation.set_source(world.the_company)
+    world.an_individual_credit_operation.set_destination(world.a_client)
+
+    world.loan_request_creation = Transformation()
+    world.loan_request_creation.set_source(world.credit_analyst.decorated)
+    world.loan_request_creation.set_destination(world.credit_analyst.decorated)
     world.loan_request_creation.set_action(world.credit_analyst.create_loan_request)
     world.loan_request_creation.action |should| equal_to(world.credit_analyst.create_loan_request)
     #associates the transformation to the process
@@ -71,7 +76,9 @@ def and_there_is_a_loan_request_of_account_account_number_with_desired_value_des
 @step(u'When I pick to analyse the loan request of account (.+)')
 def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, account_number):
     #creates a new transformation to register the analysis
-    world.loan_request_analysis = Transformation(world.credit_analyst.decorated, world.credit_analyst.decorated)
+    world.loan_request_analysis = Transformation()
+    world.loan_request_analysis.set_source(world.credit_analyst.decorated)
+    world.loan_request_analysis.set_destination(world.credit_analyst.decorated)
     #associates analyse operation to the transformation
     world.loan_request_analysis.set_action(world.credit_analyst.analyse)
     #associates the transformation to the process
@@ -102,7 +109,9 @@ def when_i_pick_and_perfom_this_loan(step):
     #picking...
     loan_request = world.credit_analyst.decorated.output_area[world.account.number]
     #preparing to perform...
-    world.create_loan = Transformation(world.credit_analyst.decorated, world.credit_analyst.decorated)
+    world.create_loan = Transformation()
+    world.create_loan.set_source(world.credit_analyst.decorated)
+    world.create_loan.set_destination(world.credit_analyst.decorated)
     world.create_loan.set_action(world.credit_analyst.create_loan)
     world.an_individual_credit_operation.insert_movement('loan creation', world.create_loan)
     #performing!
@@ -115,7 +124,9 @@ def when_i_pick_and_perfom_this_loan(step):
 @step(u'Then a loan of value (.+) for account (.+) is generated')
 def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
     #moves the loan to the processing area of the account
-    world.move_loan_to_account = Transportation(world.credit_analyst.decorated, world.account.decorated)
+    world.move_loan_to_account = Transportation()
+    world.move_loan_to_account.set_source(world.credit_analyst.decorated)
+    world.move_loan_to_account.set_destination(world.account.decorated)
     #picks the loan by its type - no way to know here its key
     for item in world.credit_analyst.decorated.output_area.values():
         if item.__class__.__name__ == 'Loan':
@@ -126,7 +137,9 @@ def then_a_loan_of_value_value_for_account_account_number_is_generated(step, val
 @step(u'And the loan_request is moved to the account (.+) historic')
 def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
     #creates the movement
-    world.move_loan_request_to_account = Transportation(world.credit_analyst.decorated, world.account.decorated)
+    world.move_loan_request_to_account = Transportation()
+    world.move_loan_request_to_account.set_source(world.credit_analyst.decorated)
+    world.move_loan_request_to_account.set_destination(world.account.decorated)
     #insert the movement into the business process
     world.an_individual_credit_operation.insert_movement('move loan request to account', world.move_loan_request_to_account)
     #perform! (world.account.number is the loan request key)

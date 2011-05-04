@@ -9,7 +9,9 @@ class MovementSpec(unittest.TestCase):
     def it_checks_source_and_destination(self):
         a_node = Person()
         non_node = "I am not a Node"
-        (Movement, a_node,   a_node)   |should_not| throw(ContractError)
-        (Movement, non_node, a_node)   |should|     throw(ContractError)
-        (Movement, a_node,   non_node) |should|     throw(ContractError)
+        movement = Movement()
+        (movement.set_source, a_node) |should_not| throw(ContractError)
+        (movement.set_destination, a_node) |should_not| throw(ContractError)
+        (movement.set_source, non_node) |should| throw(ContractError)
+        (movement.set_destination, non_node) |should| throw(ContractError)
 

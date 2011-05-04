@@ -5,8 +5,7 @@ from domain.supportive.contract_error import ContractError
 
 
 class Process(Movement):
-    def __init__(self, source, destination):
-        Movement.__init__(self, source, destination)
+    def __init__(self):
         #composition
         self.movements = {}
         #aggregation
@@ -25,4 +24,11 @@ class Process(Movement):
         except:
             raise ContractError('Node instance expected, instead %s passed' % type(node))
         self.nodes[key] = node
+
+    def configure(self, template):
+        self.template = template
+        self.states = template.states
+        self.transformations = template.transformations
+        for transformation in template.transformations:
+            self.insert_movement(transformation.name, transformation)
 
