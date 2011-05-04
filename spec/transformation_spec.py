@@ -1,8 +1,9 @@
 import unittest
-from should_dsl import should
+from should_dsl import should, should_not
 from domain.node.person import Person
 from domain.movement.transformation import Transformation
 from domain.resource.operation import operation
+from domain.supportive.contract_error import ContractError
 
 class Analyst:
     def analyze(self): pass
@@ -43,4 +44,15 @@ class TransformationSpec(unittest.TestCase):
     def it_performs(self):
         self.a_transformation.set_action(self.an_operation)
         self.a_transformation.perform(10)
+
+    def it_checks_actor_for_compatibility_with_action(self):
+        class CreditAnalyst(object):
+            @operation(category='business')
+            def create_loan(self):
+                '''I am who I am'''
+                pass
+        transformation = Transformation()
+        transformation.set_action(CreditAnalyst.create_loan)
+        (transformation.set_actor, CreditAnalyst()) |should_not| throw(Exception)
+        (transformation.set_actor, Person()) |should| throw(ContractError)
 

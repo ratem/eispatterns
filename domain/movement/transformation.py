@@ -1,5 +1,6 @@
 from datetime import datetime
 from domain.movement.movement import Movement
+from domain.supportive.contract_error import ContractError
 
 
 class Transformation(Movement):
@@ -21,4 +22,9 @@ class Transformation(Movement):
     def perform(self, *arguments):
         self.datetime = datetime.now()
         self.action(*arguments)
+
+    def set_actor(self, actor):
+        if not isinstance(actor, self.action.im_class):
+            raise ContractError("Actor doesn't belong to expected type")
+        self.actor = actor
 
