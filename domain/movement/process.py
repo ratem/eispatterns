@@ -29,4 +29,6 @@ class Process(Movement):
         self.template = template
         self.states = template.states
         self.transformations = template.transformations
+        for transformation in template.transformations:
+            self.insert_movement(transformation.name, transformation)
 
