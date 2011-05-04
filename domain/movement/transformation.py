@@ -21,7 +21,8 @@ class Transformation(Movement):
 
     def perform(self, *arguments):
         self.datetime = datetime.now()
-        self.action(*arguments)
+        return self.action(self.actor, *arguments)
+
 
     def set_actor(self, actor):
         if not isinstance(actor, self.action.im_class):

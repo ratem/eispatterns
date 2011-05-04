@@ -9,6 +9,22 @@ class Analyst:
     def analyze(self): pass
 
 
+class CreditAnalyst(object):
+    @operation(category='business')
+    def create_loan(self):
+        '''I am who I am'''
+        pass
+
+class BusinessAnalyst:
+    @operation(category='business')
+    def an_operation(self, argument):
+        ''' operations must be documented'''
+        return argument
+
+    def non_operation(self):
+        return 0
+
+
 class TransformationSpec(unittest.TestCase):
 
     def setUp(self):
@@ -18,20 +34,13 @@ class TransformationSpec(unittest.TestCase):
         self.a_transformation.set_source(self.a_person)
         self.a_transformation.set_destination(self.a_person)
 
-    @operation(category='business')
-    def an_operation(self, argument):
-        ''' operations must be documented'''
-        return argument
-
-    def non_operation(self):
-        return 0
-
     def it_sets_its_action(self):
         #should not work
-        self.a_transformation.set_action(self.non_operation) |should| be(False)
+        a_transformation = Transformation()
+        a_transformation.set_action(BusinessAnalyst.non_operation) |should| be(False)
         #should work
-        self.a_transformation.set_action(self.an_operation)
-        self.a_transformation.action |should| equal_to(self.an_operation)
+        a_transformation.set_action(BusinessAnalyst.an_operation)
+        a_transformation.action |should| equal_to(BusinessAnalyst.an_operation)
 
     def it_stores_creation_attributes(self):
         a_transformation = Transformation('A transformation',
@@ -42,15 +51,12 @@ class TransformationSpec(unittest.TestCase):
         a_transformation.to_state |should| equal_to('created')
 
     def it_performs(self):
-        self.a_transformation.set_action(self.an_operation)
-        self.a_transformation.perform(10)
+        a_transformation = Transformation()
+        a_transformation.set_action(BusinessAnalyst.an_operation)
+        a_transformation.set_actor(BusinessAnalyst())
+        a_transformation.perform(10) |should| be(10)
 
     def it_checks_actor_for_compatibility_with_action(self):
-        class CreditAnalyst(object):
-            @operation(category='business')
-            def create_loan(self):
-                '''I am who I am'''
-                pass
         transformation = Transformation()
         transformation.set_action(CreditAnalyst.create_loan)
         (transformation.set_actor, CreditAnalyst()) |should_not| throw(Exception)
