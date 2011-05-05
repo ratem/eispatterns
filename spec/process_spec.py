@@ -7,7 +7,7 @@ from domain.movement.process import Process
 from domain.movement.transformation import Transformation
 from domain.statemachine.configuration import ProcessTemplate
 from domain.resource.operation import operation
-from domain.supportive.contract_error import ContractError
+from domain.supportive.association_error import AssociationError
 
 class ProcessSpec(unittest.TestCase):
 
@@ -25,7 +25,7 @@ class ProcessSpec(unittest.TestCase):
     def it_inserts_a_movement(self):
         #should not work
         non_movement = "I am not a Movement"
-        (self.a_process.insert_movement, 'Ops!',non_movement) |should| throw(ContractError)
+        (self.a_process.insert_movement, 'Ops!',non_movement) |should| throw(AssociationError)
         #test doubles won't work given type checking rules, using classic
         self.a_process.insert_movement('A movement', self.a_movement)
         self.a_process.movements |should| contain('A movement')
@@ -33,7 +33,7 @@ class ProcessSpec(unittest.TestCase):
     def it_inserts_a_node(self):
         #should not work
         non_node = "I am not a Node"
-        (self.a_process.insert_node, 'Ops!', non_node) |should| throw(ContractError)
+        (self.a_process.insert_node, 'Ops!', non_node) |should| throw(AssociationError)
         #test doubles won't work given type checking rules, using classic
         self.a_process.insert_node('A company processing unit', self.a_processing_unit)
         self.a_process.nodes |should| contain('A company processing unit')

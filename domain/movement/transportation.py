@@ -4,6 +4,9 @@ from domain.movement.movement import Movement
 
 class Transportation(Movement):
 
+    def __init__(self, name=None):
+        self.name = name
+
     def perform(self, resource_key):
         self.datetime = datetime.now()
         try:

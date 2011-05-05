@@ -13,7 +13,7 @@ class TransportationSpec(unittest.TestCase):
         self.a_resource = Resource()
         self.a_person = Person()
         self.a_machine = Machine()
-        self.a_transportation = Transportation()
+        self.a_transportation = Transportation('A transportation')
         self.a_transportation.set_source(self.a_person)
         self.a_transportation.set_destination(self.a_machine)
 

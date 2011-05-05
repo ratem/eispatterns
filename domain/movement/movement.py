@@ -7,6 +7,9 @@ from domain.supportive.association_error import AssociationError
 
 class Movement(Decorable):
 
+    def __init__(self, name=None):
+        self.name = name
+
     def set_source(self, source):
         try:
             source |should| be_instance_of(Node)

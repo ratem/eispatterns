@@ -17,15 +17,14 @@ class Transformation(Movement):
         else:
             return False
 
-    def perform(self, *arguments):
-        self.datetime = datetime.now()
-        return self.action(self.actor, *arguments)
-
-
     def set_actor(self, actor):
         try:
             actor |should| be_instance_of(self.action.im_class)
         except:
             raise AssociationError("Actor should be %s, instead %s passed" % (self.action.im_class, type(actor)))
         self.actor = actor
+
+    def perform(self, *arguments):
+        self.datetime = datetime.now()
+        return self.action(self.actor, *arguments)
 
