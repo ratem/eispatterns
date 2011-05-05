@@ -8,8 +8,6 @@ class Transformation(Movement):
     def __init__(self, name=None, action=None):
         self.name = name
         self.action = action
-#        self.from_state = from_state
-#        self.to_state = to_state
 
     #conditions for a transformation: be an @operation, ??be a Decorator or Node method??
     def set_action(self, operation):

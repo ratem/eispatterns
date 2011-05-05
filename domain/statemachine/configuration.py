@@ -7,7 +7,9 @@ class ProcessTemplate(object):
     def __init__(self, initial_state):
         self.initial_state = initial_state
         self.states = [initial_state]
+        #should be a single dictionary named movements, using names as keys
         self.transformations = []
+        self.transportations = []
 
     def transformation(self, name, action):
         self.transformations.append(Transformation(name, action))
