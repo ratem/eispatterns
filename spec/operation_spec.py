@@ -7,7 +7,7 @@ class OperationSpec(unittest.TestCase):
 
     def setUp(self):
         #@operator was created to typify Node/Person and Node/Machine business
-        #decorators methods, however, its used directly on a person object here
+        #decorators' methods, however, it is used directly on a person object here
         #to make it easier to understand its use.
         self.a_person = Person()
 
@@ -22,5 +22,5 @@ class OperationSpec(unittest.TestCase):
         self.a_person.new_skill = self.something_a_person_can_do
         #the should below simultaneously demonstrates that the decorator
         #@operation works as well as it makes methods' "types" queriable
-        self.a_person.new_skill.category |should| be('skill')
+        self.a_person.new_skill.category |should| equal_to('skill')
 

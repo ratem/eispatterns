@@ -9,9 +9,9 @@ class ProcessTemplate(object):
         self.states = [initial_state]
         self.transformations = []
 
-    def transformation(self, name, from_state, to_state, action):
-        self.transformations.append(Transformation(name, from_state, to_state, action))
-        self._add_states(from_state, to_state)
+    def transformation(self, name, action):
+        self.transformations.append(Transformation(name, action))
+        #self._add_states(from_state, to_state)
 
     def _add_states(self, *states):
         for state in states:

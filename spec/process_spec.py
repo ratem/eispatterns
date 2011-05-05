@@ -50,13 +50,11 @@ class ProcessSpec(unittest.TestCase):
         process.states |should| equal_to([1, 2])
         process.transformations |should| equal_to(transformations)
 
-    def it_adds_transformation_from_template_as_a_movement(self):
+    def it_adds_a_transformation_from_template_as_a_movement(self):
         class CreditAnalyst(object):
             def create_loan(self): pass
         template = ProcessTemplate(initial_state='start')
-        template.transformation('Create Loan',
-            from_state='start', to_state='created',
-            action=CreditAnalyst.create_loan)
+        template.transformation('Create Loan',action=CreditAnalyst.create_loan)
         process = Process()
         process.configure(template)
         process.movements['Create Loan'] |should| equal_to(template.transformations[0])

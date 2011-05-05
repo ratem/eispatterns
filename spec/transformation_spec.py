@@ -3,11 +3,10 @@ from should_dsl import should, should_not
 from domain.node.person import Person
 from domain.movement.transformation import Transformation
 from domain.resource.operation import operation
-from domain.supportive.contract_error import ContractError
+from domain.supportive.association_error import AssociationError
 
 class Analyst:
     def analyze(self): pass
-
 
 class CreditAnalyst(object):
     @operation(category='business')
@@ -24,13 +23,11 @@ class BusinessAnalyst:
     def non_operation(self):
         return 0
 
-
 class TransformationSpec(unittest.TestCase):
 
     def setUp(self):
         self.a_person = Person()
-        self.a_transformation = Transformation('A transformation',
-            from_state='start', to_state='created', action=Analyst.analyze)
+        self.a_transformation = Transformation('A transformation', action=Analyst.analyze)
         self.a_transformation.set_source(self.a_person)
         self.a_transformation.set_destination(self.a_person)
 
@@ -43,12 +40,9 @@ class TransformationSpec(unittest.TestCase):
         a_transformation.action |should| equal_to(BusinessAnalyst.an_operation)
 
     def it_stores_creation_attributes(self):
-        a_transformation = Transformation('A transformation',
-            from_state='started', to_state='created', action=Analyst.analyze)
+        a_transformation = Transformation('A transformation', action=Analyst.analyze)
         a_transformation.name |should| equal_to('A transformation')
         a_transformation.action |should| equal_to(Analyst.analyze)
-        a_transformation.from_state |should| equal_to('started')
-        a_transformation.to_state |should| equal_to('created')
 
     def it_performs(self):
         a_transformation = Transformation()
@@ -59,6 +53,6 @@ class TransformationSpec(unittest.TestCase):
     def it_checks_actor_for_compatibility_with_action(self):
         transformation = Transformation()
         transformation.set_action(CreditAnalyst.create_loan)
-        (transformation.set_actor, CreditAnalyst()) |should_not| throw(Exception)
-        (transformation.set_actor, Person()) |should| throw(ContractError)
+        (transformation.set_actor, CreditAnalyst()) |should_not| throw(AssociationError)
+        (transformation.set_actor, Person()) |should| throw(AssociationError)
 
