@@ -4,7 +4,7 @@ from domain.movement.movement import Movement
 
 class Transportation(Movement):
 
-    def transport(self, resource_key):
+    def perform(self, resource_key):
         self.datetime = datetime.now()
         try:
             resource = self.source.output_area.pop(resource_key)

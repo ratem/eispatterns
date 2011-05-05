@@ -20,9 +20,9 @@ class TransportationSpec(unittest.TestCase):
 
     def it_transports(self):
         #should throw KeyError
-        (self.a_transportation.transport,'resource key') |should| throw(KeyError)
+        (self.a_transportation.perform,'resource key') |should| throw(KeyError)
         #should work
         self.a_person.output_area['resource key'] = self.a_resource
-        self.a_transportation.transport('resource key')
+        self.a_transportation.perform('resource key')
         self.a_machine.input_area |should| contain('resource key')
 
