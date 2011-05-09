@@ -5,7 +5,7 @@ from domain.node.node import Node
 from domain.movement.movement import Movement
 from domain.movement.process import Process
 from domain.movement.transformation import Transformation
-from domain.statemachine.configuration import ProcessTemplate
+from configurator.statemachine.configuration import ProcessTemplate
 from domain.resource.operation import operation
 from domain.supportive.association_error import AssociationError
 

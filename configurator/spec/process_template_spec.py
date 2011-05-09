@@ -1,7 +1,7 @@
 import unittest
 from should_dsl import should
 from domain.movement.process import Process
-from domain.statemachine.configuration import ProcessTemplate
+from configurator.statemachine.configuration import ProcessTemplate
 
 
 class CreditAnalyst(object):
