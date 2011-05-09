@@ -1,36 +1,39 @@
 EIS Patterns
 ============
 
-This project aims to discuss and implement in dynamic languages Enterprise
-Information Systems Design Patterns. The ideas here presented are
+This project aims at discussing and implementing, in dynamic languages,
+Enterprise Information Systems Design Patterns. The ideas here implemented are
 discussed in more detail in the blog `Enterprise Information Systems Development
-<http://eis-development.blogspot.com>`_, check the series of posts with the
-same title. The current implementation using the Decorator Pattern is explaned
-from the Part IV of this series onwards.
+<http://eis-development.blogspot.com>`_, through a series of posts entitled
+EIS Patterns. The current implementation, which uses the Decorator Design
+Pattern, is explained from the Part IV of this series onwards.
 
 Code is built on top of some concepts borrowed from `ERP5 system
-<http://www.erp5.org>`_, implemented in a different way, given that this is a
-didactic framework. If you need a fully functional, scalable, and flexible EIS
-framework in Python, you should use ERP5 instead. The concepts here used are:
+<http://www.erp5.org>`_, though implemented in a different way, given that this
+is a didactic framework. If you need a fully functional, scalable, and flexible
+EIS framework in Python, you should use ERP5 instead. The concepts here used are:
 
 Concept 1: Resource
   Is anything used for production. It can be material (components, money ...) or
-  immaterial (machine time, human skill ...). A Kit is a set of resources.
+  immaterial (machine time, human skill ...). Materials are referred as Work Items
+  and immaterials as Operations in general. A Kit is a set of resources.
 
 Concept 2: Node
-  Is a business entity that transforms resources. It can be a person or a
-  machine. An organization is a set of nodes.
+  Is a business entity that transforms resources. It can be a Person or a
+  Machine. An Organization is a set of nodes.
 
 Concept 3: Movement
-  Is a movement of any Resource between two nodes. It can be a transformation or
-  a transportation. A process is a set of movements.
+  Is a movement of any Resource between two nodes. It can be a Transformation or
+  a Transportation. A Process is a set of movements.
 
 Naturally, some supportive concepts will appear as the project evolves, such as
 Category, used to classify and configure the core concepts.
 
-The core idea is to use the concepts as Lego parts, which means, in general,
-avoid using subclasse, but masking the abstract concepts through configuration
-and using decorators instead. Check the blog for understanding this in detail.
+The core idea is to make the system objects the closest to real-world entities,
+therefore, Processes controls Nodes, which are the active entities that perform
+Operations on Resources. To extend the framework, different approaches are used
+in accordance to the type of entity - for a better understanding on how this is
+achieved, please refer to the blog.
 
 Setup
 -----
@@ -42,7 +45,7 @@ Pre-setup (on Ubuntu)::
 
 
 Install dependencies (if needed) and run all specs (depending on your
-envirnoment, you'll need to call with sudo)::
+environment, you'll need to call with sudo)::
 
     $ make
 
