@@ -19,3 +19,21 @@ class ProcessTemplate(object):
             if self.states.count(state) == 0:
                 self.states.append(state)
 
+class StateMachineTemplate(object):
+
+    def __init__(self, initial_state=None):
+        self.initial_state = initial_state
+        self.states = [initial_state]
+        self.transitions = []
+
+    def add_complete_transition(self, from_state, transition, to_state):
+        pass
+
+    def _add_states(self, *states):
+        for state in states:
+            if self.states.count(state) == 0:
+                self.states.append(state)
+
+    def associate_transition_to_movement(self, transition, movement):
+        pass
+
