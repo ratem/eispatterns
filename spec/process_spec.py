@@ -8,6 +8,8 @@ from domain.movement.transformation import Transformation
 from configurator.statemachine.configuration import ProcessTemplate
 from domain.resource.operation import operation
 from domain.supportive.association_error import AssociationError
+from configurator.fluidity import StateMachineTemplate
+from fluidity import state, transition
 
 class ProcessSpec(unittest.TestCase):
 
