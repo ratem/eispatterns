@@ -4,6 +4,7 @@ from domain.node.person import Person
 from domain.resource.operation import operation
 from domain.supportive.rule import rule
 from domain.supportive.association_error import AssociationError
+from domain.supportive.contract_matchers import be_decorated_by
 from bank_system.resources.loan_request import LoanRequest
 from bank_system.resources.loan import Loan
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
@@ -30,7 +31,7 @@ class CreditAnalystDecorator(Decorator):
     @rule('association')
     def rule_should_contain_employee_decorator(self, decorated):
         ''' Decorated object should be already decorated by Employee '''
-        decorated.decorators |should| contain(EmployeeDecorator.__doc__)
+        decorated |should| be_decorated_by(EmployeeDecorator)
 
     #creates a loan request
     @operation(category='business')
