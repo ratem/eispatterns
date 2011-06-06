@@ -7,7 +7,7 @@ from domain.node.node import Node
 from domain.resource.operation import operation
 
 
-class Decorator:
+class FakeDecorator:
     def __main__(self):
         return 0
 
@@ -78,16 +78,30 @@ class StateMachineConfiguratorSpec(unittest.TestCase):
         self.process = Process()
         self.a_node = Node()
         self.another_node = Node()
-        self.a_decorator = Decorator()
+        self.a_decorator = FakeDecorator()
         #configuring the process
         configurator = StateMachineConfigurator(LoanProcess())
         configurator.configure(self.process)
         #configuring the first transition
-        self.process.create_loan_request, logger = self.process.configure_activity(self.a_node, self.another_node, Decorator.do_something)
-        self.process.create_loan_request |should| equal_to(Decorator.do_something)
+        the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.create_loan_request, FakeDecorator.do_something)
+        the_movement.activity_runner |should| equal_to(FakeDecorator.do_something)
         #running the first transition
-        result, logger.activity_start, logger.activity_end = self.process.run_activity(self.a_decorator, self.process.create_loan_request, 2)
-        result |should| equal_to(200)
-        #logs the transition firing
-        self.process.insert_movement('create loan request',logger)
+        the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
+        the_movement.result |should| equal_to(200)
+        self.process.current_state() |should| equal_to('request_created')
+        #configures and runs the refusal path: check Fluidity + Movement configuration
+
+         #should go wrong
+         #the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
+         #it goes wrong and returns the correct exception, however, I cannot catch it
+         #self.process.run_activity(the_movement, self.a_decorator, 2) |should| throw(InvalidTransition)
+
+        #now doing the right thing
+        the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.analyst_select_request, FakeDecorator.do_something)
+        the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
+        self.process.current_state() |should| equal_to('request_analyzed')
+        #loan refused
+        the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
+        the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
+        self.process.current_state() |should| equal_to('refusal_letter_sent')
 
