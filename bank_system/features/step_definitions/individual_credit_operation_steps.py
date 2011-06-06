@@ -15,11 +15,11 @@ from bank_system.decorators.employee_decorator import EmployeeDecorator
 @step(u'Given I am a registered Credit Analyst')
 
 def given_i_am_a_registered_credit_analyst(step):
-    world.a_person = Person()
-    an_employee_decorator = EmployeeDecorator()
-    an_employee_decorator.decorate(world.a_person)
-    world.credit_analyst = CreditAnalystDecorator('09876-5')
-    world.credit_analyst.decorate(world.a_person)
+     world.a_person = Person()
+     an_employee_decorator = EmployeeDecorator()
+     an_employee_decorator.decorate(world.a_person)
+     world.credit_analyst = CreditAnalystDecorator('09876-5')
+     world.credit_analyst.decorate(world.a_person)
 
 @step(u'And an individual customer with account number (.+) asks for a personal loan')
 def and_an_individual_customer_with_account_number_account_number_asks_for_a_personal_loan(step, account_number):

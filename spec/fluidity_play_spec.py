@@ -2,6 +2,19 @@ import unittest
 from should_dsl import should
 from fluidity.machine import StateMachine, state, transition, InvalidTransition
 from extreme_fluidity.xfluidity import StateMachineConfigurator
+from domain.movement.process import Process
+from domain.node.node import Node
+from domain.resource.operation import operation
+
+
+class Decorator:
+    def __main__(self):
+        return 0
+
+    @operation(category='anyone')
+    def do_something(self, number):
+        ''' I do something '''
+        return 100*number
 
 class LoanProcess(StateMachine):
     state('requested')
@@ -16,9 +29,6 @@ class LoanProcess(StateMachine):
     transition(from_='request_analyzed', event='loan_refused', to='refusal_letter_sent')
     transition(from_='request_analyzed', event='loan_accepted', to='loan_created')
     transition(from_='loan_created', event='time_to_transfer_value', to='value_transfered')
-
-class Process(object):
-    pass
 
 class StateMachineConfiguratorSpec(unittest.TestCase):
 
@@ -62,4 +72,22 @@ class StateMachineConfiguratorSpec(unittest.TestCase):
         self.process.current_state() |should| equal_to('loan_created')
         self.process.time_to_transfer_value()
         self.process.current_state() |should| equal_to('value_transfered')
+
+    def it_configures_a_transition(self):
+        #arguments
+        self.process = Process()
+        self.a_node = Node()
+        self.another_node = Node()
+        self.a_decorator = Decorator()
+        #configuring the process
+        configurator = StateMachineConfigurator(LoanProcess())
+        configurator.configure(self.process)
+        #configuring the first transition
+        self.process.create_loan_request, logger = self.process.configure_activity(self.a_node, self.another_node, Decorator.do_something)
+        self.process.create_loan_request |should| equal_to(Decorator.do_something)
+        #running the first transition
+        result, logger.activity_start, logger.activity_end = self.process.run_activity(self.a_decorator, self.process.create_loan_request, 2)
+        result |should| equal_to(200)
+        #logs the transition firing
+        self.process.insert_movement('create loan request',logger)
 

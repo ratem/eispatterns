@@ -1,3 +1,4 @@
+from datetime import datetime
 from should_dsl import should
 from domain.movement.movement import Movement
 from domain.node.node import Node
@@ -26,10 +27,19 @@ class Process(Movement):
             raise AssociationError('Node instance expected, instead %s passed' % type(node))
         self.nodes[key] = node
 
-    def configure(self, template):
-        self.template = template
-        self.states = template.states
-        self.transformations = template.transformations
-        for transformation in template.transformations:
-            self.insert_movement(transformation.name, transformation)
+    def configure_activity(self, source, destination, method):
+        '''Configures a process activity (activity, transition, state's action...)'''
+        logger = Movement()
+        logger.set_source(source)
+        logger.set_destination(destination)
+        #to perform: activity = method
+        return method, logger
+
+    def run_activity(self, actor, activity, *arguments):
+        ''' Runs an activity using given arguments '''
+        #Must check: transportations are different...
+        activity_start = datetime.now()
+        activity_result = activity(actor,*arguments)
+        activity_end = datetime.now()
+        return activity_result, activity_start, activity_end
 

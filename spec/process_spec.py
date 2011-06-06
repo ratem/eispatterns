@@ -8,8 +8,6 @@ from domain.movement.transformation import Transformation
 from configurator.statemachine.configuration import ProcessTemplate
 from domain.resource.operation import operation
 from domain.supportive.association_error import AssociationError
-#from configurator.fluidity import StateMachineTemplate
-#from fluidity import state, transition
 
 
 class ProcessSpec(unittest.TestCase):
@@ -40,26 +38,4 @@ class ProcessSpec(unittest.TestCase):
         #test doubles won't work given type checking rules, using classic
         self.a_process.insert_node('A company processing unit', self.a_processing_unit)
         self.a_process.nodes |should| contain('A company processing unit')
-
-'''
-    def it_configures_itself_from_a_template(self):
-        template = type('object', (object,), {})()
-        template.states = [1, 2]
-        transformations = [Transformation(), Transformation()]
-        template.transformations = transformations
-        process = Process()
-        process.configure(template)
-        process.template |should| equal_to(template)
-        process.states |should| equal_to([1, 2])
-        process.transformations |should| equal_to(transformations)
-
-    def it_adds_a_transformation_from_template_as_a_movement(self):
-        class CreditAnalyst(object):
-            def create_loan(self): pass
-        template = ProcessTemplate(initial_state='start')
-        template.transformation('Create Loan',action=CreditAnalyst.create_loan)
-        process = Process()
-        process.configure(template)
-        process.movements['Create Loan'] |should| equal_to(template.transformations[0])
-'''
 
