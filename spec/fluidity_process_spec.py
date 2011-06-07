@@ -1,9 +1,10 @@
+''' Tests of the application of Fluidity & Extreme Fluidity in Process Class '''
 import unittest
 from should_dsl import should
 from fluidity.machine import StateMachine, state, transition, InvalidTransition
 from extreme_fluidity.xfluidity import StateMachineConfigurator
-from domain.movement.process import Process
 from domain.node.node import Node
+from domain.movement.process import Process
 from domain.resource.operation import operation
 
 
@@ -30,7 +31,7 @@ class LoanProcess(StateMachine):
     transition(from_='request_analyzed', event='loan_accepted', to='loan_created')
     transition(from_='loan_created', event='time_to_transfer_value', to='value_transfered')
 
-class StateMachineConfiguratorSpec(unittest.TestCase):
+class FluidityProcessSpec(unittest.TestCase):
 
     def setUp(self):
         self.process = Process()
@@ -56,12 +57,7 @@ class StateMachineConfiguratorSpec(unittest.TestCase):
         self.process.current_state() |should| equal_to('refusal_letter_sent')
 
     def it_runs_the_example_acceptance_path(self):
-        #it is necessary to rebuild the path - need a calve_machine here or a reset()
-        self.process = Process()
-        template = LoanProcess()
-        configurator = StateMachineConfigurator(template)
-        configurator.configure(self.process)
-        #restart the path
+        #process was restarted by setUp
         self.process.create_loan_request()
         self.process.current_state() |should| equal_to('request_created')
         self.process.loan_refused |should| throw(InvalidTransition)
@@ -73,18 +69,14 @@ class StateMachineConfiguratorSpec(unittest.TestCase):
         self.process.time_to_transfer_value()
         self.process.current_state() |should| equal_to('value_transfered')
 
-    def it_configures_a_transition(self):
+    def it_configures_and_runs_a_process(self):
         #arguments
-        self.process = Process()
         self.a_node = Node()
         self.another_node = Node()
         self.a_decorator = FakeDecorator()
-        #configuring the process
-        configurator = StateMachineConfigurator(LoanProcess())
-        configurator.configure(self.process)
-        #configuring the first transition
+        #process was restarted by setUp
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.create_loan_request, FakeDecorator.do_something)
-        the_movement.activity_runner |should| equal_to(FakeDecorator.do_something)
+        the_movement.activity_associated_method |should| equal_to(FakeDecorator.do_something)
         #running the first transition
         the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
         the_movement.result |should| equal_to(200)

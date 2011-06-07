@@ -33,18 +33,18 @@ class Process(Movement):
         logger.set_source(source)
         logger.set_destination(destination)
         logger.activity = activity
-        logger.activity_runner = method
+        logger.activity_associated_method = method
         logger.activity_result = None
         self.insert_movement(activity.__name__,logger)
         return logger
 
     def run_activity(self, logger, actor, *arguments):
         ''' Runs an activity using given arguments '''
-        #Must check: transportations are different...
+        #Transformations & Transportations must be rethinked
         activity_start = datetime.now()
-        activity_result = logger.activity_runner(actor,*arguments)
+        activity_result = logger.activity_associated_method(actor,*arguments)
         activity_end = datetime.now()
-        #this is only for Fluidity's transitions to change state
+        #workaround only for Fluidity's transitions to change state -> need refactoring
         logger.activity()
         return activity_result, activity_start, activity_end
 
