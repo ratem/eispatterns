@@ -15,8 +15,3 @@ class MovementSpec(unittest.TestCase):
         (movement.set_source, non_node) |should| throw(AssociationError)
         (movement.set_destination, non_node) |should| throw(AssociationError)
 
-    def it_stores_execution_arguments(self):
-        movement = Movement()
-        movement.store_execution_arguments(1,2,3)
-        movement.execution_arguments |should| equal_to([1,2,3])
-

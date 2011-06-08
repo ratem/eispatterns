@@ -25,8 +25,3 @@ class Movement(Decorable):
             raise AssociationError('Destination: Node instance expected, instead %s passed' % type(destination))
         self.destination = destination
 
-    def store_execution_arguments(self, *arguments):
-        self.execution_arguments = []
-        for argument in arguments:
-            self.execution_arguments.append(argument)
-

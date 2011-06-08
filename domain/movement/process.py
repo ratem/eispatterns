@@ -40,15 +40,19 @@ class Process(Movement):
     #Transformations & Transportations must be rethinked
     def run_activity(self, logger, actor, *arguments):
         ''' Runs an activity using given arguments and logging context data'''
-        logger.store_execution_arguments(*arguments)
+        execution_arguments = []
+        for argument in arguments:
+            execution_arguments.append(argument)
         activity_start = datetime.now()
         try:
           activity_result = logger.activity_associated_method(actor,*arguments)
-          #workaround: Fluidity's transitions need be explicitly called to change state -> need refactoring
+          #ugly workaround: Fluidity's transitions need be explicitly called to change state
           logger.activity()
         except:
+          activity_end = None
+          activity_result = None
           raise
         else:
           activity_end = datetime.now()
-        return {'actor':actor, 'result':activity_result, 'start': activity_start, 'end':activity_end}
+        return {'actor':actor, 'arguments': execution_arguments, 'result':activity_result, 'start': activity_start, 'end':activity_end}
 
