@@ -1,4 +1,4 @@
-''' Tests of the application of Fluidity & Extreme Fluidity in Process Class '''
+''' Applying Fluidity & Extreme Fluidity to Process '''
 import unittest
 from should_dsl import should
 from fluidity.machine import StateMachine, state, transition, InvalidTransition
@@ -9,8 +9,6 @@ from domain.resource.operation import operation
 
 
 class FakeDecorator:
-    def __main__(self):
-        return 0
 
     @operation(category='anyone')
     def do_something(self, number):
@@ -57,7 +55,7 @@ class FluidityProcessSpec(unittest.TestCase):
         self.process.current_state() |should| equal_to('refusal_letter_sent')
 
     def it_runs_the_example_acceptance_path(self):
-        #process was restarted by setUp
+        #process was restarted by setUp()
         self.process.create_loan_request()
         self.process.current_state() |should| equal_to('request_created')
         self.process.loan_refused |should| throw(InvalidTransition)
@@ -70,30 +68,27 @@ class FluidityProcessSpec(unittest.TestCase):
         self.process.current_state() |should| equal_to('value_transfered')
 
     def it_configures_and_runs_a_process(self):
-        #arguments
         self.a_node = Node()
         self.another_node = Node()
         self.a_decorator = FakeDecorator()
-        #process was restarted by setUp
+        #process was restarted by setUp()
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.create_loan_request, FakeDecorator.do_something)
         the_movement.activity_associated_method |should| equal_to(FakeDecorator.do_something)
-        #running the first transition
+        #starts running
         the_movement.context = self.process.run_activity(the_movement, self.a_decorator, 10)
         the_movement.context['result'] |should| equal_to("this is an operation's return value:10")
         self.process.current_state() |should| equal_to('request_created')
         #configures and runs the refusal path: check Fluidity + Movement configuration
-
-         #should go wrong
+        #should go wrong
          #the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
          #it goes wrong and returns the correct exception, however, I cannot catch it
          #self.process.run_activity(the_movement, self.a_decorator, 2) |should| throw(InvalidTransition)
-
         #now doing the right thing
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.analyst_select_request, FakeDecorator.do_something)
-        the_movement.context = self.process.run_activity(the_movement, self.a_decorator, 2)
+        the_movement.context = self.process.run_activity(the_movement, self.a_decorator,10)
         self.process.current_state() |should| equal_to('request_analyzed')
         #loan refused
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
-        the_movement.context = self.process.run_activity(the_movement, self.a_decorator, 2)
+        the_movement.context = self.process.run_activity(the_movement, self.a_decorator,15)
         self.process.current_state() |should| equal_to('refusal_letter_sent')
 
