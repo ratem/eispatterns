@@ -28,23 +28,27 @@ class Process(Movement):
         self.nodes[key] = node
 
     def configure_activity(self, source, destination, activity, method):
-        '''Configures a process activity (activity, transition, state's action...)'''
+        '''Configures an activity (activity, transition, state's action...)'''
         logger = Movement()
         logger.set_source(source)
         logger.set_destination(destination)
         logger.activity = activity
         logger.activity_associated_method = method
-        logger.activity_result = None
         self.insert_movement(activity.__name__,logger)
         return logger
 
+    #Transformations & Transportations must be rethinked
     def run_activity(self, logger, actor, *arguments):
-        ''' Runs an activity using given arguments '''
-        #Transformations & Transportations must be rethinked
+        ''' Runs an activity using given arguments and logging context data'''
+        logger.store_execution_arguments(*arguments)
         activity_start = datetime.now()
-        activity_result = logger.activity_associated_method(actor,*arguments)
-        activity_end = datetime.now()
-        #workaround only for Fluidity's transitions to change state -> need refactoring
-        logger.activity()
-        return activity_result, activity_start, activity_end
+        try:
+          activity_result = logger.activity_associated_method(actor,*arguments)
+          #workaround: Fluidity's transitions need be explicitly called to change state -> need refactoring
+          logger.activity()
+        except:
+          raise
+        else:
+          activity_end = datetime.now()
+        return actor, activity_result, activity_start, activity_end
 

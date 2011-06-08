@@ -78,7 +78,7 @@ class FluidityProcessSpec(unittest.TestCase):
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.create_loan_request, FakeDecorator.do_something)
         the_movement.activity_associated_method |should| equal_to(FakeDecorator.do_something)
         #running the first transition
-        the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
+        the_movement.actor, the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
         the_movement.result |should| equal_to(200)
         self.process.current_state() |should| equal_to('request_created')
         #configures and runs the refusal path: check Fluidity + Movement configuration
@@ -90,10 +90,10 @@ class FluidityProcessSpec(unittest.TestCase):
 
         #now doing the right thing
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.analyst_select_request, FakeDecorator.do_something)
-        the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
+        the_movement.actor, the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
         self.process.current_state() |should| equal_to('request_analyzed')
         #loan refused
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
-        the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
+        the_movement.actor, the_movement.result, the_movement.activity_start, the_movement.activity_end = self.process.run_activity(the_movement, self.a_decorator, 2)
         self.process.current_state() |should| equal_to('refusal_letter_sent')
 
