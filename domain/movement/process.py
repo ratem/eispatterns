@@ -50,5 +50,5 @@ class Process(Movement):
           raise
         else:
           activity_end = datetime.now()
-        return actor, activity_result, activity_start, activity_end
+        return {'actor':actor, 'result':activity_result, 'start': activity_start, 'end':activity_end}
 

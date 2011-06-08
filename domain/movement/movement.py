@@ -9,6 +9,7 @@ class Movement(Decorable):
 
     def __init__(self, name=None):
         self.name = name
+        self.context = {}
 
     def set_source(self, source):
         try:
