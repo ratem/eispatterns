@@ -9,7 +9,6 @@ from domain.resource.operation import operation
 
 
 class FakeDecorator:
-
     @operation(category='anyone')
     def do_something(self, number):
         ''' I do something '''
