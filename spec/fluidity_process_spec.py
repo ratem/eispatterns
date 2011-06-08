@@ -72,21 +72,18 @@ class FluidityProcessSpec(unittest.TestCase):
         self.a_decorator = FakeDecorator()
         #process was restarted by setUp()
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.create_loan_request, FakeDecorator.do_something)
-        the_movement.activity_associated_method |should| equal_to(FakeDecorator.do_something)
         #starts running
         the_movement.context = self.process.run_activity(the_movement, self.a_decorator, 10)
         the_movement.context['result'] |should| equal_to("this is an operation's return value:10")
         self.process.current_state() |should| equal_to('request_created')
-        #configures and runs the refusal path: check Fluidity + Movement configuration
-        #should go wrong
-         #the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
-         #it goes wrong and returns the correct exception, however, I cannot catch it
-         #self.process.run_activity(the_movement, self.a_decorator, 2) |should| throw(InvalidTransition)
-        #now doing the right thing
+        #configures and runs the template's refusal path
+            #should go wrong
+        the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
+        (self.process.run_activity, the_movement, self.a_decorator, 10) |should| throw(InvalidTransition)
+            #now doing the right thing
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.analyst_select_request, FakeDecorator.do_something)
         the_movement.context = self.process.run_activity(the_movement, self.a_decorator,10)
         self.process.current_state() |should| equal_to('request_analyzed')
-        #loan refused
         the_movement = self.process.configure_activity(self.a_node, self.another_node, self.process.loan_refused, FakeDecorator.do_something)
         the_movement.context = self.process.run_activity(the_movement, self.a_decorator,15)
         self.process.current_state() |should| equal_to('refusal_letter_sent')

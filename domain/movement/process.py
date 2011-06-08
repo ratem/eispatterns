@@ -39,8 +39,6 @@ class Process(Movement):
           #ugly workaround: Fluidity's transitions need be explicitly called to change state
           logger.activity()
         except:
-          activity_end = None
-          activity_result = None
           raise
         else:
           activity_end = datetime.now()
