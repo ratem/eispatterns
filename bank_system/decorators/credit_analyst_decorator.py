@@ -1,9 +1,11 @@
-from should_dsl import should
+from should_dsl import should, ShouldNotSatisfied
 from domain.base.decorator import Decorator
 from domain.node.person import Person
+from domain.node.node import Node
 from domain.resource.operation import operation
 from domain.supportive.rule import rule
 from domain.supportive.association_error import AssociationError
+from domain.supportive.contract_error import ContractError
 from domain.supportive.contract_matchers import be_decorated_by
 from bank_system.resources.loan_request import LoanRequest
 from bank_system.resources.loan import Loan
@@ -39,7 +41,7 @@ class CreditAnalystDecorator(Decorator):
         ''' creates a loan request '''
         loan_request = LoanRequest(account, value, self)
         #Puts the loan_request to the input area
-        self.decorated.receive_resource(loan_request.account.number, loan_request)
+        self.decorated.input_area[loan_request.account.number] = loan_request
 
     #stupid credit analysis, only for demonstration
     @operation(category='business')
@@ -65,8 +67,23 @@ class CreditAnalystDecorator(Decorator):
     def create_loan(self, loan_request):
         ''' creates a loan '''
         loan = Loan(loan_request)
-        #puts the new loan on the analyst's output_area
-        self.decorated.output_area[loan.datetime] = loan
+        #puts the new loan on the analyst's output_area, using analyst's register as key
+        self.decorated.output_area[loan.loan_request.analyst.register] = loan
+
+    @operation(category='business')
+    def move_loan_to_account(self, loan_key, account):
+        ''' moves the approved loan to the account '''
+        try:
+            loan = self.decorated.output_area[loan_key]
+            loan |should| be_instance_of(Loan)
+        except KeyError:
+            raise KeyError("Loan with key %s not found in Analyst's output area" % loan_key)
+        except ShouldNotSatisfied:
+            raise ContractError('Loan instance expected, instead %s passed' % type(loan))
+        try:
+            Node.move_resource(loan_key, self.decorated, account.decorated)
+        except ShouldNotSatisfied:
+            raise ContractError('Bank Account instance expected, instead %s passed' % type(account))
 
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit

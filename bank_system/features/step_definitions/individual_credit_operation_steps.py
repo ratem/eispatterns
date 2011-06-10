@@ -14,9 +14,9 @@ from extreme_fluidity.xfluidity import StateMachineConfigurator
 from loan_process_template import LoanProcess
 
 #
-# ATTENTION: you can't run more than one example, otherwise Fluidity will return
-# an error of type InvalidTransition: Cannot change from new_state to new_state
-# since after the first example the machine changes its state
+# ATTENTION: you can't run more than one example perscenario, otherwise Fluidity
+# will return an error of type InvalidTransition: Cannot change from new_state
+#to new_state since after the first example the machine changes its state
 #
 
 
@@ -129,12 +129,8 @@ def then_a_loan_of_value_value_for_account_account_number_is_generated(step, val
     world.move_loan_to_account = Transportation('Moves new loan to the account')
     world.move_loan_to_account.set_source(world.credit_analyst.decorated)
     world.move_loan_to_account.set_destination(world.account.decorated)
-    #picks the loan by its type - no way to know its key here
-    for item in world.credit_analyst.decorated.output_area.values():
-        if item.__class__.__name__ == 'Loan':
-            break
-    world.move_loan_to_account.perform(item.datetime)
-    world.account.decorated.input_area |should| contain(item.datetime)
+    world.move_loan_to_account.perform(world.credit_analyst.register)
+    world.account.decorated.input_area |should| contain(world.credit_analyst.register)
 
 @step(u'And the loan_request is moved to the account (.+) historic')
 def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):

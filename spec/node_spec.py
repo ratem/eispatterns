@@ -12,16 +12,8 @@ class NodeSpec(unittest.TestCase):
         self.a_node = Node()
         self.a_resource = Resource()
 
-    def it_receives_a_resource(self):
-        #should not work
-        non_resource = "I am not a Resource"
-        (self.a_node.receive_resource, non_resource,'anything') |should| throw(ContractError)
-        #test doubles won't work given type checking rules, using classic
-        self.a_node.receive_resource('resource key', self.a_resource)
-        self.a_node.input_area |should| contain('resource key')
-
     def it_transfers_a_resource(self):
-        self.a_node.receive_resource('resource key', self.a_resource)
+        self.a_node.input_area['resource key'] = self.a_resource
         #from input to processing
         self.a_node.transfer('resource key', 'input', 'processing')
          #one way of testing
@@ -34,4 +26,15 @@ class NodeSpec(unittest.TestCase):
         #from output to log
         self.a_node.transfer('resource key', 'output', 'log')
         self.a_node.log_area |should| contain('resource key')
+
+    def it_moves_a_resource_between_two_nodes(self):
+        another_node = Node()
+        self.a_node.output_area['resource'] = self.a_resource
+        self.a_node.output_area['non_resource'] = "I am not a Resource"
+        #should not work
+        (Node.move_resource, 'wrong key', self.a_node, another_node) |should| throw(KeyError)
+        (Node.move_resource, 'non_resource', self.a_node, another_node) |should| throw(ContractError)
+        #should work
+        Node.move_resource('resource', self.a_node, another_node)
+        another_node.input_area |should| include('resource')
 

@@ -1,4 +1,4 @@
-from should_dsl import should
+from should_dsl import should, ShouldNotSatisfied
 from domain.base.decorable import Decorable
 from domain.resource.resource import Resource
 from domain.supportive.contract_error import ContractError
@@ -14,14 +14,6 @@ class Node(Decorable):
         self.log_area = {}
         self.tag = None
         self.location = None
-
-    #receiving resources should be through movements
-    def receive_resource(self, key, resource):
-        try:
-            resource |should| be_instance_of(Resource)
-        except:
-            raise ContractError('Resource instance expected, instead %s passed' % type(resource))
-        self.input_area[key] = resource
 
     def transfer(self, key, source_area, destination_area):
         if source_area == 'input':
@@ -43,4 +35,27 @@ class Node(Decorable):
         else:
             return False
         return True
+
+    @classmethod
+    def move_resource(self, key, source, destination):
+        try:
+            source |should| be_instance_of(Node)
+        except ShouldNotSatisfied:
+            raise ContractError('Node instance expected for Source, instead %s passed' % type(source))
+
+        try:
+            destination |should| be_instance_of(Node)
+        except ShouldNotSatisfied:
+            raise ContractError('Node instance expected for Destination, instead %s passed' % type(destination))
+
+        try:
+            resource = source.output_area.pop(key)
+            resource |should| be_instance_of(Resource)
+        except KeyError:
+            raise KeyError('Resource with key %s not found in source node output area' % key)
+        except ShouldNotSatisfied:
+            source.output_area[key] = resource #put it back in the source
+            raise ContractError('Resource instance expected, instead %s passed' % type(resource))
+        else:
+            destination.input_area[key] = resource
 
