@@ -28,9 +28,10 @@ Feature: Individual Customer Credit Operation
   Scenario Outline: Approved loan request
     Given I am a registered Credit Analyst
     And there is an approved loan request of value <value> for account <account number>
-    When When I pick and perfom this loan
+    When I ask for performing this loan
     Then a loan of value <value> for account <account number> is generated
-    And the loan_request is moved to the account <account number> historic
+    And the value is moved to the account <account number>
+    And the loan is moved to the account <account number> historic
 
     Examples:
       | account number | desired value |
@@ -39,8 +40,9 @@ Feature: Individual Customer Credit Operation
   Scenario Outline: Refused loan request
     Given I am a registered Credit Analyst
     And there is a refused loan request of value <desired value> for account <account number>
-    When When I pick this loan request
+    When I pick this loan request
     Then the loan_request is moved to the account <account number> historic
+    And an refusal letter is sent to the account holder
 
     Examples:
       | account number | desired value |

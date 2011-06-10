@@ -14,9 +14,9 @@ from extreme_fluidity.xfluidity import StateMachineConfigurator
 from loan_process_template import LoanProcess
 
 #
-# ATTENTION: you can't run more than one example perscenario, otherwise Fluidity
-# will return an error of type InvalidTransition: Cannot change from new_state
-#to new_state since after the first example the machine changes its state
+# ATTENTION: you can't run more than one example per scenario, otherwise Fluidity
+# will return an error such as "InvalidTransition: Cannot change from new_state
+#to new_state", given that after the first example the machine changes its state
 #
 
 
@@ -105,8 +105,13 @@ def and_there_is_an_approved_loan_request_of_value_value_for_account_account_num
     world.credit_analyst.decorated.transfer(world.account.number, 'input', 'output')
     world.credit_analyst.decorated.output_area |should| contain(world.account.number)
 
-@step(u'When I pick and perfom this loan')
-def when_i_pick_and_perfom_this_loan(step):
+@step(u'When I ask for performing this loan')
+def when_i_ask_for_performing_this_loan(step):
+    #GUI action
+    pass
+
+@step(u'Then a loan of value (.+) for account (.+) is generated')
+def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
     #pick
     loan_request = world.credit_analyst.decorated.output_area[world.account.number]
     #configure
@@ -115,57 +120,44 @@ def when_i_pick_and_perfom_this_loan(step):
     the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.credit_analyst, loan_request)
     #checks
     world.an_individual_credit_operation.current_state() |should| equal_to('loan_created')
-    #datetime is used to generate the key, thus I cannot access the newly created loan through its key
-    #the only way to check is: output_area must have at least the loan_request and the newly created loan
-    world.credit_analyst.decorated.output_area.values() |should| have(2).itens
+    world.credit_analyst.decorated.output_area |should| include(world.credit_analyst.register)
 
-@step(u'Then a loan of value (.+) for account (.+) is generated')
-def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
-    #not solved yet:
-    #transportations needs a different treatment - and should be implemented by the decorator
-    #
+@step(u'And the value is moved to the account (.+)')
+def and_the_value_is_moved_to_the_account_account_number(step, account_number):
+    #not implemented yet
+    pass
 
-    #moves the loan to the processing area of the account
-    world.move_loan_to_account = Transportation('Moves new loan to the account')
-    world.move_loan_to_account.set_source(world.credit_analyst.decorated)
-    world.move_loan_to_account.set_destination(world.account.decorated)
-    world.move_loan_to_account.perform(world.credit_analyst.register)
-    world.account.decorated.input_area |should| contain(world.credit_analyst.register)
-
-@step(u'And the loan_request is moved to the account (.+) historic')
-def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
-    #not solved yet:
-    #transportations needs a different treatment - and should be implemented by the decorator
-    #
-
-    #creates the movement
-    world.move_loan_request_to_account = Transportation('Move loan request to account historic')
-    world.move_loan_request_to_account.set_source(world.credit_analyst.decorated)
-    world.move_loan_request_to_account.set_destination(world.account.decorated)
-    #insert the movement into the business process
-    world.an_individual_credit_operation.insert_movement(world.move_loan_request_to_account.name, world.move_loan_request_to_account)
-    #perform! (world.account.number is the loan request key)
-    world.an_individual_credit_operation.movements[world.move_loan_request_to_account.name].perform(world.account.number)
+@step(u'And the loan is moved to the account (.+) historic')
+def and_the_loan_is_moved_to_the_account_account_number_historic(step, account_number):
+    #right now there is no event or state action for performing thus, running outside the engine
+    loan_key = world.credit_analyst.register
+    world.credit_analyst.move_loan_to_account(loan_key, world.account)
+    world.account.decorated.input_area |should| include(loan_key)
     #moves from the input area to the log area
-    world.account.decorated.transfer(world.account.number,'input','log')
-    world.account.decorated.log_area |should| have(1).loan_request
+    world.account.decorated.transfer(loan_key,'input','log')
+    world.account.decorated.log_area |should| include(loan_key)
 
 #Scenario Refused loan request
 @step(u'And there is a refused loan request of value (.+) for account (.+)')
 def and_there_is_a_refused_loan_request_of_value_value_for_account_account_number(step, desired_value, account_number):
-    #directly creating a loan request (I really need BLDD to avoid this...)
+    #preparing the context - directly creating a loan request
     world.credit_analyst.create_loan_request(world.account, int(desired_value))
     #forces the loan request approval and its transfer to the output_area
     world.credit_analyst.decorated.input_area[world.account.number].approved = False
     world.credit_analyst.decorated.transfer(world.account.number, 'input', 'output')
     world.credit_analyst.decorated.output_area |should| contain(world.account.number)
 
-@step(u'When When I pick this loan request')
-def when_when_i_pick_this_loan_request(step):
+@step(u'When I pick this loan request')
+def when_i_pick_this_loan_request(step):
     #GUI code goes here
     pass
 
 @step(u'Then the loan_request is moved to the account (.+) historic')
 def then_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
     step.then(u'And the loan_request is moved to the account (.+) historic')
+
+@step(u'And an refusal letter is sent to the account holder')
+def and_an_refusal_letter_is_sent_to_the_account_holder(step):
+    #not implemented yet
+    pass
 
