@@ -1,12 +1,14 @@
-EIS Patterns
-============
+Enterprise Information Systems Patterns
+=======================================
 
 This project aims at discussing and implementing, in dynamic languages,
 Enterprise Information Systems Design Patterns. The ideas here implemented are
 discussed in more detail in the blog `Enterprise Information Systems Development
 <http://eis-development.blogspot.com>`_, through a series of posts entitled
 EIS Patterns. The current implementation, which uses the Decorator Design
-Pattern, is explained from the Part IV of this series onwards.
+Pattern, is explained from the Part IV of this series onwards. To better understand
+its evolution, it is suggested to read the `Change Log
+<http://eis-development.blogspot.com/p/eis-patterns-change-log.html>`.
 
 Code is built on top of some concepts borrowed from `ERP5 system
 <http://www.erp5.org>`_, though implemented in a different way, given that this

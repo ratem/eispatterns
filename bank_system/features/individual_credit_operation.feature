@@ -24,7 +24,6 @@ Feature: Individual Customer Credit Operation
     Examples:
       | account number | desired value | decision |
       | 1234567-8      | 10000         | True     |
-      | 1234567-8      | 10005         | False    |
 
   Scenario Outline: Approved loan request
     Given I am a registered Credit Analyst

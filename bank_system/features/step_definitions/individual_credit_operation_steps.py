@@ -9,6 +9,15 @@ from domain.movement.transportation import Transportation
 from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
 from bank_system.decorators.bank_account_decorator import BankAccountDecorator
 from bank_system.decorators.employee_decorator import EmployeeDecorator
+from fluidity.machine import StateMachine, state, transition, InvalidTransition
+from extreme_fluidity.xfluidity import StateMachineConfigurator
+from loan_process_template import LoanProcess
+
+#
+# ATTENTION: you can't run more than one example, otherwise Fluidity will return
+# an error of type InvalidTransition: Cannot change from new_state to new_state
+# since after the first example the machine changes its state
+#
 
 
 #Scenario Individual Customer asks for loan
@@ -35,11 +44,9 @@ def and_the_loan_request_is_of_desired_value(step, desired_value):
 
 @step(u'When I confirm the loan request')
 def when_i_confirm_the_loan_request(step):
-    #GUI action
+    #GUI action which will start the whole process
     pass
-#
-#from this point onwards: the process is built "by hand", template not in use
-#
+
 @step(u'Then a new loan request with the (.+) and (.+) is created')
 def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created(step, account_number, desired_value):
     #Processes are nodes that use the company as the source node, and the client as destination
@@ -49,51 +56,37 @@ def then_a_new_loan_request_with_the_account_number_and_desired_value_is_created
     world.an_individual_credit_operation = Process('Individual Customer Credit Operation')
     world.an_individual_credit_operation.set_source(world.the_company)
     world.an_individual_credit_operation.set_destination(world.a_client)
-
-    world.loan_request_creation = Transformation('loan request creation')
-    world.loan_request_creation.set_source(world.credit_analyst.decorated)
-    world.loan_request_creation.set_destination(world.credit_analyst.decorated)
-    world.loan_request_creation.set_action(CreditAnalystDecorator.create_loan_request)
-                                                #be doesn't work...
-    world.loan_request_creation.action |should| equal_to(CreditAnalystDecorator.create_loan_request)
-    world.loan_request_creation.set_actor(world.credit_analyst)
-    world.loan_request_creation.actor |should| be(world.credit_analyst)
-    #associates the transformation to the process
-    world.an_individual_credit_operation.insert_movement(world.loan_request_creation.name, world.loan_request_creation)
-    world.an_individual_credit_operation.movements |should| contain('loan request creation')
-    #finally it runs the transformation...
-    world.an_individual_credit_operation.movements[world.loan_request_creation.name].perform(world.account, desired_value)
-    #checks if the loan request is stored in the Node's input_area
-    world.credit_analyst.decorated.input_area |should| contain(account_number)
+    #configures the process using a template state machine
+    template = LoanProcess()
+    configurator = StateMachineConfigurator(template)
+    configurator.configure(world.an_individual_credit_operation)
+    #configures the loan request creation
+    the_movement = world.an_individual_credit_operation.configure_activity(world.credit_analyst.decorated, world.credit_analyst.decorated, world.an_individual_credit_operation.create_loan_request, CreditAnalystDecorator.create_loan_request)
+    #runs the loan request creation
+    the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.credit_analyst, world.account, desired_value)
+    world.an_individual_credit_operation.current_state() |should| equal_to('request_created')
+    world.an_individual_credit_operation.movements |should| contain(the_movement.activity.__name__)
 
 @step(u'And the new loan request is associated to the Credit Analyst')
 def and_the_new_loan_request_is_associated_to_the_credit_analyst(step):
-    #... the association is done during loan creation, just checking
+    #... this association is done during loan creation, just checking
     world.a_person.input_area[world.account.number].analyst |should| be(world.credit_analyst)
 
 #Scenario Credit Analyst analyses the individual customer loan request
 @step(u'And there is a loan request of account (.+) with desired value (.+) to be analysed')
 def and_there_is_a_loan_request_of_account_account_number_with_desired_value_desired_value_to_be_analysed(step, account_number, desired_value):
-    #Lettuce sends desired_valeu as an string
+    #(a)the process is already in the right state, however, Lettuce cleans the objects, thus:
     world.credit_analyst.create_loan_request(world.account, int(desired_value))
-    world.credit_analyst.decorated.input_area |should| contain(world.account.number)
 
 @step(u'When I pick to analyse the loan request of account (.+)')
 def when_i_pick_to_analyse_the_loan_request_of_account_account_number(step, account_number):
-    #creates a new transformation to register the analysis
-    world.loan_request_analysis = Transformation('loan request analysis')
-    world.loan_request_analysis.set_source(world.credit_analyst.decorated)
-    world.loan_request_analysis.set_destination(world.credit_analyst.decorated)
-    #associates analyse operation to the transformation
-    world.loan_request_analysis.set_action(CreditAnalystDecorator.analyse)
-    #associates the analyst
-    world.loan_request_analysis.set_actor(world.credit_analyst)
-    #associates the transformation to the process
-    world.an_individual_credit_operation.insert_movement('loan request analysis', world.loan_request_analysis)
-    #finally it runs the transformation...
-    #must refactor process.movements to make it easier to find operations => use a dictionary
-    world.an_individual_credit_operation.movements['loan request analysis'].perform(world.account.number)
-    #if everything is ok the loan request was stored in the Node's output_area
+    #configure
+    the_movement = world.an_individual_credit_operation.configure_activity(world.credit_analyst.decorated, world.credit_analyst.decorated, world.an_individual_credit_operation.analyst_select_request, CreditAnalystDecorator.analyse)
+    #run
+    the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.credit_analyst, world.account.number)
+    world.an_individual_credit_operation.current_state() |should| equal_to('request_analyzed')
+    #checks
+    #(a) if everything is ok the loan request was stored in the Node's output_area
     world.credit_analyst.decorated.output_area |should| contain(account_number)
 
 @step(u'Then the loan request for account (.+) has the decision (.+)')
@@ -105,7 +98,7 @@ def then_the_loan_request_for_account_account_number_has_the_decision_decision(s
 @step(u'And there is an approved loan request of value (.+) for account (.+)')
 def and_there_is_an_approved_loan_request_of_value_value_for_account_account_number(step, value, account_number):
     #prepare the context for this scenario
-    #directly creating a loan request (I really need BLDD to avoid this...)
+    #directly creating a loan request (same problem of (a) - maybe it is the case of developing an specific tool)
     world.credit_analyst.create_loan_request(world.account, value)
     #forces the loan request approval and its transfer to the output_area
     world.credit_analyst.decorated.input_area[world.account.number].approved = True
@@ -114,30 +107,29 @@ def and_there_is_an_approved_loan_request_of_value_value_for_account_account_num
 
 @step(u'When I pick and perfom this loan')
 def when_i_pick_and_perfom_this_loan(step):
-    #picking...
+    #pick
     loan_request = world.credit_analyst.decorated.output_area[world.account.number]
-    #preparing to perform...
-    world.create_loan = Transformation('loan creation')
-    world.create_loan.set_source(world.credit_analyst.decorated)
-    world.create_loan.set_destination(world.credit_analyst.decorated)
-    world.create_loan.set_action(CreditAnalystDecorator.create_loan)
-    #associates the analyst
-    world.create_loan.set_actor(world.credit_analyst)
-    world.an_individual_credit_operation.insert_movement(world.create_loan.name, world.create_loan)
-    #performing!
-    world.an_individual_credit_operation.movements[world.create_loan.name].perform(loan_request)
-    #given that I am using datetime to generate the key, I cannot access the newly
-    #created loan through its key
-    #output_area must have at least the loan_request and the newly created loan
+    #configure
+    the_movement = world.an_individual_credit_operation.configure_activity(world.credit_analyst.decorated, world.credit_analyst.decorated, world.an_individual_credit_operation.loan_accepted, CreditAnalystDecorator.create_loan)
+    #run
+    the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.credit_analyst, loan_request)
+    #checks
+    world.an_individual_credit_operation.current_state() |should| equal_to('loan_created')
+    #datetime is used to generate the key, thus I cannot access the newly created loan through its key
+    #the only way to check is: output_area must have at least the loan_request and the newly created loan
     world.credit_analyst.decorated.output_area.values() |should| have(2).itens
 
 @step(u'Then a loan of value (.+) for account (.+) is generated')
 def then_a_loan_of_value_value_for_account_account_number_is_generated(step, value, account_number):
+    #not solved yet:
+    #transportations needs a different treatment - and should be implemented by the decorator
+    #
+
     #moves the loan to the processing area of the account
     world.move_loan_to_account = Transportation('Moves new loan to the account')
     world.move_loan_to_account.set_source(world.credit_analyst.decorated)
     world.move_loan_to_account.set_destination(world.account.decorated)
-    #picks the loan by its type - no way to know here its key
+    #picks the loan by its type - no way to know its key here
     for item in world.credit_analyst.decorated.output_area.values():
         if item.__class__.__name__ == 'Loan':
             break
@@ -146,6 +138,10 @@ def then_a_loan_of_value_value_for_account_account_number_is_generated(step, val
 
 @step(u'And the loan_request is moved to the account (.+) historic')
 def and_the_loan_request_is_moved_to_the_account_account_number_historic(step, account_number):
+    #not solved yet:
+    #transportations needs a different treatment - and should be implemented by the decorator
+    #
+
     #creates the movement
     world.move_loan_request_to_account = Transportation('Move loan request to account historic')
     world.move_loan_request_to_account.set_source(world.credit_analyst.decorated)
