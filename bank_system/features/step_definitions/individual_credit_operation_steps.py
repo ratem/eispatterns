@@ -13,12 +13,12 @@ from fluidity.machine import StateMachine, state, transition, InvalidTransition
 from extreme_fluidity.xfluidity import StateMachineConfigurator
 from loan_process_template import LoanProcess
 
+
 #
 # ATTENTION: you can't run more than one example per scenario, otherwise Fluidity
 # will return an error such as "InvalidTransition: Cannot change from new_state
 #to new_state", given that after the first example the machine changes its state
 #
-
 
 #Scenario Individual Customer asks for loan
 @step(u'Given I am a registered Credit Analyst')
@@ -99,7 +99,7 @@ def then_the_loan_request_for_account_account_number_has_the_decision_decision(s
 def and_there_is_an_approved_loan_request_of_value_value_for_account_account_number(step, value, account_number):
     #prepare the context for this scenario
     #directly creating a loan request (same problem of (a) - maybe it is the case of developing an specific tool)
-    world.credit_analyst.create_loan_request(world.account, value)
+    world.credit_analyst.create_loan_request(world.account, 10000) #should be int(value)
     #forces the loan request approval and its transfer to the output_area
     world.credit_analyst.decorated.input_area[world.account.number].approved = True
     world.credit_analyst.decorated.transfer(world.account.number, 'input', 'output')
@@ -124,14 +124,17 @@ def then_a_loan_of_value_value_for_account_account_number_is_generated(step, val
 
 @step(u'And the value is moved to the account (.+)')
 def and_the_value_is_moved_to_the_account_account_number(step, account_number):
-    #not implemented yet
+    #implemented by a call to account.register_credit inside credit_analyst.move_loan_to_account
     pass
 
 @step(u'And the loan is moved to the account (.+) historic')
 def and_the_loan_is_moved_to_the_account_account_number_historic(step, account_number):
-    #right now there is no event or state action for performing thus, running outside the engine
+    #configure
+    the_movement = world.an_individual_credit_operation.configure_activity(world.credit_analyst.decorated, world.account.decorated, world.an_individual_credit_operation.time_to_transfer_value, CreditAnalystDecorator.move_loan_to_account)
+    #run
     loan_key = world.credit_analyst.register
-    world.credit_analyst.move_loan_to_account(loan_key, world.account)
+    the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.credit_analyst, loan_key, world.account)
+    #checks
     world.account.decorated.input_area |should| include(loan_key)
     #moves from the input area to the log area
     world.account.decorated.transfer(loan_key,'input','log')
@@ -158,6 +161,7 @@ def then_the_loan_request_is_moved_to_the_account_account_number_historic(step, 
 
 @step(u'And an refusal letter is sent to the account holder')
 def and_an_refusal_letter_is_sent_to_the_account_holder(step):
-    #not implemented yet
-    pass
+    value = world.credit_analyst.decorated.output_area[world.account.number].value
+    message = 'Sorry, your loan request of value %f was refused.' % value
+    world.account.send_message_to_account_holder(message) |should| equal_to(message)
 

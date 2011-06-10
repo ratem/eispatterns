@@ -21,3 +21,12 @@ class bankAccountDecoratorSpec(unittest.TestCase):
         non_machine = 'I am not a machine'
         (self.a_bank_account_decorator.decorate, non_machine) |should| throw(AssociationError)
 
+    def it_registers_a_credit(self):
+        self.a_bank_account_decorator.balance = 100
+        self.a_bank_account_decorator.register_credit(50)
+        self.a_bank_account_decorator.balance |should| equal_to(150)
+
+    def it_sends_a_message_to_the_account_holder(self):
+        message = 'This is a message'
+        self.a_bank_account_decorator.send_message_to_account_holder(message) |should| equal_to(message)
+

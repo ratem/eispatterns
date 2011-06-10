@@ -87,6 +87,7 @@ class CreditAnalystDecoratorSpec(unittest.TestCase):
         loan_key = self.a_credit_analyst_decorator.register
         self.a_credit_analyst_decorator.move_loan_to_account(loan_key, self.an_account)
         self.an_account.decorated.input_area |should| include(loan_key)
+        self.an_account.balance |should| equal_to(7000)
 
     def it_changes_its_loan_limit(self):
         self.a_credit_analyst_decorator.change_loan_limit(100000)

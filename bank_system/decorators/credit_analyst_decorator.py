@@ -84,6 +84,7 @@ class CreditAnalystDecorator(Decorator):
             Node.move_resource(loan_key, self.decorated, account.decorated)
         except ShouldNotSatisfied:
             raise ContractError('Bank Account instance expected, instead %s passed' % type(account))
+        account.register_credit(loan.loan_request.value)
 
     def change_loan_limit(self, new_limit):
         self.loan_limit = new_limit
