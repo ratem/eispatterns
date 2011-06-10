@@ -136,6 +136,7 @@ def and_the_loan_is_moved_to_the_account_account_number_historic(step, account_n
     the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.credit_analyst, loan_key, world.account)
     #checks
     world.account.decorated.input_area |should| include(loan_key)
+    world.an_individual_credit_operation.current_state() |should| equal_to('value_transfered')
     #moves from the input area to the log area
     world.account.decorated.transfer(loan_key,'input','log')
     world.account.decorated.log_area |should| include(loan_key)
@@ -143,7 +144,15 @@ def and_the_loan_is_moved_to_the_account_account_number_historic(step, account_n
 #Scenario Refused loan request
 @step(u'And there is a refused loan request of value (.+) for account (.+)')
 def and_there_is_a_refused_loan_request_of_value_value_for_account_account_number(step, desired_value, account_number):
-    #preparing the context - directly creating a loan request
+    #preparing the context
+    #puts the process in the refusal path
+    world.an_individual_credit_operation = Process('Individual Customer Credit Operation')
+    template = LoanProcess()
+    configurator = StateMachineConfigurator(template)
+    configurator.configure(world.an_individual_credit_operation)
+    world.an_individual_credit_operation.create_loan_request()
+    world.an_individual_credit_operation.analyst_select_request()
+    #directly creating a loan request
     world.credit_analyst.create_loan_request(world.account, int(desired_value))
     #forces the loan request approval and its transfer to the output_area
     world.credit_analyst.decorated.input_area[world.account.number].approved = False
@@ -161,7 +170,13 @@ def then_the_loan_request_is_moved_to_the_account_account_number_historic(step, 
 
 @step(u'And an refusal letter is sent to the account holder')
 def and_an_refusal_letter_is_sent_to_the_account_holder(step):
+    #configure
+    the_movement = world.an_individual_credit_operation.configure_activity(world.account.decorated, world.account.decorated, world.an_individual_credit_operation.loan_refused, BankAccountDecorator.send_message_to_account_holder)
+    #run
     value = world.credit_analyst.decorated.output_area[world.account.number].value
     message = 'Sorry, your loan request of value %f was refused.' % value
-    world.account.send_message_to_account_holder(message) |should| equal_to(message)
+    the_movement.context = world.an_individual_credit_operation.run_activity(the_movement, world.account, message)
+    #checks
+    world.an_individual_credit_operation.current_state() |should| equal_to('refusal_letter_sent')
+    the_movement.context['result'] |should| equal_to(message)
 
