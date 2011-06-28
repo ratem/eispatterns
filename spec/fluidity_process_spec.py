@@ -2,7 +2,7 @@
 import unittest
 from should_dsl import should
 from fluidity.machine import StateMachine, state, transition, InvalidTransition
-from extreme_fluidity.xfluidity import StateMachineConfigurator
+from xfluidity import StateMachineConfigurator
 from domain.node.node import Node
 from domain.movement.process import Process
 from domain.resource.operation import operation
