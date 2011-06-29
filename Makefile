@@ -34,6 +34,6 @@ unit: specloud ludibrio should-dsl path
 acceptance: lettuce path
 	@echo ==============================================
 	@echo ========= Running acceptance specs ===========
-	@lettuce
+	@lettuce bank_system
 	@echo
 
