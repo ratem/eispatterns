@@ -13,16 +13,19 @@ ludibrio:
 
 should-dsl:
 	@python -c 'import should_dsl' 2>/dev/null || pip install http://github.com/hugobr/should-dsl/tarball/master
+	
+path:
+    export PYTHONPATH=..
 
 test: unit acceptance
 
-unit: specloud ludibrio should-dsl
+unit: path specloud ludibrio should-dsl
 	@echo =======================================
 	@echo ========= Running unit specs ==========
 	@specloud spec
 	@echo
 
-acceptance: lettuce
+acceptance: path lettuce
 	@echo ==============================================
 	@echo ========= Running acceptance specs ===========
 	@lettuce
