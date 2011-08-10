@@ -25,3 +25,10 @@ class Movement(Decorable):
             raise AssociationError('Destination: Node instance expected, instead %s passed' % type(destination))
         self.destination = destination
 
+    def typify(self):
+        ''' In the future will work properly with categories '''
+        if self.source == self.destination:
+            self.category = 'Transformation'
+        else:
+            self.category = 'Transportation'
+
