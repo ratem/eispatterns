@@ -20,10 +20,12 @@ class MovementSpec(unittest.TestCase):
     def it_typifies_itself(self):
         another_node = Node()
         self.movement.set_source(self.a_node)
+        #a transportation from a_node to Null
+        self.movement.is_transportation() |should| equal_to(True)
         self.movement.set_destination(self.a_node)
-        self.movement.typify()
-        self.movement.category |should| equal_to('Transformation')
+        #a transformation inside a_node
+        self.movement.is_transformation() |should| equal_to(True)
         self.movement.set_destination(another_node)
-        self.movement.typify()
-        self.movement.category |should| equal_to('Transportation')
+        #a transportation from a_node to another_node
+        self.movement.is_transportation() |should| equal_to(True)
 

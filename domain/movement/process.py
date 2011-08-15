@@ -7,7 +7,7 @@ from domain.supportive.association_error import AssociationError
 
 class Process(Movement):
     def __init__(self, name=None):
-        self.name = name
+        Movement.__init__(self,name)
         self.movements = {}
 
     def insert_movement(self, key, movement):
