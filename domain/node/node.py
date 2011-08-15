@@ -1,5 +1,7 @@
+from datetime import datetime
 from should_dsl import should, ShouldNotSatisfied
 from domain.base.decorable import Decorable
+from domain.base.decorator import Decorator
 from domain.resource.resource import Resource
 from domain.supportive.contract_error import ContractError
 
@@ -7,7 +9,6 @@ from domain.supportive.contract_error import ContractError
 class Node(Decorable):
     def __init__(self):
         Decorable.__init__(self)
-        self.decorators = {}
         self.input_area = {}
         self.processing_area = {}
         self.output_area = {}
@@ -58,4 +59,14 @@ class Node(Decorable):
             raise ContractError('Resource instance expected, instead %s passed' % type(resource))
         else:
             destination.input_area[key] = resource
+
+    def decorate(self, decorator):
+        try:
+            decorator |should| be_instance_of(Decorator)
+        except ShouldNotSatisfied:
+            raise ContractError('Decorator instance expected, instead %s passed' % type(decorator))
+        else:
+            self.decorators[decorator.__doc__] = decorator
+            #decorator reference, datetime ativation, datetime deactivation
+            self.decoration_history.append([decorator, datetime.now(), None])
 

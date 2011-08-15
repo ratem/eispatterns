@@ -4,7 +4,12 @@ from should_dsl import should
 from domain.node.node import Node
 from domain.resource.resource import Resource
 from domain.supportive.contract_error import ContractError
+from domain.base.decorator import Decorator
 
+class FakeDecorator(Decorator):
+    '''Fake Decorator for testing purposes'''
+    def __init__(self):
+        Decorator.__init__(self)
 
 class NodeSpec(unittest.TestCase):
 
@@ -37,4 +42,10 @@ class NodeSpec(unittest.TestCase):
         #should work
         Node.move_resource('resource', self.a_node, another_node)
         another_node.input_area |should| include('resource')
+
+    def it_gets_decorated(self):
+        a_decorator = FakeDecorator()
+        self.a_node.decorate(a_decorator)
+        self.a_node |should| have(1).decorators
+        self.a_node.decoration_history |should| have(1).element
 
