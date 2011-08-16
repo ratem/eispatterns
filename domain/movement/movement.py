@@ -29,18 +29,21 @@ class Movement(Decorable):
         self._typify()
 
     def _typify(self):
-        ''' Identifies if movement is a transformation or a transportation
+        ''' Identifies if the movement is a transformation or a transportation
             If one of source or destination is not defined yet, it will consider
-            as a transportation from/to Null'''
-        #In the future will use Category objects
+            as a transportation from/to None
+        '''
+        #Will use Category objects from version 1.0.0 onwards
         if self.source == self.destination:
             self.category = 'Transformation'
         else:
             self.category = 'Transportation'
 
     def is_transformation(self):
+        #Will use Category objects from version 1.0.0 onwards
         return self.category == 'Transformation'
 
     def is_transportation(self):
+        #Will use Category objects from version 1.0.0 onwards
         return self.category == 'Transportation'
 
