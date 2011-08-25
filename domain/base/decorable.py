@@ -2,6 +2,7 @@ from datetime import datetime
 from should_dsl import should, ShouldNotSatisfied
 from domain.base.business_entity import BusinessEntity
 from domain.base.decorator import Decorator
+from domain.supportive.contract_error import ContractError
 
 
 class Decorable(BusinessEntity):
@@ -24,7 +25,7 @@ class Decorable(BusinessEntity):
     def undecorate(self, decorator):
         ''' Keeps decorator reference and logs its datetime deactivation'''
         for decorator_activation in self.decoration_history:
-            #since the same decotator can be activated and deactivated many times
+            #since the same decorator can be activated and deactivated many times
             #gets the one still active
             if decorator_activation[0] == decorator and decorator_activation[2] == None:
                decorator_activation[2] = datetime.now()

@@ -1,9 +1,8 @@
 from domain.base.business_entity import BusinessEntity
 
 
-class Decorator:
+class Decorator(BusinessEntity):
     def __init__(self):
-        self.oid         = None
         self.description = None
 
     def decorate(self, decorated):
