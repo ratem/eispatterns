@@ -1,22 +1,20 @@
 from should_dsl import should, ShouldNotSatisfied
 from domain.supportive.rule import rule
-from domain.supportive.association_error import AssociationError
 
 
-def loadable_rule(rule_category, docstring, module, element):
+#rough draft for a rule builder
+def built_rule(rule_category, docstring, module, element):
     def build_rule(method):
+        if docstring == None:
+            raise ValueError('Rule must have a docstring')
         setattr(method, 'rule_category', rule_category)
         setattr(method, '__doc__', docstring)
-        if method.__doc__ == None:
-            raise ValueError('Rule must have a docstring')
         #Check http://code.activestate.com/recipes/52241/
         m = __import__(module.element)
         return method
     return build_rule
 
 class RuleManager(object):
-    classes_and_rules = {'SomeDecorator': ['should_be_instance_of_person']}
-
     #Singleton machinery
     _instance = None
     def __new__(cls, *args, **kwargs):
@@ -24,28 +22,37 @@ class RuleManager(object):
             cls._instance = super(RuleManager, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
-    def check_rules_for_class(self, ruled_class, associated_candidate):
+    def check_decoration_rules(self, decorator_class, decoration_candidate):
+        '''Checks all decoration rules of a given decorator upon a given decoration candidate'''
         approved_rules = []
         refused_rules = []
-        type_name = ruled_class.__name__
-        try:
-            RuleManager.classes_and_rules |should| contain(type_name)
-        except ShouldNotSatisfied:
-            raise KeyError('%s type has no registered rules' % type_name)
-        for rule in RuleManager.classes_and_rules[type_name]:
-            approved = getattr(self.__class__, rule)(associated_candidate)
-            if approved: #maybe it is the case of returning only the __doc__ ...
-                approved_rules.append(getattr(self, rule))
+        type_name = decorator_class.__name__
+        if not decorator_class.decoration_rules:
+           raise ValueError('%s type has no decoration rules' % decorator_class.__name__)
+        for rule in decorator_class.decoration_rules:
+            try:
+                approved = getattr(self, rule)(decoration_candidate)
+            except AttributeError:
+                raise AttributeError('Rule Manager has no %s rule' % rule)
+            if approved:
+                approved_rules.append(getattr(self.__class__, rule).__doc__)
             else:
-                refused_rules.append(getattr(self, rule))
+                refused_rules.append(getattr(self.__class__, rule).__doc__)
         if not refused_rules:
-            return True, approved_rules, refused_rules
+            return True, approved_rules, None
         else:
             return False, approved_rules, refused_rules
 
+    def check_rule(self, rule, association_candidate):
+        '''Check a single rule for a given association candidate'''
+        try:
+            approved = getattr(self, rule)(association_candidate)
+        except AttributeError:
+            raise AttributeError('Rule Manager has no %s rule' % rule)
+        return approved
+
     #(1)rules in fact should be loaded from a configuration file
     #(2)need to develop a rule builder - through decorator
-    @classmethod
     @rule('association')
     def should_be_instance_of_person(self, associated):
         '''Associated object should be instance of Person'''
@@ -54,7 +61,6 @@ class RuleManager(object):
         except ShouldNotSatisfied: return False
         else: return True
 
-    @classmethod
     @rule('association')
     def should_be_instance_of_machine(self, associated):
         '''Associated object should be instance of Machine'''
