@@ -23,6 +23,11 @@ class RuleManager(object):
             cls._instance = super(RuleManager, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
+    @classmethod
+    def get_instance(cls):
+        return cls()
+    #/Singleton machinery
+
     def check_decoration_rules(self, decorator_class, decoration_candidate):
         '''Checks all decoration rules of a given decorator upon a given decoration candidate'''
         approved_rules = []
