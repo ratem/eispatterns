@@ -1,6 +1,6 @@
 import unittest
 from should_dsl import should
-from configurator.rule_manager import RuleManager
+from domain.supportive.rule_manager import RuleManager
 from domain.node.person import Person
 from domain.base.decorator import Decorator
 
@@ -12,26 +12,7 @@ class SomeDecorator(Decorator):
     def __init__(self):
         Decorator.__init__(self)
 
-    #Will go to Decorator superclass
-    def decorate(self, decorated):
-        passed, approved_rules, refused_rules = RuleManager.get_instance().check_decoration_rules(self,decorated)
-        if passed:
-           self.decorated = decorated
-           self.decorated.decorate(self)
-        return passed, approved_rules, refused_rules
-
 class RuleManagerSpec(unittest.TestCase):
-
-    #testing the generic decorate()
-    def it_decorates(self):
-        a_decorator = SomeDecorator()
-        a_person = Person()
-        a_decorator.decorate(a_person)
-        a_person.decorators |should| contain("Some Decorator")
-        SomeDecorator.decoration_rules = ['xxxxx']
-        (RuleManager.get_instance().check_decoration_rules, a_decorator, a_person) |should| throw(AttributeError)
-        #tear down
-        SomeDecorator.decoration_rules = ['should_be_instance_of_person']
 
     def it_is_a_singleton(self):
         a_rule_manager = RuleManager()
