@@ -28,6 +28,7 @@ class RuleManager(object):
         #gets the decorator object, without the need of passing it as an argument
         #works only if there is a rule_manager object inside the decorator
         decorator = inspect.stack()[1][0].f_locals['self']
+        #print inspect.stack()[1][0].f_locals
         approved_rules = []
         refused_rules = []
         if not decorator.__class__.decoration_rules:
