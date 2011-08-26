@@ -23,16 +23,13 @@ class RuleManager(object):
             cls._instance = super(RuleManager, cls).__new__(cls, *args, **kwargs)
         return cls._instance
 
-    def check_decoration_rules(self, decoration_candidate):
+    def check_decoration_rules(self, decorator_class, decoration_candidate):
         '''Checks all decoration rules of a given decorator upon a given decoration candidate'''
-        #gets the decorator object, without the need of passing it as an argument
-        #works only if there is a rule_manager object inside the decorator
-        decorator = inspect.stack()[1][0].f_locals['self']
         approved_rules = []
         refused_rules = []
-        if not decorator.__class__.decoration_rules:
-           raise ValueError('%s type has no decoration rules' % decorator.__class__.__name__)
-        for rule in decorator.__class__.decoration_rules:
+        if not decorator_class.decoration_rules:
+           raise ValueError('%s type has no decoration rules' % decorator_class.__name__)
+        for rule in decorator_class.decoration_rules:
             try:
                 approved = getattr(self, rule)(decoration_candidate)
             except AttributeError:
