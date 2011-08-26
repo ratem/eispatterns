@@ -3,6 +3,7 @@ from domain.supportive.rule_manager import RuleManager
 
 
 class Decorator(BusinessEntity):
+
     def __init__(self):
         self.description = None
 
