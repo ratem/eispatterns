@@ -21,6 +21,6 @@ class DecorableSpec(unittest.TestCase):
 
     def it_gest_undecorated(self):
         self.a_node.decorate(self.a_decorator)
-        self.a_node.undecorate(self.a_decorator) |should| equal_to(True)
-        self.a_node.undecorate('Something else') |should| equal_to(False)
+        self.a_node.undecorate(self.a_decorator) |should| be(True)
+        self.a_node.undecorate('Something else') |should| be(False)
 
