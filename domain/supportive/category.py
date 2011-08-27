@@ -1,10 +1,14 @@
 '''
-Resource/Operations: operation/person, operation/machine
-Resource/Materials: mro, component, raw material, software, document
-Resource/Kits: product, service
-Node/Persons: employee, customer/individual, partner/individual, employee/customer, employee/partner
-Node/Machines: hardware/it, tool, machine/general
-Node/Organizations: company, holding, branch, government, customer/organization, partner/organization
+Basic categories - "..." indicates that new sub-subcategories can be created
+Resource/Operation/: handcrafted/..., automated/...
+Resource/Material/: mro/..., component/..., raw_material/..., software/..., document/...
+Resource/Kit/: product/..., service/..., product_and_service/...
+Node/Person/: employee/..., customer/..., partner/..., customer_employee, partner_employee
+Node/Machine/: IT_hardware/..., tool/..., general
+Node/Organization/: my_organization/..., government/..., customer/..., partner/..., cell
+Movement/Transformation (instance of Resource/Operation/...)
+Movement/Transportation (instance of Resource/Operation/...)
+Movement/Process        (instance of Resource/Kit/service)
 '''
 class Category:
     def __init__(self, super_category, description, concept):

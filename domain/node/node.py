@@ -1,5 +1,6 @@
 from should_dsl import should, ShouldNotSatisfied
 from domain.base.decorable import Decorable
+from domain.base.decorator import Decorator
 from domain.resource.resource import Resource
 from domain.supportive.contract_error import ContractError
 
@@ -7,7 +8,6 @@ from domain.supportive.contract_error import ContractError
 class Node(Decorable):
     def __init__(self):
         Decorable.__init__(self)
-        self.decorators = {}
         self.input_area = {}
         self.processing_area = {}
         self.output_area = {}

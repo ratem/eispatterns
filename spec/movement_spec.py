@@ -6,12 +6,26 @@ from domain.supportive.association_error import AssociationError
 
 class MovementSpec(unittest.TestCase):
 
+    def setUp(self):
+        self.a_node = Node()
+        self.movement = Movement()
+
     def it_checks_source_and_destination(self):
-        a_node = Node()
         non_node = "I am not a Node"
-        movement = Movement()
-        (movement.set_source, a_node) |should_not| throw(AssociationError)
-        (movement.set_destination, a_node) |should_not| throw(AssociationError)
-        (movement.set_source, non_node) |should| throw(AssociationError)
-        (movement.set_destination, non_node) |should| throw(AssociationError)
+        (self.movement.set_source, self.a_node) |should_not| throw(AssociationError)
+        (self.movement.set_destination, self.a_node) |should_not| throw(AssociationError)
+        (self.movement.set_source, non_node) |should| throw(AssociationError)
+        (self.movement.set_destination, non_node) |should| throw(AssociationError)
+
+    def it_typifies_itself(self):
+        another_node = Node()
+        self.movement.set_source(self.a_node)
+        #a transportation from a_node to Null
+        self.movement.is_transportation() |should| equal_to(True)
+        self.movement.set_destination(self.a_node)
+        #a transformation inside a_node
+        self.movement.is_transformation() |should| equal_to(True)
+        self.movement.set_destination(another_node)
+        #a transportation from a_node to another_node
+        self.movement.is_transportation() |should| equal_to(True)
 

@@ -31,6 +31,10 @@ class ProcessSpec(unittest.TestCase):
         self.a_process.insert_movement('A movement', a_movement)
         self.a_process.movements |should| contain('A movement')
 
+    def it_inserts_a_subprocess(self):
+        a_subprocess = Process()
+        self.a_process.insert_movement('A subprocess', a_subprocess)
+
     def an_activity(self):
         '''
         Represents an activity of a workflow engine.
@@ -39,16 +43,16 @@ class ProcessSpec(unittest.TestCase):
         '''
         pass
 
-    def it_configures_an_activity(self):
-        logger = self.a_process.configure_activity(self.the_company, self.a_client, self.an_activity, FakeDecorator.do_something)
+    def it_configures_a_movement_as_an_activity_logger(self):
+        logger = self.a_process.configure_activity_logger(self.the_company, self.a_client, self.an_activity, FakeDecorator.do_something)
         logger.source |should| be(self.the_company)
         logger.destination |should| be(self.a_client)
         logger.activity |should| equal_to(self.an_activity)
         logger.activity_associated_method |should| equal_to(FakeDecorator.do_something)
         self.a_process.movements |should| include(self.an_activity.__name__)
 
-    def it_runs_a_preconfigured_activity(self):
-        logger = self.a_process.configure_activity(self.the_company, self.a_client, self.an_activity, FakeDecorator.do_something)
+    def it_runs_an_activity_through_a_preconfigured_activity_logger(self):
+        logger = self.a_process.configure_activity_logger(self.the_company, self.a_client, self.an_activity, FakeDecorator.do_something)
         a_decorator = FakeDecorator()
         logger.context = self.a_process.run_activity(logger, a_decorator, 100, 200)
         logger.context['actor'] |should| be(a_decorator)

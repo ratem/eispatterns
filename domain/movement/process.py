@@ -7,17 +7,17 @@ from domain.supportive.association_error import AssociationError
 
 class Process(Movement):
     def __init__(self, name=None):
-        self.name = name
+        Movement.__init__(self,name)
         self.movements = {}
 
     def insert_movement(self, key, movement):
-        try:#a process should be passed as a movement too, check what could happen
+        try:
             movement |should| be_instance_of(Movement)
         except:
             raise AssociationError('Movement instance expected, instead %s passed' % type(movement))
         self.movements[key] = movement
 
-    def configure_activity(self, source, destination, activity, method):
+    def configure_activity_logger(self, source, destination, activity, method):
         '''Configures an activity (activity, transition, state's action...)'''
         logger = Movement()
         logger.set_source(source)
@@ -27,7 +27,6 @@ class Process(Movement):
         self.insert_movement(activity.__name__,logger)
         return logger
 
-    #Transformations & Transportations must be rethinked
     def run_activity(self, logger, actor, *arguments):
         ''' Runs an activity using given arguments and logging context data'''
         execution_arguments = []
@@ -38,7 +37,7 @@ class Process(Movement):
           activity_result = logger.activity_associated_method(actor,*arguments)
           #ugly workaround: Fluidity's transitions need be explicitly called to change state
           logger.activity()
-        except:
+        except:#raises anything that can go wrong
           raise
         else:
           activity_end = datetime.now()

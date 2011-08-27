@@ -5,7 +5,6 @@ from domain.node.node import Node
 from domain.resource.resource import Resource
 from domain.supportive.contract_error import ContractError
 
-
 class NodeSpec(unittest.TestCase):
 
     def setUp(self):
