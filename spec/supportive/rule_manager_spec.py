@@ -24,9 +24,9 @@ class RuleManagerSpec(unittest.TestCase):
         a_person = Person()
         a_decorator = SomeDecorator()
         passed, approved_rules, refused_rules = RuleManager.get_instance().check_decoration_rules(SomeDecorator, a_person)
-        passed |should| equal_to(True)
+        passed |should| be(True)
         approved_rules |should| contain('''Associated object should be instance of Person''')
-        refused_rules |should| equal_to(None)
+        refused_rules |should| be(None)
         SomeDecorator.decoration_rules = ['xxxxx']
         (RuleManager.get_instance().check_decoration_rules, SomeDecorator, a_person) |should| throw(AttributeError)
         #tear down
@@ -34,7 +34,7 @@ class RuleManagerSpec(unittest.TestCase):
 
     def it_checks_a_rule(self):
         a_person = Person()
-        RuleManager.get_instance().check_rule('should_be_instance_of_person', a_person) |should| equal_to(True)
-        RuleManager.get_instance().check_rule('should_be_instance_of_machine', a_person) |should| equal_to(False)
+        RuleManager.get_instance().check_rule('should_be_instance_of_person', a_person) |should| be(True)
+        RuleManager.get_instance().check_rule('should_be_instance_of_machine', a_person) |should| be(False)
         (RuleManager.get_instance().check_rule, 'wrong rule...', a_person) |should| throw(AttributeError)
 

@@ -9,8 +9,8 @@ class CategorySpec(unittest.TestCase):
 
     def it_updates_its_super_category(self):
         self.category.update_super_category('company','any type of company')
-        self.category.super_category |should| be('company')
-        self.category.description |should| be('any type of company')
+        self.category.super_category |should| equal_to('company')
+        self.category.description |should| equal_to('any type of company')
 
     def it_includes_a_subcategory(self):
         self.category.include_sub_category('manager','manages departments of the company')
