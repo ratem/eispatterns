@@ -1,9 +1,6 @@
 all: deps test
 
-deps: specloud lettuce ludibrio should-dsl fluidity extreme_fluidity
-
-lettuce:
-	@python -c 'import lettuce' 2>/dev/null || pip install lettuce
+deps: specloud ludibrio should-dsl fluidity extreme_fluidity
 
 specloud:
 	@python -c 'import specloud' 2>/dev/null || pip install --no-deps specloud -r https://github.com/hugobr/specloud/raw/master/requirements.txt
@@ -23,17 +20,11 @@ extreme_fluidity:
 path:
     export PYTHONPATH=.
 
-test: unit acceptance
+test: unit
 
 unit: specloud ludibrio should-dsl path
 	@echo =======================================
 	@echo ========= Running unit specs ==========
 	@specloud spec
-	@echo
-
-acceptance: lettuce path
-	@echo ==============================================
-	@echo ========= Running acceptance specs ===========
-	@lettuce bank_system
 	@echo
 
