@@ -1,19 +1,7 @@
-import inspect
 from should_dsl import should, ShouldNotSatisfied
 from domain.supportive.rule import rule
+from domain.supportive.core_rules import CoreRules
 
-
-#rough draft for a rule builder
-def built_rule(rule_category, docstring, module, element):
-    def build_rule(method):
-        if docstring == None:
-            raise ValueError('Rule must have a docstring')
-        setattr(method, 'rule_category', rule_category)
-        setattr(method, '__doc__', docstring)
-        #Check http://code.activestate.com/recipes/52241/
-        m = __import__(module.element)
-        return method
-    return build_rule
 
 class RuleManager(object):
     #Singleton machinery
@@ -28,6 +16,11 @@ class RuleManager(object):
         return cls()
     #/Singleton machinery
 
+    #should be through configuration
+    rule_base = CoreRules()
+    def __init__(self):
+        self.rules = RuleManager.rule_base
+
     def check_decoration_rules(self, decorator_class, decoration_candidate):
         '''Checks all decoration rules of a given decorator upon a given decoration candidate'''
         approved_rules = []
@@ -36,10 +29,10 @@ class RuleManager(object):
            raise ValueError('%s type has no decoration rules' % decorator_class.__name__)
         for rule in decorator_class.decoration_rules:
             try:
-                approved = getattr(self, rule)(decoration_candidate)
+                approved = getattr(self.rules, rule)(decoration_candidate)
             except AttributeError:
                 raise AttributeError('Rule Manager has no %s rule' % rule)
-            rule_object_docstring = getattr(self.__class__, rule).__doc__
+            rule_object_docstring = getattr(self.rules, rule).__doc__
             if approved:
                 approved_rules.append(rule_object_docstring)
             else:
@@ -52,7 +45,7 @@ class RuleManager(object):
     def check_rule(self, rule, association_candidate):
         '''Check a single rule for a given association candidate'''
         try:
-            approved = getattr(self, rule)(association_candidate)
+            approved = getattr(self.rules, rule)(association_candidate)
         except AttributeError:
             raise AttributeError('Rule Manager has no %s rule' % rule)
         return approved
