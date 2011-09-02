@@ -3,7 +3,7 @@ Should be able of supplying documentation on (Business) Decorators and Materials
 (instantiable Resources).
 -Decorators: @operations
 -Work Items: attributes
-In the future, with the use of a workflow engine, it should also work for Processes
+In the medium term, it should also work for Processes
 '''
 import inspect
 from domain.resource.work_item import WorkItem

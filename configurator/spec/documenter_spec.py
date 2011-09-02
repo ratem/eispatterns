@@ -19,6 +19,8 @@ class DocumenterSpec(unittest.TestCase):
         self.documenter.find_classes(bank_system.resources.loan)
         self.documenter |should| have(2).work_items
         #a imports module
+        self.documenter.decorators = []
+        self.documenter.work_items = []
         self.documenter.find_classes(configurator.documenter_imports)
         self.documenter |should| have(3).decorators
         self.documenter |should| have(2).work_items

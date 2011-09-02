@@ -1,6 +1,6 @@
-from bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
-from bank_system.decorators.bank_account_decorator import BankAccountDecorator
-from bank_system.decorators.employee_decorator import EmployeeDecorator
-from bank_system.resources.loan import Loan
-from bank_system.resources.loan_request import LoanRequest
+from eispatterns_examples.bank_system.decorators.credit_analyst_decorator import CreditAnalystDecorator
+from eispatterns_examples.bank_system.decorators.bank_account_decorator import BankAccountDecorator
+from eispatterns_examples.bank_system.decorators.employee_decorator import EmployeeDecorator
+from eispatterns_examples.bank_system.resources.loan import Loan
+from eispatterns_examples.bank_system.resources.loan_request import LoanRequest
 

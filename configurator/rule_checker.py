@@ -1,25 +1,20 @@
 '''
-@rules must be class methods because creating an instance for each decorator is
-a problem, given that the different arguments required by different decorator
-constructors. The solution is to use @rules as Class Methods, with no arguments
-besides decorated.
-If decorators instance attributes are needed they should be used at decorate(),
-making that some object can pass the @rule tests but get an extra error while
-trying to decorate() it. Anyway, checking decorators instance attributes for
-decoration maybe is a bad practice, given that decorators are created for
-decorating an object (having setted only very basic attributes), thus, it starts
-operating - and changing its state - only after the decoration.
+@rules are defined as methods of the singleton RuleManager. Pay attention to
+configuring the appropriate RuleManager subclass when using rules not related to
+the core classes.
 '''
 import sys
 import inspect
-from domain.supportive.contract_error import ContractError
 from domain.base.decorator import Decorator
+from domain.supportive.rule_manager import RuleManager
+from domain.supportive.contract_error import ContractError
 
 
 class RuleChecker:
     ''' Checks for a given node which decorators can be associated to it '''
     def __init__(self):
         self.allowable_decorators = []
+        self.non_allowable_decorators = []
         self.broken_rules = []
         self.decorators = []
 
@@ -43,15 +38,10 @@ class RuleChecker:
     def check_rules(self, node):
         ''' for each decorator, identifies and runs each rule separately '''
         for decorator in self.decorators:
-            for method_name, method_object in inspect.getmembers(decorator, inspect.ismethod):
-                if hasattr(method_object,'rule_category'):
-                    try:#decorator.__dict__[method_name].__get__(None, decorator)(node)
-                        getattr(decorator, method_name)(node)
-                    except:
-                        allowable = False
-                        self.broken_rules.append([decorator, method_object])
-                    else:
-                        allowable = True
-            if allowable:
+            passed, approved_rules, refused_rules = RuleManager.get_instance().check_decoration_rules(decorator, node)
+            if passed:
                 self.allowable_decorators.append(decorator)
+            else:
+                self.non_allowable_decorators.append(decorator)
+                self.broken_rules.append(refused_rules)
 
